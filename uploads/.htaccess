@@ -1,0 +1,11 @@
+# Mencegah eksekusi file PHP di folder uploads (keamanan)
+<FilesMatch "\.(php|phtml|php3|php4|php5|php7|pht)$">
+    Require all denied
+</FilesMatch>
+
+# Fallback untuk Apache versi lama
+<IfModule !mod_authz_core.c>
+    Order Deny,Allow
+    Deny from all
+</IfModule>
+Options -Indexes

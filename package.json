@@ -1,0 +1,24 @@
+{
+  "name": "upucc3",
+  "version": "1.0.0",
+  "description": "Website organisasi dengan Node.js + Firebase. Terdiri dari **3 area**:",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "firebase": "^12.18.0",
+    "firebase-admin": "^14.3.0",
+    "multer": "^2.3.0"
+  }
+}

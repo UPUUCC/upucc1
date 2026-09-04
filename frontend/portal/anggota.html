@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Member - UPUCC</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="/portal/dashboard.html">Portal UPUCC</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#portalNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="portalNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/portal/dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="/portal/absensi.html">Absensi</a></li>
+        <li class="nav-item"><a class="nav-link" href="/portal/kas.html">Uang Kas</a></li>
+        <li class="nav-item"><a class="nav-link" href="/portal/profil.html">Profil</a></li>
+        <li class="nav-item"><a class="nav-link text-warning" href="/portal/logout.html">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container mt-4">
+
+<?php
+/**
+ * Menu "Kelola Anggota" (registrasi / pembuatan akun anggota baru) sudah
+ * TIDAK ADA lagi di Portal Anggota, untuk role apa pun -- termasuk Ketua
+ * Umum dan Wakil Ketua Umum. Pembuatan, pengubahan, dan penghapusan akun
+ * anggota (username, password, foto, role, divisi) kini HANYA bisa
+ * dilakukan lewat menu "Anggota / Struktur" di Dashboard CMS
+ * (lihat /dashboard/anggota.php).
+ *
+ * File ini sengaja tetap ada (supaya link/bookmark lama ke portal/anggota.php
+ * tidak error 404) dan langsung mengarahkan kembali ke Beranda Portal
+ * dengan pesan penjelasan.
+ */
+require_once __DIR__ . '/../database.php';
+require_once __DIR__ . '/../includes/functions.php';
+require_once __DIR__ . '/../includes/auth_portal.php';
+portal_login_required();
+
+set_flash('danger', 'Menu Kelola Anggota sudah tidak ada di Portal. Pembuatan/pengelolaan akun anggota kini hanya bisa dilakukan lewat menu "Anggota / Struktur" di Dashboard CMS.');
+redirect('dashboard.php');
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

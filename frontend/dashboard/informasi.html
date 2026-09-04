@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin - UPUCC</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+<div class="d-flex">
+  <!-- Sidebar -->
+  <div class="bg-dark text-white p-3 vh-100 position-fixed" style="width: 250px; overflow-y:auto;">
+    <h4 class="mb-4">Admin UPUCC</h4>
+    <ul class="nav flex-column">
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/index.html">Dashboard</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/slider.html">Slider</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/informasi.html">Informasi UPUCC</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/divisi.html">Divisi</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/prestasi.html">Prestasi</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/struktur.html">Struktur</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/sejarah.html">Sejarah</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/acara.html">Acara</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/anggota.html">Anggota</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/pendaftaran.html">Pendaftaran</a></li>
+      <li class="nav-item mt-4"><a class="nav-link text-danger" href="/dashboard/logout.html">Logout</a></li>
+    </ul>
+  </div>
+  <!-- Main Content -->
+  <div class="flex-grow-1 bg-light" style="margin-left: 250px; min-height: 100vh;">
+    <div class="container-fluid p-4">
+
+<div class="card border-0 shadow-sm p-4">
+  <h5>Edit Informasi Umum UPUCC</h5>
+  <p class="text-muted small">Konten ini akan tampil di halaman Beranda dan halaman Informasi.</p>
+  <form method="POST">
+    <div class="mb-3">
+      <textarea name="konten" class="form-control" rows="10"><!-- Dynamic: e($info['konten'] ?? '') --></textarea>
+    </div>
+    <button class="btn btn-primary"><i class="bi bi-save"></i> Simpan</button>
+  </form>
+</div>
+
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

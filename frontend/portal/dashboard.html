@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Member - UPUCC</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="/portal/dashboard.html">Portal UPUCC</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#portalNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="portalNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/portal/dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="/portal/absensi.html">Absensi</a></li>
+        <li class="nav-item"><a class="nav-link" href="/portal/kas.html">Uang Kas</a></li>
+        <li class="nav-item"><a class="nav-link" href="/portal/profil.html">Profil</a></li>
+        <li class="nav-item"><a class="nav-link text-warning" href="/portal/logout.html">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container mt-4">
+
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm p-4 text-center">
+      <i class="bi bi-person-badge fs-1 text-primary"></i>
+      <h5 class="mt-2"><!-- Dynamic: e($_SESSION['member_nama']) --></h5>
+      <p class="mb-0 text-muted"><!-- Dynamic: e(label_role(portal_role())) --></p>
+      <p class="mb-0 text-muted small">Divisi: <!-- Dynamic: e($divisiNama) --></p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm p-4 text-center">
+      
+        <i class="bi bi-clipboard-data fs-1 text-success"></i>
+        <h5 class="mt-2">Pemantauan Absensi</h5>
+        <span class="badge bg-info text-dark">Tidak perlu absen sendiri</span>
+        <div class="mt-2"><a href="absensi.php" class="btn btn-sm btn-primary">Pantau Absensi</a></div>
+      
+        <i class="bi bi-calendar-check fs-1 text-success"></i>
+        <h5 class="mt-2">Absensi Hari Ini</h5>
+        
+          <span class="badge bg-secondary text-uppercase"><!-- Dynamic: e($absenHariIni['status']) --></span>
+          <div class="mt-1"><span class="badge <!-- Dynamic: badge_approval($absenHariIni['approval_status']) -->"><!-- Dynamic: e(label_approval($absenHariIni['approval_status'])) --></span></div>
+        
+          <span class="badge bg-secondary">Belum Absen</span>
+          <div class="mt-2"><a href="absensi.php" class="btn btn-sm btn-primary">Absen Sekarang</a></div>
+
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm p-4 text-center">
+      <i class="bi bi-inbox fs-1 text-danger"></i>
+      <h5 class="mt-2">Kotak Pesan Absensi</h5>
+      
+        <span class="badge bg-danger"><!-- Dynamic: $pendingApprovalCount --> menunggu persetujuan</span>
+      
+        <span class="badge bg-success">Tidak ada pengajuan baru</span>
+      
+      <div class="mt-2"><a href="persetujuan_absensi.php" class="btn btn-sm btn-outline-primary">Buka Kotak Pesan</a></div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    
+    <div class="card border-0 shadow-sm p-4 text-center">
+      <i class="bi bi-cash-stack fs-1 text-warning"></i>
+      <h5 class="mt-2">Saldo Kas</h5>
+      <h4 class="text-primary"><!-- Dynamic: rupiah($saldo) --></h4>
+      <a href="kas.php" class="btn btn-sm btn-outline-primary">Lihat Detail</a>
+    </div>
+  </div>
+  
+</div>
+
+<div class="row g-3 mt-1">
+  <div class="col-md-4">
+    
+    <div class="card border-0 shadow-sm p-4 text-center">
+      <i class="bi bi-cash-stack fs-1 text-warning"></i>
+      <h5 class="mt-2">Saldo Kas <span class="badge bg-secondary">Lihat saja</span></h5>
+      <h4 class="text-primary"><!-- Dynamic: rupiah($saldo) --></h4>
+      <a href="kas.php" class="btn btn-sm btn-outline-primary">Lihat Detail</a>
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-info mt-4">
+  <i class="bi bi-info-circle"></i> Hak akses Anda:
+  <ul class="mb-0 mt-2">
+    
+      <li>Akses penuh ke seluruh data (kecuali menambah/mengubah Kas - hanya bisa <b>melihat</b> Kas).</li>
+      <li><b>Tidak perlu melakukan absensi untuk diri sendiri</b> -- hanya memantau absensi dari <b>seluruh divisi</b>, serta menerima/menolak pengajuan absensi mandiri dari <b>Kotak Pesan</b> (semua divisi).</li>
+      <li>Bisa mengunduh rekap absensi dalam bentuk <b>Excel</b> di menu Absensi.</li>
+      <li>Bisa mengelola data anggota.</li>
+    
+      <li><b>Tidak perlu melakukan absensi untuk diri sendiri</b> -- hanya memantau &amp; mengelola absensi anggota untuk <b>divisi Anda sendiri</b>.</li>
+      <li>Menerima atau menolak pengajuan absensi mandiri anggota divisi Anda lewat menu <b>Kotak Pesan</b>.</li>
+      <li>Bisa mengunduh rekap absensi divisi Anda dalam bentuk <b>Excel</b> di menu Absensi.</li>
+      <li>Kas Organisasi: hanya bisa <b>melihat</b>, tidak bisa menambah/mengubah.</li>
+    
+      <li>Fokus mengelola data <b>anggota</b> (tambah, ubah, hapus) di seluruh divisi.</li>
+      <li>Bisa <b>memantau</b> absensi seluruh divisi dan mengunduh rekapnya dalam bentuk <b>Excel</b> di menu Absensi, tetapi tidak dapat mengubah data absensi maupun mengakses Kas.</li>
+    
+      <li>Melakukan absensi seperti anggota lain (pengajuan Anda menunggu persetujuan Ketua/Wakil Ketua Umum).</li>
+      <li>Satu-satunya role dengan akses <b>penuh</b> (tambah/ubah/hapus) ke Kas Organisasi.</li>
+    
+      <li>Anda hanya dapat melakukan absensi untuk <b>diri sendiri</b>.</li>
+      <li>Setiap pengajuan absensi akan masuk ke Kotak Pesan pengurus divisi Anda dan baru tercatat resmi setelah <b>disetujui</b>.</li>
+    
+  </ul>
+</div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

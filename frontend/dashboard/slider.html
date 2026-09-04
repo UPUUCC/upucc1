@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin - UPUCC</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+<div class="d-flex">
+  <!-- Sidebar -->
+  <div class="bg-dark text-white p-3 vh-100 position-fixed" style="width: 250px; overflow-y:auto;">
+    <h4 class="mb-4">Admin UPUCC</h4>
+    <ul class="nav flex-column">
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/index.html">Dashboard</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/slider.html">Slider</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/informasi.html">Informasi UPUCC</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/divisi.html">Divisi</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/prestasi.html">Prestasi</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/struktur.html">Struktur</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/sejarah.html">Sejarah</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/acara.html">Acara</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/anggota.html">Anggota</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/pendaftaran.html">Pendaftaran</a></li>
+      <li class="nav-item mt-4"><a class="nav-link text-danger" href="/dashboard/logout.html">Logout</a></li>
+    </ul>
+  </div>
+  <!-- Main Content -->
+  <div class="flex-grow-1 bg-light" style="margin-left: 250px; min-height: 100vh;">
+    <div class="container-fluid p-4">
+
+<div class="card border-0 shadow-sm p-4 mb-4">
+  <h5>Tambah Slider Baru</h5>
+  <form method="POST" enctype="multipart/form-data" class="row g-3">
+    <input type="hidden" name="action" value="add">
+    <div class="col-md-4">
+      <label class="form-label">Gambar *</label>
+      <input type="file" name="gambar" class="form-control" required accept="image/*">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Judul</label>
+      <input type="text" name="judul" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Deskripsi Singkat</label>
+      <input type="text" name="deskripsi" class="form-control">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">Urutan</label>
+      <input type="number" name="urutan" class="form-control" value="0">
+    </div>
+    <div class="col-12">
+      <button class="btn btn-primary"><i class="bi bi-plus"></i> Tambah Slider</button>
+    </div>
+  </form>
+</div>
+
+<div class="row g-3">
+  
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm">
+      <img src="../uploads/slider/<!-- Dynamic: e($s['gambar']) -->" class="card-img-top" style="height:160px;object-fit:cover;">
+      <div class="card-body">
+        <h6><!-- Dynamic: e($s['judul'] ?: '(tanpa judul)') --></h6>
+        <p class="small text-muted"><!-- Dynamic: e($s['deskripsi']) --></p>
+        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#edit<!-- Dynamic: $s['id'] -->"><i class="bi bi-pencil"></i> Edit</button>
+        <a href="?hapus=<!-- Dynamic: $s['id'] -->" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus slider ini?')"><i class="bi bi-trash"></i> Hapus</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="edit<!-- Dynamic: $s['id'] -->">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="action" value="edit">
+          <input type="hidden" name="id" value="<!-- Dynamic: $s['id'] -->">
+          <div class="modal-header"><h5 class="modal-title">Edit Slider</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+          <div class="modal-body">
+            <div class="mb-3"><label class="form-label">Ganti Gambar (kosongkan jika tidak ganti)</label><input type="file" name="gambar" class="form-control" accept="image/*"></div>
+            <div class="mb-3"><label class="form-label">Judul</label><input type="text" name="judul" class="form-control" value="<!-- Dynamic: e($s['judul']) -->"></div>
+            <div class="mb-3"><label class="form-label">Deskripsi</label><input type="text" name="deskripsi" class="form-control" value="<!-- Dynamic: e($s['deskripsi']) -->"></div>
+            <div class="mb-3"><label class="form-label">Urutan</label><input type="number" name="urutan" class="form-control" value="<!-- Dynamic: $s['urutan'] -->"></div>
+          </div>
+          <div class="modal-footer"><button class="btn btn-primary">Simpan</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

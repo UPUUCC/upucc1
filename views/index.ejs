@@ -1,0 +1,93 @@
+<%- include('partials/header') %>
+
+<!-- SLIDER -->
+<div id="heroCarousel" class="carousel slide hero-slider" data-bs-ride="carousel">
+  <% if (sliders && sliders.length > 0) { %>
+    <div class="carousel-indicators">
+      <% sliders.forEach(function(s, i) { %>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="<%= i %>" class="<%= i === 0 ? 'active' : '' %>"></button>
+      <% }); %>
+    </div>
+    <div class="carousel-inner">
+      <% sliders.forEach(function(s, i) { %>
+        <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+          <img src="<%= s.gambar ? (s.gambar.startsWith('http') ? s.gambar : '/uploads/slider/' + s.gambar) : '' %>" alt="<%= s.judul %>">
+          <% if (s.judul) { %>
+          <div class="carousel-caption text-white">
+            <h3><%= s.judul %></h3>
+            <% if (s.deskripsi) { %><p class="mb-0"><%= s.deskripsi %></p><% } %>
+          </div>
+          <% } %>
+        </div>
+      <% }); %>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  <% } else { %>
+    <div class="d-flex align-items-center justify-content-center text-white" style="height:480px; background:linear-gradient(120deg,#0d2b4e,#1e6fd9);">
+      <div class="text-center">
+        <h1 class="fw-bold">Selamat Datang di UPUCC</h1>
+        <p>Tambahkan gambar slider melalui Dashboard untuk mengisi bagian ini.</p>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<div class="container my-5">
+  <h2 class="section-title">Tentang UPUCC</h2>
+  <p class="lead"><%- info ? info.konten.replace(/\n/g, '<br>') : '' %></p>
+  <a href="/informasi" class="btn btn-primary">Selengkapnya <i class="bi bi-arrow-right"></i></a>
+</div>
+
+<div class="container my-5">
+  <h2 class="section-title">4 Divisi UPUCC</h2>
+  <div class="row g-4">
+    <% if (divisions && divisions.length > 0) { %>
+      <% divisions.forEach(function(d) { %>
+      <div class="col-md-3 col-6">
+        <a href="/informasi_divisi/<%= d.slug %>" class="text-decoration-none text-dark">
+          <div class="card card-divisi h-100 text-center">
+            <img src="<%= d.logo ? (d.logo.startsWith('http') ? d.logo : '/uploads/divisi/' + d.logo) : 'https://via.placeholder.com/90?text=' + d.nama.substring(0,1) %>" class="logo-divisi" alt="<%= d.nama %>">
+            <div class="card-body">
+              <h5 class="card-title"><%= d.nama %></h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <% }); %>
+    <% } %>
+  </div>
+</div>
+
+<% if (prestasiTerbaru && prestasiTerbaru.length > 0) { %>
+<div class="container my-5">
+  <h2 class="section-title">Prestasi Terbaru</h2>
+  <div class="row g-4">
+    <% prestasiTerbaru.forEach(function(p) { %>
+    <div class="col-md-4">
+      <div class="card prestasi-card h-100">
+        <img src="<%= p.gambar ? (p.gambar.startsWith('http') ? p.gambar : '/uploads/prestasi/' + p.gambar) : 'https://via.placeholder.com/400x180?text=UPUCC' %>" class="card-img-top" alt="">
+        <div class="card-body">
+          <h5 class="card-title"><%= p.judul %></h5>
+          <p class="card-text small text-muted">
+            <% 
+              const d = p.tanggal ? new Date(p.tanggal._seconds ? p.tanggal._seconds * 1000 : p.tanggal) : new Date();
+              const formattedDate = d.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+            %>
+            <%= formattedDate %>
+          </p>
+          <p class="card-text"><%= p.deskripsi.substring(0,100) %>...</p>
+        </div>
+      </div>
+    </div>
+    <% }); %>
+  </div>
+  <div class="text-center mt-3"><a href="/prestasi" class="btn btn-outline-primary">Lihat Semua Prestasi</a></div>
+</div>
+<% } %>
+
+<%- include('partials/footer') %>
