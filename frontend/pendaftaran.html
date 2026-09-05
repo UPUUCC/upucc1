@@ -3,9 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pendaftaran Anggota Baru - UPUCC</title>
+  <title>Pendaftaran Anggota UPU-CC 2026</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+  <style>
+    body {
+      background-color: #f0ebf8; /* Google Forms typical purple background */
+    }
+    .form-header {
+      background-color: #fff;
+      border-radius: 8px;
+      border-top: 10px solid #673ab7;
+      padding: 24px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .form-card {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: box-shadow 0.2s;
+      border-left: 3px solid transparent;
+    }
+    .form-card:focus-within {
+      border-left: 3px solid #4285f4;
+    }
+    .form-title {
+      font-size: 32px;
+      font-family: 'Outfit', sans-serif;
+      margin-bottom: 12px;
+    }
+    .required {
+      color: #d93025;
+    }
+    .question-title {
+      font-size: 16px;
+      margin-bottom: 16px;
+      font-weight: 500;
+      color: #202124;
+    }
+    .custom-input {
+      border: none;
+      border-bottom: 1px solid #e0e0e0;
+      border-radius: 0;
+      padding: 8px 0;
+      background-color: transparent;
+      width: 50%;
+      min-width: 200px;
+      transition: border-bottom 0.2s;
+    }
+    .custom-input:focus {
+      box-shadow: none;
+      border-bottom: 2px solid #673ab7;
+    }
+    .custom-radio {
+      margin-bottom: 12px;
+    }
+    .custom-radio label {
+      color: #202124;
+      font-weight: 400;
+    }
+    .btn-submit {
+      background-color: #673ab7;
+      color: #fff;
+      padding: 10px 24px;
+      border-radius: 4px;
+      font-weight: 500;
+      border: none;
+    }
+    .btn-submit:hover {
+      background-color: #5e35b1;
+    }
+  </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top upucc-navbar">
@@ -19,50 +91,137 @@
     <div class="collapse navbar-collapse" id="mainNav">
       <ul class="navbar-nav ms-auto" id="navMenu">
         <li class="nav-item"><a class="nav-link" href="/">Beranda</a></li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Informasi</a>
-          <ul class="dropdown-menu" id="navDivisi">
-            <li><a class="dropdown-item" href="/informasi.html">Informasi UPUCC</a></li>
-            <li><hr class="dropdown-divider"></li>
-          </ul>
-        </li>
+        <li class="nav-item"><a class="nav-link" href="/informasi.html">Informasi UPUCC</a></li>
         <li class="nav-item"><a class="nav-link" href="/prestasi.html">Prestasi</a></li>
         <li class="nav-item"><a class="nav-link" href="/struktur.html">Struktur Organisasi</a></li>
         <li class="nav-item"><a class="nav-link" href="/sejarah.html">Sejarah</a></li>
         <li class="nav-item"><a class="nav-link" href="/acara.html">Acara</a></li>
-        
         <li class="nav-item"><a class="nav-link btn btn-sm btn-outline-light ms-lg-2 px-3" href="/login.html"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
-<div class="container my-5 animate-on-load delay-1">
-  <div class="row justify-content-center">
-    <div class="col-lg-8">
-      <div class="card shadow-sm border-0 rounded-4">
-        <div class="card-body p-5 text-center">
-          <i class="bi bi-person-plus" style="font-size:3.5rem;color:var(--upucc-secondary);"></i>
-          <h2 class="card-title fw-bold mb-4 mt-3 text-primary">Pendaftaran Anggota Baru</h2>
-          <p class="text-muted mb-4" style="font-size:1.1rem;">
-            Pendaftaran anggota baru secara mandiri saat ini sudah <strong>ditiadakan</strong> dari sistem website.
-          </p>
-          <div class="alert alert-info text-start d-inline-block mx-auto">
-            Silakan hubungi <b>Ketua Umum</b>, <b>Wakil Ketua Umum</b>, atau <b>Sekretaris</b> UPUCC
-            untuk dibuatkan akun keanggotaan Anda terlebih dahulu. 
-            <br><br>
-            Setelah akun Anda terdaftar, Anda bisa login lewat halaman <a href="/login.html" class="fw-bold">Login</a> sesuai dengan divisi Anda.
-          </div>
-          <div class="mt-4">
-            <a href="/login.html" class="btn btn-primary px-4 py-2"><i class="bi bi-box-arrow-in-right"></i> Pergi ke Halaman Login</a>
-          </div>
-        </div>
+<div class="container my-5" style="max-width: 770px;">
+  
+  <form id="pendaftaranForm">
+    <!-- Header Block -->
+    <div class="form-header animate-on-load delay-1">
+      <h1 class="form-title">Pendaftaran Anggota UPU-CC 2026</h1>
+      <p>Halo, Mahasiswa/i Aktif Universitas Potensi Utama! 👋</p>
+      <p>Silakan isi formulir di bawah ini untuk pendaftaran anggota baru UPU-CC (Universitas Potensi Utama Computer Club) 2026.</p>
+      <p>Silakan isi data diri kamu dengan benar dan pilih divisi yang sesuai dengan minat serta passion kamu:</p>
+      <ul style="padding-left: 20px; color: #5f6368;">
+        <li>Programming (Pengembangan software, web, dan aplikasi)</li>
+        <li>Network Security (Keamanan jaringan dan infrastruktur IT)</li>
+        <li>Multimedia (Desain grafis, video editing, dan content creation)</li>
+        <li>Knowledge of Technology (Eksplorasi dan edukasi teknologi terkini)</li>
+      </ul>
+      <p>Pastikan seluruh data diisi dengan valid.<br>Mari bergabung, belajar, dan berkembang bersama keluarga besar UPU-CC! 🚀</p>
+      <hr>
+      <div class="d-flex justify-content-between text-muted small">
+        <span>Menunjukkan pertanyaan yang wajib diisi <span class="required">*</span></span>
       </div>
     </div>
+
+    <!-- Email -->
+    <div class="form-card animate-on-load delay-2">
+      <div class="question-title">Email <span class="required">*</span></div>
+      <input type="email" class="form-control custom-input" id="email" name="email" placeholder="Jawaban Anda" required>
+    </div>
+
+    <!-- Nama Lengkap -->
+    <div class="form-card animate-on-load delay-3">
+      <div class="question-title">Nama Lengkap <span class="required">*</span></div>
+      <input type="text" class="form-control custom-input" id="nama" name="nama" placeholder="Jawaban Anda" required>
+    </div>
+
+    <!-- Nomor HP -->
+    <div class="form-card animate-on-load delay-4">
+      <div class="question-title">Nomor HP / WhatsApp Aktif <span class="required">*</span></div>
+      <input type="tel" class="form-control custom-input" id="nohp" name="nohp" placeholder="Jawaban Anda" required>
+    </div>
+
+    <!-- NIM -->
+    <div class="form-card animate-on-load delay-5">
+      <div class="question-title">NIM / Nomor Induk Mahasiswa <span class="required">*</span></div>
+      <input type="number" class="form-control custom-input" id="nim" name="nim" placeholder="Jawaban Anda" required>
+    </div>
+
+    <!-- Prodi -->
+    <div class="form-card animate-on-load delay-6">
+      <div class="question-title">Program Studi (Prodi) <span class="required">*</span></div>
+      <input type="text" class="form-control custom-input" id="prodi" name="prodi" placeholder="Jawaban Anda" required>
+    </div>
+
+    <!-- Semester -->
+    <div class="form-card animate-on-load delay-7">
+      <div class="question-title">Semester <span class="required">*</span></div>
+      <div class="form-check custom-radio">
+        <input class="form-check-input" type="radio" name="semester" id="sem1" value="1" required>
+        <label class="form-check-label" for="sem1">1</label>
+      </div>
+      <div class="form-check custom-radio">
+        <input class="form-check-input" type="radio" name="semester" id="sem3" value="3" required>
+        <label class="form-check-label" for="sem3">3</label>
+      </div>
+      <div class="form-check custom-radio">
+        <input class="form-check-input" type="radio" name="semester" id="sem5" value="5" required>
+        <label class="form-check-label" for="sem5">5</label>
+      </div>
+    </div>
+
+    <!-- Divisi -->
+    <div class="form-card animate-on-load delay-8">
+      <div class="question-title">Pemilihan Divisi <span class="required">*</span></div>
+      <div class="form-check custom-radio">
+        <input class="form-check-input" type="radio" name="divisi" id="divProg" value="Programming" required>
+        <label class="form-check-label" for="divProg">Programming</label>
+      </div>
+      <div class="form-check custom-radio">
+        <input class="form-check-input" type="radio" name="divisi" id="divNet" value="Network Security" required>
+        <label class="form-check-label" for="divNet">Network Security</label>
+      </div>
+      <div class="form-check custom-radio">
+        <input class="form-check-input" type="radio" name="divisi" id="divMulti" value="Multimedia" required>
+        <label class="form-check-label" for="divMulti">Multimedia</label>
+      </div>
+      <div class="form-check custom-radio">
+        <input class="form-check-input" type="radio" name="divisi" id="divKnow" value="Knowledge of Technology" required>
+        <label class="form-check-label" for="divKnow">Knowledge of Technology</label>
+      </div>
+    </div>
+
+    <!-- Upload Bukti -->
+    <div class="form-card animate-on-load delay-9">
+      <div class="question-title">Upload bukti sudah mengikuti akun Instagram UPUCC (<a href="https://www.instagram.com/upucc.or.id" target="_blank">@upucc.or.id</a>) <span class="required">*</span></div>
+      <p class="small text-muted mb-3">Upload maksimum 5 file yang didukung: PDF, drawing, atau image. Maks 10 MB per file.</p>
+      <input type="file" class="form-control" id="buktiFollow" name="buktiFollow" accept="image/*,.pdf" multiple required>
+      <div id="fileHelpBlock" class="form-text mt-2 text-danger d-none">
+        Maksimal 5 file, ukuran maksimum 10 MB per file.
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-5 animate-on-load delay-10">
+      <button type="submit" class="btn btn-submit" id="submitBtn">Kirim</button>
+      <button type="button" class="btn text-primary" style="font-weight: 500;">Kosongkan formulir</button>
+    </div>
+  </form>
+  
+  <div id="successMessage" class="d-none">
+    <div class="form-card text-center py-5 shadow-lg border-0" style="border-top: 10px solid #673ab7;">
+      <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+      <h2 class="mt-4 form-title">Terima Kasih!</h2>
+      <p class="text-muted">Pendaftaran Anda telah berhasil dikirim. Kami akan meninjau data Anda segera.</p>
+      <p class="text-muted">Pantau terus grup WhatsApp dan Instagram UPU-CC untuk informasi selanjutnya!</p>
+      <a href="/" class="btn btn-submit mt-3">Kembali ke Beranda</a>
+    </div>
   </div>
+
 </div>
 
 <footer class="upucc-footer text-light mt-5">
+  <!-- Footer Content -->
   <div class="container">
     <div class="row g-4 justify-content-between align-items-center">
       <div class="col-md-6 text-center text-md-start">
@@ -71,14 +230,8 @@
           UPU-CC
         </h5>
         <p class="mb-1 small">Universitas Potensi Utama Computer Club</p>
-        <p class="mb-0 small" style="color: #64748b;">Programming &bull; Net Sect &bull; Knowtech &bull; Multimedia</p>
       </div>
       <div class="col-md-6 text-center text-md-end">
-        <div class="social-icons mb-3">
-          <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-          <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-          <a href="#" aria-label="Github"><i class="bi bi-github"></i></a>
-        </div>
         <p class="mb-0 small text-muted">&copy; <span id="footerYear">2026</span> UPUCC. All rights reserved.</p>
       </div>
     </div>
@@ -87,5 +240,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module" src="/src/main.js"></script>
+<script type="module" src="/src/pendaftaran.js"></script>
 </body>
 </html>
