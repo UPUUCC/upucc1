@@ -36,7 +36,7 @@
   </div>
 </nav>
 
-<div class="container my-5" style="max-width:650px;">
+<div class="container my-5 animate-on-load delay-1" style="max-width:650px;">
   <h2 class="section-title">Acara UPUCC</h2>
 
   <div id="acaraLoading" class="text-center my-5">
@@ -49,11 +49,26 @@
   
 </div>
 
-<footer class="upucc-footer text-light mt-5 py-4">
-  <div class="container text-center">
-    <p class="mb-1 fw-bold"><img src="/logo.jpg" alt="Logo UPU-CC" height="30" class="me-2 rounded-circle"> UPU-CC - Universitas Potensi Utama Computer Club</p>
-    <p class="mb-1 small">Programming &bull; Net Sect &bull; Knowtech &bull; Multimedia</p>
-    <p class="mb-0 small text-muted">&copy; UPUCC. All rights reserved.</p>
+<footer class="upucc-footer text-light mt-5">
+  <div class="container">
+    <div class="row g-4 justify-content-between align-items-center">
+      <div class="col-md-6 text-center text-md-start">
+        <h5 class="mb-2 fw-bold d-flex align-items-center justify-content-center justify-content-md-start">
+          <img src="/logo.jpg" alt="Logo UPU-CC" height="36" class="me-3 rounded-circle footer-logo"> 
+          UPU-CC
+        </h5>
+        <p class="mb-1 small">Universitas Potensi Utama Computer Club</p>
+        <p class="mb-0 small" style="color: #64748b;">Programming &bull; Net Sect &bull; Knowtech &bull; Multimedia</p>
+      </div>
+      <div class="col-md-6 text-center text-md-end">
+        <div class="social-icons mb-3">
+          <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+          <a href="#" aria-label="Github"><i class="bi bi-github"></i></a>
+        </div>
+        <p class="mb-0 small text-muted">&copy; <span id="footerYear">2026</span> UPUCC. All rights reserved.</p>
+      </div>
+    </div>
   </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

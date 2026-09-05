@@ -1,49 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
 :root {
   --upucc-primary: #002A54;
   --upucc-secondary: #24ACDF;
   --upucc-accent: #f2a900;
+  --text-dark: #0f172a;
+  --text-light: #64748b;
+  --bg-color: #f8fafc;
 }
-body { background:#f5f7fa; font-family:'Segoe UI',Roboto,Arial,sans-serif; color:#222; }
-.upucc-navbar { background: linear-gradient(90deg, var(--upucc-primary), var(--upucc-secondary)); }
-.upucc-navbar .nav-link { font-weight:500; }
-.upucc-navbar .nav-link.active { color: var(--upucc-accent) !important; }
-.upucc-footer { background: var(--upucc-primary); }
 
-.hero-slider img { width:100%; height:480px; object-fit:cover; }
-.hero-slider .carousel-caption { background:rgba(13,43,78,.55); border-radius:10px; padding:15px 25px; bottom:40px; }
+body { 
+  background-color: var(--bg-color); 
+  font-family: 'Outfit', sans-serif; 
+  color: var(--text-dark); 
+  line-height: 1.6;
+}
 
-.section-title { font-weight:700; color:var(--upucc-primary); border-left:6px solid var(--upucc-accent); padding-left:12px; margin-bottom:25px; }
+/* --- Typography --- */
+h1, h2, h3, h4, h5, h6 { font-weight: 700; }
 
-.card-divisi { transition:.25s; border:none; box-shadow:0 2px 10px rgba(0,0,0,.08); }
-.card-divisi:hover { transform:translateY(-6px); box-shadow:0 8px 20px rgba(0,0,0,.15); }
-.card-divisi img.logo-divisi { width:90px; height:90px; object-fit:contain; margin:20px auto 0; }
+.section-title { 
+  font-weight: 800; 
+  font-size: 2rem; 
+  background: linear-gradient(120deg, var(--upucc-primary), var(--upucc-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  border-left: none; 
+  padding-left: 0; 
+  margin-bottom: 2rem; 
+  position: relative;
+  display: inline-block;
+}
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 50px;
+  height: 4px;
+  background: var(--upucc-accent);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.section-title:hover::after { width: 100%; }
 
-.struktur-card { border:none; box-shadow:0 2px 10px rgba(0,0,0,.08); border-radius:12px; text-align:center; padding:20px 10px; }
-.struktur-card img { width:110px; height:110px; object-fit:cover; border-radius:50%; border:4px solid var(--upucc-secondary); margin-bottom:10px; }
-.struktur-card .jabatan { color:var(--upucc-secondary); font-weight:600; font-size:.9rem; }
+/* --- Navbar (Glassmorphism) --- */
+.upucc-navbar { 
+  background: rgba(0, 42, 84, 0.85) !important; 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 15px 0;
+  transition: all 0.3s ease;
+}
+.upucc-navbar .navbar-brand { font-size: 1.3rem; letter-spacing: 0.5px; }
+.upucc-navbar .nav-link { font-weight: 500; color: rgba(255,255,255,0.85); margin: 0 5px; transition: color 0.2s; }
+.upucc-navbar .nav-link:hover { color: #fff; }
+.upucc-navbar .nav-link.active { color: var(--upucc-accent) !important; font-weight: 600; }
+.upucc-navbar .btn-outline-light { border-radius: 50px; font-weight: 600; border-width: 2px; }
+.upucc-navbar .btn-outline-light:hover { background: var(--upucc-accent); border-color: var(--upucc-accent); color: var(--upucc-primary); }
 
-.acara-card { border:none; box-shadow:0 2px 10px rgba(0,0,0,.08); border-radius:14px; overflow:hidden; margin-bottom:30px; }
-.acara-card .acara-photos { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; background:#000; }
-.acara-card .acara-photos img { width:100%; flex:0 0 100%; scroll-snap-align:start; max-height:600px; object-fit:contain; }
-/* Foto postingan Acara ditampilkan UTUH (tidak dipotong/crop) mengikuti ukuran asli,
-   dengan batas tinggi maksimum supaya tidak terlalu panjang di layar. */
-.acara-card .carousel { background:#000; }
-.acara-card .carousel-item img { width:100%; height:auto; max-height:600px; object-fit:contain; display:block; margin:0 auto; background:#000; }
-.acara-card .acara-header { display:flex; align-items:center; gap:10px; padding:14px; }
-.acara-card .acara-header .icon { width:42px; height:42px; border-radius:50%; background:var(--upucc-secondary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; }
-.acara-card .acara-body { padding:14px; }
+/* --- Hero Slider --- */
+.hero-slider img { width: 100%; height: 550px; object-fit: cover; filter: brightness(0.85); }
+.hero-slider .carousel-caption { 
+  background: rgba(0, 42, 84, 0.6); 
+  backdrop-filter: blur(5px);
+  border-radius: 16px; 
+  padding: 30px 40px; 
+  bottom: 15%; 
+  border: 1px solid rgba(255,255,255,0.15);
+  transform: translateY(20px);
+  opacity: 0;
+  animation: fadeInUp 0.8s 0.2s forwards;
+}
+.hero-slider .carousel-caption h3 { font-size: 2.5rem; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.hero-slider .carousel-indicators [data-bs-target] { width: 40px; height: 6px; border-radius: 3px; }
 
-.badge-status-open { background:#1c8b3c; }
-.badge-status-closed { background:#a11d1d; }
+/* --- Cards (Modern, Soft Shadows, Rounded) --- */
+.card-divisi, .struktur-card, .acara-card, .prestasi-card { 
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8); 
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+  border-radius: 20px; 
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+  overflow: hidden;
+}
+.card-divisi:hover, .prestasi-card:hover { 
+  transform: translateY(-10px); 
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); 
+}
 
-.prestasi-card { transition:.2s; cursor:pointer; }
-.prestasi-card:hover { transform:translateY(-4px); box-shadow:0 8px 20px rgba(0,0,0,.15); }
-.prestasi-card img { height:180px; object-fit:cover; }
-.prestasi-excerpt { min-height:48px; }
+/* Divisi */
+.card-divisi img.logo-divisi { width: 90px; height: 90px; object-fit: contain; margin: 30px auto 10px; transition: transform 0.3s ease; }
+.card-divisi:hover img.logo-divisi { transform: scale(1.1); }
+.card-divisi .card-title { font-weight: 700; color: var(--upucc-primary); }
 
+/* Struktur */
+.struktur-card { text-align: center; padding: 30px 15px; }
+.struktur-card img { 
+  width: 120px; height: 120px; object-fit: cover; 
+  border-radius: 50%; 
+  border: 4px solid #fff; 
+  box-shadow: 0 0 0 4px var(--upucc-secondary); 
+  margin-bottom: 15px; 
+  transition: transform 0.3s;
+}
+.struktur-card:hover img { transform: rotate(5deg) scale(1.05); }
+.struktur-card h6 { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--text-dark); }
+.struktur-card .jabatan { color: var(--upucc-secondary); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; }
 
-/* Catatan: CSS untuk bagan Struktur Organisasi (org chart) sekarang
-   ditulis langsung sebagai inline <style> di dalam struktur.php sendiri
-   (bukan lagi di file ini), supaya bagan tetap tampil benar walau file
-   CSS eksternal ini belum ter-upload ulang / masih ke-cache oleh
-   browser saat Anda mengganti isi website. Lihat struktur.php. */
+/* Prestasi */
+.prestasi-card img { height: 220px; object-fit: cover; }
+.prestasi-card .card-body { padding: 25px; }
+.prestasi-card .badge { border-radius: 8px; padding: 6px 12px; font-weight: 600; letter-spacing: 0.5px; }
+.prestasi-excerpt { min-height: 50px; color: var(--text-light); }
+.prestasi-card .btn-outline-primary { border-radius: 50px; font-weight: 600; padding: 6px 20px; }
+
+/* Acara */
+.acara-card { margin-bottom: 40px; border-radius: 24px; }
+.acara-card .acara-header { display: flex; align-items: center; gap: 12px; padding: 20px; background: rgba(248, 250, 252, 0.5); }
+.acara-card .acara-header .icon { 
+  width: 48px; height: 48px; border-radius: 50%; 
+  background: linear-gradient(135deg, var(--upucc-secondary), var(--upucc-primary)); 
+  color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem;
+}
+.acara-card .carousel { background: #0f172a; }
+.acara-card .carousel-item img { width: 100%; height: auto; max-height: 500px; object-fit: contain; display: block; margin: 0 auto; background: #0f172a; }
+.acara-card .acara-body { padding: 25px; }
+.acara-card .acara-body h5 { font-size: 1.4rem; color: var(--upucc-primary); }
+.acara-card .acara-body p { color: var(--text-light); font-size: 1.05rem; }
+
+/* --- Footer --- */
+.upucc-footer { 
+  background: linear-gradient(135deg, #021224 0%, #002A54 100%); 
+  border-top: 4px solid var(--upucc-accent);
+  padding: 60px 0 40px; 
+  position: relative;
+}
+.upucc-footer p.small { color: #94a3b8 !important; }
+.upucc-footer .footer-logo { filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+.upucc-footer .social-icons a { 
+  display: inline-block; width: 40px; height: 40px; 
+  background: rgba(255,255,255,0.1); border-radius: 50%; 
+  line-height: 40px; text-align: center; color: #fff; 
+  margin: 0 5px; transition: all 0.3s;
+}
+.upucc-footer .social-icons a:hover { background: var(--upucc-accent); color: var(--upucc-primary); transform: translateY(-3px); }
+
+/* --- Buttons & Utilities --- */
+.btn-primary { 
+  background: linear-gradient(135deg, var(--upucc-secondary), var(--upucc-primary));
+  border: none;
+  border-radius: 50px;
+  padding: 10px 25px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(36, 172, 223, 0.3);
+  transition: all 0.3s;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(36, 172, 223, 0.5);
+  background: linear-gradient(135deg, var(--upucc-primary), var(--upucc-secondary));
+}
+
+.badge-status-open { background: #10b981; color: white; padding: 8px 15px; border-radius: 20px; font-weight: 600; }
+.badge-status-closed { background: #ef4444; color: white; padding: 8px 15px; border-radius: 20px; font-weight: 600; }
+
+/* --- Animations --- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-on-load { opacity: 0; animation: fadeInUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
