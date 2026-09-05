@@ -40,6 +40,16 @@
     th { white-space: nowrap; }
     td { white-space: nowrap; }
   </style>
+
+  <script>
+    // Proteksi kode sumber
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+      if (e.key === 'F12') { e.preventDefault(); return false; }
+      if (e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].includes(e.key)) { e.preventDefault(); return false; }
+      if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) { e.preventDefault(); return false; }
+    });
+  </script>
 </head>
 <body>
 

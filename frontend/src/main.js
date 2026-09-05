@@ -4,6 +4,18 @@ import { db, auth } from './firebase.js';
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, doc, getDoc, query, orderBy, limit, addDoc, serverTimestamp } from "firebase/firestore";
 
+// === Proteksi Kode Sumber ===
+// Disable klik kanan (context menu)
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+// Disable F12, Ctrl+Shift+I/J/C, Ctrl+U (View Source)
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'F12') { e.preventDefault(); return false; }
+  if (e.ctrlKey && e.shiftKey && ['I', 'i', 'J', 'j', 'C', 'c'].includes(e.key)) { e.preventDefault(); return false; }
+  if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) { e.preventDefault(); return false; }
+});
+// ============================
+
 async function fetchHomeData() {
   try {
     // 1. Fetch Informasi Umum
