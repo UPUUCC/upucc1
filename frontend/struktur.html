@@ -36,27 +36,7 @@
   </div>
 </nav>
 
-<div class="oc-person role-<!-- Dynamic: e($roleClass) -->">
-      <div class="oc-avatar-ring">
-        
-          <img src="<!-- Dynamic: $foto -->" alt="<!-- Dynamic: e($m['nama']) -->">
-        
-          <div class="oc-avatar-placeholder"><i class="bi bi-person-fill"></i></div>
-        
-      </div>
-      <div class="oc-label">
-        <div class="oc-label-name"><!-- Dynamic: e($m['nama']) --></div>
-        <div class="oc-label-jabatan"><!-- Dynamic: e($jabatan) --></div>
-      </div>
-    </div>
-    
-    <div class="oc-person role-<!-- Dynamic: e($roleClass) --> oc-kosong">
-      <div class="oc-avatar-ring"><div class="oc-avatar-placeholder"><i class="bi bi-person"></i></div></div>
-      <div class="oc-label">
-        <div class="oc-label-name"><!-- Dynamic: e($label) --></div>
-        <div class="oc-label-jabatan">Belum diisi</div>
-      </div>
-    </div>
+
     
 <style>
 /* =====================================================================
@@ -189,63 +169,14 @@
   <h2 class="section-title">Struktur Organisasi UPUCC</h2>
   <p class="text-muted mb-4">Bagan berikut menampilkan susunan pengurus UPUCC beserta foto dan nama akun masing-masing, sesuai data yang dikelola lewat Dashboard.</p>
 
-    <p class="text-muted">Data struktur organisasi belum diisi.</p>
-
-  <div class="oc-wrap">
-    <div class="tree">
-      <ul>
-        <li>
-
-          <ul class="oc-row-single">
-            <li>
-
-              <ul>
-                <!-- Kiri: Sekretaris -->
-                <li>
-                  
-                </li>
-
-                <!-- Tengah: node tak-terlihat, hanya meneruskan garis lurus turun
-                     ke baris ke-4 Divisi (supaya garis vertikal WAKETUM tampak
-                     menerus lurus di tengah, persis seperti bagan referensi) -->
-                <li>
-                  <div class="oc-person oc-trunk"></div>
-                  <ul>
-                    
-                    <li>
-                      <div class="oc-division">
-                        <div class="oc-division-title"><!-- Dynamic: e($d['nama']) --></div>
-
-                        <div class="oc-division-pair">
-
-                        </div>
-                        
-                        <div class="oc-division-empty">Kadiv &amp; Wakadiv belum diisi</div>
-
-                        <div class="oc-division-connector"></div>
-                        <div class="oc-anggota-group">
-                          <div class="oc-anggota-title">Anggota (<!-- Dynamic: count($dd['anggota']) -->)</div>
-                          <div class="oc-anggota-list">
-                            
-                          </div>
-                        </div>
-                        
-                      </div>
-                    </li>
-                    
-                  </ul>
-                </li>
-
-                <!-- Kanan: Bendahara -->
-                <li>
-                  
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-      </ul>
+  <div id="strukturLoading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
+  </div>
+
+  <div id="strukturContainer" class="oc-wrap" style="display:none;">
+    <div class="tree" id="strukturTree"></div>
   </div>
 
 </div>
@@ -268,5 +199,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module" src="/src/main.js"></script>
+<script type="module" src="/src/struktur.js"></script>
 </body>
 </html>

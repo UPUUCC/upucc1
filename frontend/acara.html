@@ -39,40 +39,13 @@
 <div class="container my-5" style="max-width:650px;">
   <h2 class="section-title">Acara UPUCC</h2>
 
-    <p class="text-muted">Belum ada postingan acara.</p>
-
-  <div class="acara-card">
-    <div class="acara-header">
-      <div class="icon"><img src="/logo.jpg" alt="Logo UPU-CC" height="30" class="me-2 rounded-circle"></div>
-      <div>
-        <div class="fw-bold">UPUCC</div>
-        <div class="small text-muted"><!-- Dynamic: tgl_indo(date('Y-m-d', strtotime($a['created_at']))) --></div>
-      </div>
-    </div>
-
-    <div id="<!-- Dynamic: $carId -->" class="carousel slide" data-bs-ride="false">
-      <div class="carousel-inner">
-        
-        <div class="carousel-item <!-- Dynamic: $i===0?'active':'' -->">
-          <img src="uploads/acara/<!-- Dynamic: e($f['foto']) -->" alt="">
-        </div>
-        
-      </div>
-      
-      <button class="carousel-control-prev" type="button" data-bs-target="#<!-- Dynamic: $carId -->" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#<!-- Dynamic: $carId -->" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-      </button>
-      
-    </div>
-
-    <div class="acara-body">
-      <h5 class="fw-bold"><!-- Dynamic: e($a['judul']) --></h5>
-      <p style="white-space:pre-line;"><!-- Dynamic: nl2br(e($a['deskripsi'])) --></p>
+  <div id="acaraLoading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
   </div>
+
+  <div id="acaraContainer"></div>
   
 </div>
 
@@ -85,5 +58,6 @@
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module" src="/src/main.js"></script>
+<script type="module" src="/src/acara.js"></script>
 </body>
 </html>

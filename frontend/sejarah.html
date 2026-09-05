@@ -38,22 +38,10 @@
 
 <div class="container my-5">
   <h2 class="section-title">Sejarah UPUCC</h2>
-  <p class="lead" style="white-space:pre-line;"><!-- Dynamic: nl2br(e($umum['konten'] ?? 'Sejarah UPUCC belum diisi.')) --></p>
+  <p class="lead" id="sejarahUmum" style="white-space:pre-line;">Memuat sejarah...</p>
 
   <h3 class="section-title mt-5">Sejarah Masing-Masing Divisi</h3>
   <div class="accordion" id="accSejarah">
-    
-    <div class="accordion-item">
-      <h2 class="accordion-header">
-        <button class="accordion-button <!-- Dynamic: $i>0?'collapsed':'' -->" type="button" data-bs-toggle="collapse" data-bs-target="#coll<!-- Dynamic: $s['id'] -->">
-          Divisi <!-- Dynamic: e($s['divisi_nama']) -->
-        </button>
-      </h2>
-      <div id="coll<!-- Dynamic: $s['id'] -->" class="accordion-collapse collapse <!-- Dynamic: $i===0?'show':'' -->" data-bs-parent="#accSejarah">
-        <div class="accordion-body" style="white-space:pre-line;"><!-- Dynamic: nl2br(e($s['konten'])) --></div>
-      </div>
-    </div>
-    
   </div>
   
 </div>
@@ -67,5 +55,6 @@
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module" src="/src/main.js"></script>
+<script type="module" src="/src/sejarah.js"></script>
 </body>
 </html>
