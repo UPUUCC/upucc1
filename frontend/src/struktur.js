@@ -14,8 +14,10 @@ function renderPerson(person, roleClass, defaultLabel) {
   }
   
   let fotoUrl = '';
-  if (person.foto) {
-    fotoUrl = person.foto.startsWith('http') ? person.foto : `uploads/anggota/${person.foto}`;
+  if (person.fotoUrl) {
+    fotoUrl = person.fotoUrl;
+  } else if (person.foto) {
+    fotoUrl = person.foto.startsWith('http') ? person.foto : `/uploads/anggota/${person.foto}`;
   }
 
   const fotoHTML = fotoUrl 
@@ -29,7 +31,7 @@ function renderPerson(person, roleClass, defaultLabel) {
       </div>
       <div class="oc-label">
         <div class="oc-label-name">${person.nama}</div>
-        <div class="oc-label-jabatan">${person.jabatan || person.role || roleClass}</div>
+        <div class="oc-label-jabatan">${person.jabatan_text || person.jabatan || person.role || roleClass}</div>
       </div>
     </div>`;
 }
@@ -40,11 +42,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   const loading = document.getElementById('strukturLoading');
 
   try {
-    // 1. Fetch data struktur
-    const strukSnap = await getDocs(collection(db, "struktur"));
+    // 1. Fetch data struktur dari tabel 'members'
+    const strukSnap = await getDocs(collection(db, "members"));
     const members = [];
     strukSnap.forEach(doc => {
-      members.push({ id: doc.id, ...doc.data() });
+      const data = doc.data();
+      // Hanya masukkan yang tampil_struktur == true dan status == 'aktif'
+      if (data.tampil_struktur !== false && data.status !== 'nonaktif') {
+        members.push({ id: doc.id, ...data });
+      }
     });
 
     // 2. Fetch data divisi

@@ -7,6 +7,33 @@ import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth"
 const secondaryApp = initializeApp(app.options, "SecondaryApp");
 const secondaryAuth = getAuth(secondaryApp);
 
+// Konfigurasi Cloudinary (Silakan ganti dengan milik Anda)
+const CLOUDINARY_CLOUD_NAME = "ganti_dengan_cloud_name_anda";
+const CLOUDINARY_UPLOAD_PRESET = "ganti_dengan_upload_preset_anda";
+
+async function uploadToCloudinary(file) {
+    if (!file) return '';
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+    try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+        if (data.secure_url) {
+            return data.secure_url;
+        } else {
+            throw new Error(data.error?.message || 'Gagal upload gambar');
+        }
+    } catch (err) {
+        console.error("Cloudinary Error:", err);
+        throw new Error("Gagal mengupload gambar ke Cloudinary. Pastikan Cloud Name dan Upload Preset sudah diatur dengan benar di kode.");
+    }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const tableBody = document.getElementById('anggotaTableBody');
     const formAdd = document.getElementById('formAddAnggota');
@@ -107,6 +134,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const password = document.getElementById('addPassword').value;
 
         try {
+            // Upload Foto jika ada
+            let fotoUrl = '';
+            const fileInput = document.getElementById('addFotoFile');
+            if (fileInput.files.length > 0) {
+                fotoUrl = await uploadToCloudinary(fileInput.files[0]);
+            }
+
             // 1. Create user in Firebase Auth using secondary app
             const userCredential = await createUserWithEmailAndPassword(secondaryAuth, email, password);
             const uid = userCredential.user.uid;
@@ -116,7 +150,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             await setDoc(doc(db, "members", uid), {
                 nama: document.getElementById('addNama').value,
                 email: email,
-                fotoUrl: document.getElementById('addFotoUrl').value,
+                fotoUrl: fotoUrl,
                 role: document.getElementById('addRole').value,
                 divisi_id: document.getElementById('addDivisi').value,
                 jabatan_text: document.getElementById('addJabatanText').value,
@@ -165,7 +199,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (m) {
                 document.getElementById('editAlert').classList.add('d-none');
                 document.getElementById('editNama').value = m.nama || '';
-                document.getElementById('editFotoUrl').value = m.fotoUrl || '';
+                
+                // Tampilkan foto saat ini (jika ada)
+                const preview = document.getElementById('currentFotoPreview');
+                if (m.fotoUrl) {
+                    preview.innerHTML = `<img src="${m.fotoUrl}" style="height: 50px; border-radius: 5px;"> <span class="small text-muted d-block mt-1">Foto tersimpan</span>`;
+                } else if (m.foto) {
+                    const src = m.foto.startsWith('http') ? m.foto : `/uploads/anggota/${m.foto}`;
+                    preview.innerHTML = `<img src="${src}" style="height: 50px; border-radius: 5px;"> <span class="small text-muted d-block mt-1">Foto tersimpan (lama)</span>`;
+                } else {
+                    preview.innerHTML = '<span class="small text-muted">Belum ada foto</span>';
+                }
+
+                document.getElementById('editFotoFile').value = ''; // Reset file input
                 document.getElementById('editRole').value = m.role || 'anggota';
                 document.getElementById('editDivisi').value = m.divisi_id || '';
                 document.getElementById('editJabatanText').value = m.jabatan_text || '';
@@ -189,9 +235,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         const id = formEdit.getAttribute('data-id');
         try {
+            const m = membersData.find(x => x.id === id);
+            let fotoUrl = m.fotoUrl || ''; // Default ke URL yang sudah ada
+
+            const fileInput = document.getElementById('editFotoFile');
+            if (fileInput.files.length > 0) {
+                fotoUrl = await uploadToCloudinary(fileInput.files[0]);
+            }
+
             await updateDoc(doc(db, "members", id), {
                 nama: document.getElementById('editNama').value,
-                fotoUrl: document.getElementById('editFotoUrl').value,
+                fotoUrl: fotoUrl,
                 role: document.getElementById('editRole').value,
                 divisi_id: document.getElementById('editDivisi').value,
                 jabatan_text: document.getElementById('editJabatanText').value,
