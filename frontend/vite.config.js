@@ -15,6 +15,17 @@ export default defineConfig({
         prestasi: resolve(__dirname, 'prestasi.html'),
         sejarah: resolve(__dirname, 'sejarah.html'),
         struktur: resolve(__dirname, 'struktur.html'),
+        dashboard_index: resolve(__dirname, 'dashboard/index.html'),
+        dashboard_acara: resolve(__dirname, 'dashboard/acara.html'),
+        dashboard_anggota: resolve(__dirname, 'dashboard/anggota.html'),
+        dashboard_divisi: resolve(__dirname, 'dashboard/divisi.html'),
+        dashboard_informasi: resolve(__dirname, 'dashboard/informasi.html'),
+        dashboard_login: resolve(__dirname, 'dashboard/login.html'),
+        dashboard_logout: resolve(__dirname, 'dashboard/logout.html'),
+        dashboard_pendaftaran: resolve(__dirname, 'dashboard/pendaftaran.html'),
+        dashboard_prestasi: resolve(__dirname, 'dashboard/prestasi.html'),
+        dashboard_sejarah: resolve(__dirname, 'dashboard/sejarah.html'),
+        dashboard_slider: resolve(__dirname, 'dashboard/slider.html'),
       }
     }
   }
