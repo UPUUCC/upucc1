@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     const initial = divisiData.nama ? divisiData.nama.substring(0, 1) : 'U';
-    const logoSrc = divisiData.logo ? (divisiData.logo.startsWith('http') ? divisiData.logo : `uploads/divisi/${divisiData.logo}`) : `https://via.placeholder.com/100?text=${initial}`;
+    const logoSrc = divisiData.logoUrl || (divisiData.logo ? (divisiData.logo.startsWith('http') ? divisiData.logo : `uploads/divisi/${divisiData.logo}`) : `https://via.placeholder.com/100?text=${initial}`);
 
     headerContainer.innerHTML = `
       <div class="d-flex align-items-center gap-3 mb-4">
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     `;
 
     // 2. Fetch Pengurus
-    const membersQuery = collection(db, "struktur");
+    const membersQuery = collection(db, "members");
     const membersSnap = await getDocs(membersQuery);
     
     let membersList = [];
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let membersHTML = '';
     membersList.forEach(p => {
-      const fotoUrl = p.foto ? (p.foto.startsWith('http') ? p.foto : `uploads/anggota/${p.foto}`) : 'https://via.placeholder.com/110?text=Foto';
+      const fotoUrl = p.fotoUrl || (p.foto ? (p.foto.startsWith('http') ? p.foto : `uploads/anggota/${p.foto}`) : 'https://via.placeholder.com/110?text=Foto');
       const jabatanText = p.jabatan_text || p.jabatan || labelRole(p.role);
       
       membersHTML += `

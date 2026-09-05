@@ -91,8 +91,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     let modalsHTML = '';
 
     filteredData.forEach((p) => {
-      const imgSrc = p.gambar ? p.gambar : 'https://via.placeholder.com/400x180?text=Prestasi+UPUCC';
-      const modalImgSrc = p.gambar ? p.gambar : 'https://via.placeholder.com/800x400?text=Prestasi+UPUCC';
+      const imgSrc = p.gambarUrl || (p.gambar ? (p.gambar.startsWith('http') ? p.gambar : `/uploads/prestasi/${p.gambar}`) : 'https://via.placeholder.com/400x180?text=Prestasi+UPUCC');
+      const modalImgSrc = p.gambarUrl || (p.gambar ? (p.gambar.startsWith('http') ? p.gambar : `/uploads/prestasi/${p.gambar}`) : 'https://via.placeholder.com/800x400?text=Prestasi+UPUCC');
       const divName = p.divisi_nama || p.divisi || 'Umum';
 
       // Card

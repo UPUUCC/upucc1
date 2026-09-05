@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const accSejarahEl = document.getElementById('accSejarah');
 
   try {
-    // 1. Fetch Sejarah Umum (from informasi_umum doc "1")
-    const infoDoc = await getDoc(doc(db, "informasi_umum", "1"));
+    // 1. Fetch Sejarah Umum (from sejarah doc "umum")
+    const infoDoc = await getDoc(doc(db, "sejarah", "umum"));
     if (infoDoc.exists() && infoDoc.data().konten) {
       sejarahUmumEl.innerHTML = nl2br(infoDoc.data().konten);
     } else {
@@ -30,12 +30,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     let accordionHTML = '';
     let i = 0;
     
-    divSnap.forEach((docSnap) => {
+    for (let i = 0; i < divSnap.docs.length; i++) {
+      const docSnap = divSnap.docs[i];
       const d = docSnap.data();
       const divId = docSnap.id;
       const isFirst = i === 0;
       
-      const kontenDivisi = d.konten || d.deskripsi || 'Sejarah divisi belum diisi.';
+      let kontenDivisi = d.deskripsi || 'Sejarah divisi belum diisi.';
+      try {
+        const sejDoc = await getDoc(doc(db, "sejarah", `divisi_${divId}`));
+        if (sejDoc.exists() && sejDoc.data().konten) {
+            kontenDivisi = sejDoc.data().konten;
+        }
+      } catch (e) { console.error(e); }
 
       accordionHTML += `
       <div class="accordion-item">
@@ -49,8 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
       </div>
       `;
-      i++;
-    });
+    }
 
     accSejarahEl.innerHTML = accordionHTML;
 

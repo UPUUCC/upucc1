@@ -43,19 +43,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // Handle foto, bisa array atau string tunggal
       let carouselItems = '';
-      if (Array.isArray(a.foto) && a.foto.length > 0) {
-        a.foto.forEach((fotoStr, index) => {
+      if (Array.isArray(a.fotos) && a.fotos.length > 0) {
+        a.fotos.forEach((fotoStr, index) => {
           const activeClass = index === 0 ? 'active' : '';
+          const src = fotoStr.startsWith('http') ? fotoStr : `/uploads/acara/${fotoStr}`;
           carouselItems += `
             <div class="carousel-item ${activeClass}">
-              <img src="${fotoStr}" class="d-block w-100" alt="Foto Acara">
+              <img src="${src}" class="d-block w-100" alt="Foto Acara">
+            </div>
+          `;
+        });
+      } else if (Array.isArray(a.foto) && a.foto.length > 0) {
+        a.foto.forEach((fotoStr, index) => {
+          const activeClass = index === 0 ? 'active' : '';
+          const src = fotoStr.startsWith('http') ? fotoStr : `/uploads/acara/${fotoStr}`;
+          carouselItems += `
+            <div class="carousel-item ${activeClass}">
+              <img src="${src}" class="d-block w-100" alt="Foto Acara">
             </div>
           `;
         });
       } else if (typeof a.foto === 'string' && a.foto.trim() !== '') {
+        const src = a.foto.startsWith('http') ? a.foto : `/uploads/acara/${a.foto}`;
         carouselItems = `
           <div class="carousel-item active">
-            <img src="${a.foto}" class="d-block w-100" alt="Foto Acara">
+            <img src="${src}" class="d-block w-100" alt="Foto Acara">
           </div>
         `;
       } else if (a.gambar) {
@@ -86,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="carousel-inner">
               ${carouselItems}
             </div>
-            ${(Array.isArray(a.foto) && a.foto.length > 1) ? `
+            ${((Array.isArray(a.fotos) && a.fotos.length > 1) || (Array.isArray(a.foto) && a.foto.length > 1)) ? `
             <button class="carousel-control-prev" type="button" data-bs-target="#${carId}" data-bs-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Previous</span>

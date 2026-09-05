@@ -6,7 +6,7 @@ import { collection, getDocs, doc, getDoc, query, orderBy, limit } from "firebas
 async function fetchHomeData() {
   try {
     // 1. Fetch Informasi Umum
-    const infoDoc = await getDoc(doc(db, "informasi_umum", "1"));
+    const infoDoc = await getDoc(doc(db, "settings", "informasi"));
     const infoEl = document.getElementById('infoUPUCC');
     if (infoDoc.exists()) {
       infoEl.innerHTML = infoDoc.data().konten.replace(/\n/g, '<br>');
@@ -26,7 +26,7 @@ async function fetchHomeData() {
         const activeClass = i === 0 ? 'active' : '';
         indicatorsHTML += `<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="${i}" class="${activeClass}"></button>`;
         
-        let imgSrc = s.gambar ? (s.gambar.startsWith('http') ? s.gambar : s.gambar) : '';
+        let imgSrc = s.gambarUrl || (s.gambar ? (s.gambar.startsWith('http') ? s.gambar : `/uploads/slider/${s.gambar}`) : 'https://via.placeholder.com/800x400');
         
         innerHTML += `
           <div class="carousel-item ${activeClass}">
@@ -59,7 +59,7 @@ async function fetchHomeData() {
     if (!divSnap.empty) {
       divSnap.forEach((docSnap) => {
         const d = docSnap.data();
-        const logoSrc = d.logo ? d.logo : 'https://via.placeholder.com/90?text=' + d.nama.substring(0,1);
+        const logoSrc = d.logoUrl || (d.logo ? (d.logo.startsWith('http') ? d.logo : `/uploads/divisi/${d.logo}`) : 'https://via.placeholder.com/90?text=' + d.nama.substring(0,1));
         divHTML += `
         <div class="col-md-3 col-6">
           <a href="/informasi_divisi.html?slug=${d.slug}" class="text-decoration-none text-dark">
@@ -84,9 +84,15 @@ async function fetchHomeData() {
       let presHTML = '';
       prestasiSnap.forEach((docSnap) => {
         const p = docSnap.data();
-        const imgSrc = p.gambar ? p.gambar : 'https://via.placeholder.com/400x180?text=UPUCC';
-        const dDate = p.tanggal ? new Date(p.tanggal.seconds ? p.tanggal.seconds * 1000 : p.tanggal) : new Date();
-        const formattedDate = dDate.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+        const imgSrc = p.gambarUrl || (p.gambar ? (p.gambar.startsWith('http') ? p.gambar : `/uploads/prestasi/${p.gambar}`) : 'https://via.placeholder.com/400x180?text=UPUCC');
+        
+        let formattedDate = 'Tanggal tidak diketahui';
+        if (p.tanggal) {
+            const dDate = new Date(p.tanggal);
+            if (!isNaN(dDate)) {
+                formattedDate = dDate.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+            }
+        }
         
         presHTML += `
         <div class="col-md-4">
