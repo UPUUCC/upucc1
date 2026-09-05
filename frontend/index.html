@@ -78,6 +78,36 @@
   <div class="text-center mt-3"><a href="/prestasi.html" class="btn btn-outline-primary">Lihat Semua Prestasi</a></div>
 </div>
 
+<!-- Saran Section -->
+<div class="container my-5 animate-on-load delay-1" id="saranSection">
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden" style="background: linear-gradient(135deg, #f8fafc, #f1f5f9);">
+    <div class="row g-0">
+      <div class="col-md-5 bg-primary text-white p-5 d-flex flex-column justify-content-center">
+        <h2 class="fw-bold mb-3">Kotak Saran</h2>
+        <p class="mb-0 opacity-75">Kami selalu ingin menjadi lebih baik. Jika Anda memiliki kritik, masukan, atau ide cemerlang untuk UPU-CC, jangan ragu untuk menyampaikannya kepada kami!</p>
+        <div class="mt-4">
+          <i class="bi bi-chat-left-heart fs-1 opacity-50"></i>
+        </div>
+      </div>
+      <div class="col-md-7 p-5">
+        <form id="formSaran">
+          <div class="mb-3">
+            <label class="form-label text-muted small fw-bold">Nama (Opsional)</label>
+            <input type="text" class="form-control" id="saranNama" placeholder="Nama Anda atau Anonim">
+          </div>
+          <div class="mb-4">
+            <label class="form-label text-muted small fw-bold">Pesan / Saran <span class="text-danger">*</span></label>
+            <textarea class="form-control" id="saranPesan" rows="4" placeholder="Tuliskan saran atau pesan Anda di sini..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary px-4 py-2 fw-bold w-100" id="btnSubmitSaran">
+            <i class="bi bi-send me-2"></i> Kirim Pesan
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer class="upucc-footer text-light mt-5">
   <div class="container">
     <div class="row g-4 justify-content-between align-items-center mb-4">

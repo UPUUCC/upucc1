@@ -60,7 +60,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const acaraSnap = await getDocs(collection(db, "acara"));
         document.getElementById('countAcara').textContent = acaraSnap.size;
+
+        const pendaftaranSnap = await getDocs(collection(db, "pendaftaran"));
+        if(document.getElementById('countPendaftar')) document.getElementById('countPendaftar').textContent = pendaftaranSnap.size;
+
+        const saranSnap = await getDocs(collection(db, "saran"));
+        if(document.getElementById('countSaran')) document.getElementById('countSaran').textContent = saranSnap.size;
+
     } catch (err) {
-        console.error("Gagal memuat jumlah data", err);
+        console.error("Gagal memuat statistik", err);
     }
 });

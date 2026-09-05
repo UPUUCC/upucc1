@@ -1,7 +1,8 @@
 import './style.css'; // Vite supports CSS imports
+import Swal from 'sweetalert2';
 import { db, auth } from './firebase.js';
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs, doc, getDoc, query, orderBy, limit } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, query, orderBy, limit, addDoc, serverTimestamp } from "firebase/firestore";
 
 async function fetchHomeData() {
   try {
@@ -124,6 +125,45 @@ document.addEventListener('DOMContentLoaded', () => {
   const footerYear = document.getElementById('footerYear');
   if (footerYear) {
     footerYear.textContent = new Date().getFullYear();
+  }
+
+  // Handle Form Saran
+  const formSaran = document.getElementById('formSaran');
+  if (formSaran) {
+      formSaran.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const btn = document.getElementById('btnSubmitSaran');
+          const namaInput = document.getElementById('saranNama').value.trim();
+          const pesanInput = document.getElementById('saranPesan').value.trim();
+
+          btn.disabled = true;
+          btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengirim...';
+
+          try {
+              await addDoc(collection(db, "saran"), {
+                  nama: namaInput || 'Anonim',
+                  pesan: pesanInput,
+                  tanggal: serverTimestamp()
+              });
+              Swal.fire({
+                  icon: 'success',
+                  title: 'Terkirim!',
+                  text: 'Terima kasih atas saran dan masukan Anda untuk UPU-CC.',
+                  confirmButtonColor: '#2563eb'
+              });
+              formSaran.reset();
+          } catch (err) {
+              console.error(err);
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Gagal',
+                  text: 'Terjadi kesalahan saat mengirim saran. Silakan coba lagi.'
+              });
+          } finally {
+              btn.disabled = false;
+              btn.innerHTML = '<i class="bi bi-send me-2"></i> Kirim Pesan';
+          }
+      });
   }
 
   // Check Maintenance Mode
