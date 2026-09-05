@@ -120,6 +120,24 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchHomeData();
   }
 
+  // Check Maintenance Mode
+  const isLoginPage = window.location.pathname.includes('login.html');
+  if (!isLoginPage && !window.location.pathname.includes('/dashboard/')) {
+    getDoc(doc(db, "settings", "maintenance")).then(mainSnap => {
+        if (mainSnap.exists() && mainSnap.data().isMaintenance === true) {
+            document.body.innerHTML = `
+            <div style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#0f172a; color:#fff; z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px;">
+              <i class="bi bi-cone-striped" style="font-size: 5rem; color: #f59e0b; margin-bottom: 20px;"></i>
+              <h1 style="font-family:'Outfit',sans-serif; font-weight:700; font-size: 2.5rem; margin-bottom: 15px;">Sedang Dalam Perbaikan</h1>
+              <p style="font-family:'Outfit',sans-serif; font-size: 1.2rem; color: #cbd5e1; max-width: 500px;">Website UPUCC saat ini sedang dalam mode pemeliharaan (Maintenance) untuk peningkatan sistem dan layanan kami. Silakan kembali lagi nanti.</p>
+              <a href="/login.html" style="margin-top: 40px; color: #475569; text-decoration:none; font-size:0.9rem;">Admin Login</a>
+            </div>
+            `;
+            document.body.style.overflow = 'hidden';
+        }
+    }).catch(err => console.error(err));
+  }
+
   // Handle Authentication State for Navbar Login Button
   onAuthStateChanged(auth, (user) => {
     const loginLink = document.querySelector('a[href="/login.html"]');
