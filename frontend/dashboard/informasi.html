@@ -4,32 +4,73 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Admin - UPUCC</title>
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Outfit', sans-serif; background: #f8fafc; color: #1e293b; }
+    .sidebar { width: 260px; height: 100vh; position: fixed; top: 0; left: 0; background: #0f172a; color: #fff; overflow-y: auto; transition: 0.3s; z-index: 1045; }
+    .sidebar .brand { font-size: 1.2rem; font-weight: 700; padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 10px; }
+    .sidebar .nav-link { color: #94a3b8; padding: 12px 20px; font-weight: 500; border-radius: 8px; margin: 4px 15px; transition: 0.2s; }
+    .sidebar .nav-link:hover, .sidebar .nav-link.active { background: #1e293b; color: #fff; }
+    .sidebar .nav-link i { margin-right: 10px; font-size: 1.1rem; }
+    .main-content { margin-left: 260px; min-height: 100vh; transition: 0.3s; }
+    .top-navbar { background: #fff; padding: 15px 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); display: flex; align-items: center; justify-content: space-between; }
+    .toggle-btn { display: none; background: none; border: none; font-size: 1.5rem; color: #0f172a; cursor: pointer; }
+    
+    .card { border: none; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    .form-control, .form-select { border-radius: 10px; padding: 10px 15px; border: 1px solid #e2e8f0; }
+    .btn { border-radius: 10px; padding: 8px 20px; font-weight: 600; }
+    .btn-primary { background: #2563eb; border: none; }
+    .btn-primary:hover { background: #1d4ed8; }
+
+    @media (max-width: 992px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.show { transform: translateX(0); }
+      .main-content { margin-left: 0; }
+      .toggle-btn { display: block; }
+      .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 1040; }
+      .sidebar-overlay.show { display: block; }
+    }
+  </style>
+
 </head>
 <body>
-<div class="d-flex">
-  <!-- Sidebar -->
-  <div class="bg-dark text-white p-3 vh-100 position-fixed" style="width: 250px; overflow-y:auto;">
-    <h4 class="mb-4">Admin UPUCC</h4>
-    <ul class="nav flex-column">
-      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/index.html">Dashboard</a></li>
-      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/slider.html">Slider</a></li>
-      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/informasi.html">Informasi UPUCC</a></li>
-      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/divisi.html">Divisi</a></li>
-      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/prestasi.html">Prestasi</a></li>
-      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/sejarah.html">Sejarah</a></li>
-      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/acara.html">Acara</a></li>
-      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/anggota.html">Anggota & Struktur</a></li>
-      <li class="nav-item"><a class="nav-link text-white" href="/dashboard/pendaftaran.html">Pendaftaran</a></li>
-      <li class="nav-item mt-4"><a class="nav-link text-danger" href="/dashboard/logout.html">Logout</a></li>
+
+
+  <div class="sidebar" id="sidebar">
+    <div class="brand">UPUCC Admin</div>
+    <ul class="nav flex-column mt-2">
+      <li class="nav-item"><a class="nav-link" href="/dashboard/index.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/slider.html"><i class="bi bi-images"></i> Slider</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/informasi.html"><i class="bi bi-info-circle"></i> Info UPUCC</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/divisi.html"><i class="bi bi-diagram-3"></i> Divisi</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/prestasi.html"><i class="bi bi-trophy"></i> Prestasi</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/sejarah.html"><i class="bi bi-clock-history"></i> Sejarah</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/acara.html"><i class="bi bi-calendar-event"></i> Acara</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/anggota.html"><i class="bi bi-people"></i> Anggota & Struktur</a></li>
+      <li class="nav-item mt-4"><a class="nav-link text-danger" href="/dashboard/logout.html"><i class="bi bi-box-arrow-left"></i> Logout</a></li>
     </ul>
   </div>
-  <!-- Main Content -->
-  <div class="flex-grow-1 bg-light" style="margin-left: 250px; min-height: 100vh;">
-    <div class="container-fluid p-4">
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-<div class="card border-0 shadow-sm p-4">
+
+<div class="main-content">
+  
+  <div class="top-navbar">
+    <div class="d-flex align-items-center">
+      <button class="toggle-btn me-3" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
+      <h5 class="mb-0 fw-bold d-none d-sm-block">Panel Admin</h5>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <span class="text-muted small">UPUCC CMS v2.0</span>
+      <img src="https://ui-avatars.com/api/?name=Admin&background=0f172a&color=fff" class="rounded-circle" width="35" height="35">
+    </div>
+  </div>
+
+  <div class="container-fluid p-4">
+    <div class="card border-0 shadow-sm p-4">
   <h5>Edit Informasi Umum UPUCC</h5>
   <p class="text-muted small">Konten ini akan tampil di halaman Beranda dan halaman Informasi.</p>
   <div id="alertInfo" class="alert d-none"></div>
@@ -40,11 +81,25 @@
     <button type="submit" class="btn btn-primary" id="btnSave"><i class="bi bi-save"></i> Simpan</button>
   </form>
 </div>
-
-    </div>
   </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('show');
+    document.getElementById('sidebarOverlay').classList.toggle('show');
+  }
+  // Active state logic
+  document.addEventListener("DOMContentLoaded", () => {
+    const currentUrl = window.location.pathname;
+    document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+      if(link.getAttribute('href') === currentUrl) link.classList.add('active');
+    });
+  });
+</script>
+
 <script type="module" src="/src/dashboard/informasi.js"></script>
 </body>
 </html>

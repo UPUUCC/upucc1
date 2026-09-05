@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Admin - UPUCC</title>
-  
+const fs = require('fs');
+const path = require('path');
+
+const dir = path.join(__dirname, 'frontend/dashboard');
+const files = fs.readdirSync(dir).filter(f => f.endsWith('.html'));
+
+const commonHead = `
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -34,11 +34,9 @@
       .sidebar-overlay.show { display: block; }
     }
   </style>
+`;
 
-</head>
-<body>
-
-
+const sidebarHTML = `
   <div class="sidebar" id="sidebar">
     <div class="brand">UPUCC Admin</div>
     <ul class="nav flex-column mt-2">
@@ -54,10 +52,9 @@
     </ul>
   </div>
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+`;
 
-
-<div class="main-content">
-  
+const topNavHTML = `
   <div class="top-navbar">
     <div class="d-flex align-items-center">
       <button class="toggle-btn me-3" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
@@ -68,36 +65,9 @@
       <img src="https://ui-avatars.com/api/?name=Admin&background=0f172a&color=fff" class="rounded-circle" width="35" height="35">
     </div>
   </div>
+`;
 
-  <div class="container-fluid p-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="mb-0">Dashboard Utama</h4>
-    <span class="text-muted">Halo, <b id="adminName">Admin</b></span>
-  </div>
-
-  <div class="row g-3">
-    <div class="col-md-3 col-6">
-      <div class="card border-0 shadow-sm p-3 text-center"><i class="bi bi-images fs-2 text-primary"></i><h3 id="countSlider">0</h3><p class="mb-0 text-muted">Slider</p></div>
-    </div>
-    <div class="col-md-3 col-6">
-      <div class="card border-0 shadow-sm p-3 text-center"><i class="bi bi-trophy fs-2 text-warning"></i><h3 id="countPrestasi">0</h3><p class="mb-0 text-muted">Prestasi</p></div>
-    </div>
-    <div class="col-md-3 col-6">
-      <div class="card border-0 shadow-sm p-3 text-center"><i class="bi bi-people fs-2 text-success"></i><h3 id="countAnggota">0</h3><p class="mb-0 text-muted">Anggota</p></div>
-    </div>
-    <div class="col-md-3 col-6">
-      <div class="card border-0 shadow-sm p-3 text-center"><i class="bi bi-calendar-event fs-2 text-danger"></i><h3 id="countAcara">0</h3><p class="mb-0 text-muted">Postingan Acara</p></div>
-    </div>
-  </div>
-
-  <div class="alert alert-info mt-4">
-    <i class="bi bi-info-circle"></i> Gunakan menu di samping untuk mengelola seluruh isi halaman publik (index), mulai dari slider, informasi, divisi, prestasi, struktur organisasi/anggota, sejarah, hingga acara. Menu pendaftaran anggota sudah tidak digunakan -- akun anggota baru dibuat langsung lewat menu <b>Anggota / Struktur</b> di Dashboard ini.
-  </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+const jsScript = `
 <script>
   function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('show');
@@ -111,7 +81,50 @@
     });
   });
 </script>
+`;
 
-<script type="module" src="/src/dashboard/index.js"></script>
+files.forEach(f => {
+  if (f === 'login.html' || f === 'logout.html' || f === 'pendaftaran.html') return; // Skip these
+
+  const fp = path.join(dir, f);
+  let content = fs.readFileSync(fp, 'utf-8');
+
+  // Extract core content
+  let innerContent = "";
+  if (f === 'index.html') {
+    const match = content.match(/<div class="main">([\s\S]*?)<\/div>\s*<script/);
+    if(match) innerContent = match[1].trim();
+  } else {
+    const match = content.match(/<div class="container-fluid p-4">([\s\S]*?)<\/div>\s*<\/div>\s*<\/div>\s*<script/);
+    if(match) innerContent = match[1].trim();
+  }
+
+  // Construct new layout
+  const newLayout = `<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin - UPUCC</title>
+  ${commonHead}
+</head>
+<body>
+
+${sidebarHTML}
+
+<div class="main-content">
+  ${topNavHTML}
+  <div class="container-fluid p-4">
+    ${innerContent}
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+${jsScript}
+<script type="module" src="/src/dashboard/${f.replace('.html', '.js')}"></script>
 </body>
-</html>
+</html>`;
+
+  fs.writeFileSync(fp, newLayout);
+  console.log('Updated ' + f);
+});
