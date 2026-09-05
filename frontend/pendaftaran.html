@@ -132,6 +132,12 @@
         <li>Knowledge of Technology (Eksplorasi dan edukasi teknologi terkini)</li>
       </ul>
       <p>Pastikan seluruh data diisi dengan valid.<br>Mari bergabung, belajar, dan berkembang bersama keluarga besar UPU-CC! 🚀</p>
+      
+      <div class="mt-4 mb-2">
+        <button type="button" class="btn btn-outline-primary rounded-pill px-4" onclick="showShareModal()">
+          <i class="bi bi-share-fill me-1"></i> Bagikan Info Pendaftaran
+        </button>
+      </div>
       <hr>
       <div class="d-flex justify-content-between text-muted small">
         <span>Menunjukkan pertanyaan yang wajib diisi <span class="required">*</span></span>
@@ -264,5 +270,87 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module" src="/src/main.js"></script>
 <script type="module" src="/src/pendaftaran.js"></script>
+
+<!-- Share Modal -->
+<div class="modal fade" id="shareModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 shadow-lg">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold">🚀 Bagikan Pendaftaran UPU-CC</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body pt-2 pb-4">
+        <p class="text-muted small mb-4">Ajak teman-temanmu untuk bergabung! Pilih platform favoritmu:</p>
+        
+        <div class="d-grid gap-3">
+          <!-- WhatsApp -->
+          <a id="shareWa" href="#" target="_blank" class="btn btn-success rounded-pill py-2 text-start px-4 fw-semibold" style="background: linear-gradient(135deg, #25d366, #128c7e); border: none;">
+            <i class="bi bi-whatsapp me-2 fs-5"></i> Bagikan via WhatsApp
+          </a>
+          <!-- Threads -->
+          <a id="shareThreads" href="#" target="_blank" class="btn rounded-pill py-2 text-start px-4 fw-semibold text-white" style="background: linear-gradient(135deg, #101010, #434343); border: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" class="me-2 mb-1" viewBox="0 0 192 192"><path d="M141.537 88.988a66.667 66.667 0 0 0-2.518-1.143c-1.482-27.307-16.403-42.94-41.457-43.1h-.34c-14.986 0-27.449 6.396-35.12 18.036l13.779 9.452c5.73-8.695 14.724-10.548 21.348-10.548h.229c8.249.053 14.474 2.452 18.503 7.129 2.932 3.405 4.893 8.111 5.864 14.05-7.314-1.244-15.224-1.626-23.68-1.14-23.82 1.371-39.134 15.264-38.105 34.568.522 9.792 5.4 18.216 13.735 23.719 7.047 4.652 16.124 6.927 25.557 6.412 12.458-.683 22.231-5.436 29.049-14.127 5.178-6.6 8.453-15.153 9.899-25.93 5.937 3.583 10.337 8.298 12.767 13.966 4.132 9.635 4.373 25.468-8.546 38.376-11.319 11.308-24.925 16.2-45.488 16.351-22.809-.169-40.06-7.484-51.275-21.742C35.236 139.966 29.808 120.682 29.605 96c.203-24.682 5.63-43.966 16.133-57.317C56.954 24.425 74.204 17.11 97.013 16.941c22.975.17 40.526 7.52 52.171 21.847 5.71 7.026 10.015 15.86 12.853 26.162l16.147-4.308c-3.44-12.68-8.853-23.606-16.219-32.668C147.036 9.607 125.202.195 97.07 0h-.113C68.882.195 47.292 9.643 32.788 28.08 19.882 44.485 13.224 67.315 13.001 95.932L13 96v.067c.224 28.617 6.882 51.447 19.788 67.854C47.292 182.358 68.882 191.806 96.957 192h.113c24.96-.173 42.554-6.708 57.048-21.189 18.963-18.945 18.392-42.692 12.142-57.27-4.484-10.454-13.033-18.945-24.723-24.553zM98.44 129.507c-10.44.588-21.286-4.098-21.82-14.135-.397-7.442 5.277-15.745 22.303-16.739 1.951-.112 3.868-.168 5.754-.168 6.365 0 12.313.619 17.69 1.806-2.016 25.213-13.926 28.648-23.927 29.236z"/></svg>
+            Bagikan via Threads
+          </a>
+          <!-- Instagram -->
+          <a id="shareInstagram" href="https://www.instagram.com/upucc.official/" target="_blank" class="btn rounded-pill py-2 text-start px-4 fw-semibold text-white" style="background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); border: none;">
+            <i class="bi bi-instagram me-2 fs-5"></i> Kunjungi Instagram UPU-CC
+          </a>
+        </div>
+
+        <div class="mt-4 p-3 rounded-3" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+          <p class="text-muted small mb-1 fw-semibold">📋 Copy teks untuk Instagram / Threads:</p>
+          <p class="small mb-2" id="shareTextPreview" style="color:#334155; white-space: pre-wrap; font-size: 0.78rem;"></p>
+          <button onclick="copyShareText()" class="btn btn-sm btn-outline-secondary rounded-pill">
+            <i class="bi bi-clipboard me-1"></i> Copy Teks
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const SHARE_TEXT = `✨ OPEN RECRUITMENT UPU-CC 2026 ✨
+
+🎯 Hei, Mahasiswa Universitas Potensi Utama!
+Ini kesempatan emasmu untuk bergabung bersama kami — UPU-CC (Universitas Potensi Utama Computer Club)!
+
+💡 Kenapa harus join UPU-CC?
+🔹 Asah skill tech-mu bersama orang-orang berpengalaman
+🔹 Bangun portofolio & koneksi yang kuat
+🔹 Ikut kompetisi bergengsi & acara seru
+🔹 4 Divisi keren: Programming, Network Security, Multimedia, Knowledge of Technology
+
+⏰ Pendaftaran sudah DIBUKA SEKARANG!
+
+🔗 Daftar sekarang di:
+${window.location.href}
+
+#UPUCC #OpenRecruitment #UPU #Oprec2026 #ComputerClub #MahasiswaBerprestasi`;
+
+  function showShareModal() {
+    const pageUrl = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent(SHARE_TEXT);
+    
+    document.getElementById('shareWa').href = `https://wa.me/?text=${text}`;
+    document.getElementById('shareThreads').href = `https://www.threads.net/intent/post?text=${text}`;
+    document.getElementById('shareTextPreview').textContent = SHARE_TEXT;
+    
+    const modal = new bootstrap.Modal(document.getElementById('shareModal'));
+    modal.show();
+  }
+
+  function copyShareText() {
+    navigator.clipboard.writeText(SHARE_TEXT).then(() => {
+      const btn = event.target.closest('button');
+      btn.innerHTML = '<i class="bi bi-check-circle-fill me-1 text-success"></i> Berhasil di-Copy!';
+      setTimeout(() => {
+        btn.innerHTML = '<i class="bi bi-clipboard me-1"></i> Copy Teks';
+      }, 2000);
+    });
+  }
+</script>
 </body>
 </html>
+
