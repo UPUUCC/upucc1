@@ -1,5 +1,6 @@
 import './style.css'; // Vite supports CSS imports
-import { db } from './firebase.js';
+import { db, auth } from './firebase.js';
+import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, doc, getDoc, query, orderBy, limit } from "firebase/firestore";
 
 async function fetchHomeData() {
@@ -108,5 +109,27 @@ async function fetchHomeData() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', fetchHomeData);
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('infoUPUCC') || document.getElementById('sliderIndicators')) {
+    fetchHomeData();
+  }
+
+  // Handle Authentication State for Navbar Login Button
+  onAuthStateChanged(auth, (user) => {
+    const loginLink = document.querySelector('a[href="/login.html"]');
+    if (loginLink) {
+      if (user) {
+        loginLink.innerHTML = '<i class="bi bi-speedometer2"></i> Dashboard';
+        loginLink.href = "/dashboard/anggota.html";
+        loginLink.classList.replace('btn-outline-light', 'btn-light');
+        loginLink.classList.add('text-dark');
+      } else {
+        loginLink.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Login';
+        loginLink.href = "/login.html";
+        loginLink.classList.replace('btn-light', 'btn-outline-light');
+        loginLink.classList.remove('text-dark');
+      }
+    }
+  });
+});
 
