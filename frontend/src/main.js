@@ -130,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <i class="bi bi-cone-striped" style="font-size: 5rem; color: #f59e0b; margin-bottom: 20px;"></i>
               <h1 style="font-family:'Outfit',sans-serif; font-weight:700; font-size: 2.5rem; margin-bottom: 15px;">Sedang Dalam Perbaikan</h1>
               <p style="font-family:'Outfit',sans-serif; font-size: 1.2rem; color: #cbd5e1; max-width: 500px;">Website UPUCC saat ini sedang dalam mode pemeliharaan (Maintenance) untuk peningkatan sistem dan layanan kami. Silakan kembali lagi nanti.</p>
-              <a href="/login.html" style="margin-top: 40px; color: #475569; text-decoration:none; font-size:0.9rem;">Admin Login</a>
             </div>
             `;
             document.body.style.overflow = 'hidden';
