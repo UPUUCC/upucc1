@@ -117,21 +117,109 @@
     </div>
   </div>
 
-  <div id="pendaftaranForm" class="d-none">
+  <form id="pendaftaranForm" class="d-none">
     <!-- Header Block -->
-    <div class="form-header animate-on-load delay-1 text-center py-5">
-      <h1 class="form-title mb-4">Pendaftaran Anggota UPU-CC 2026</h1>
-      <i class="bi bi-file-earmark-text text-primary mb-3 d-block" style="font-size: 4rem;"></i>
-      <p class="fs-5 text-muted mb-4">Pendaftaran anggota baru UPU-CC telah dibuka! Silakan isi data diri Anda melalui formulir resmi kami di bawah ini.</p>
-      
-      <div class="mt-4 mb-3">
-        <a href="#" id="gformRedirectBtn" target="_blank" class="btn btn-primary btn-lg shadow px-5 py-3 fw-bold rounded-pill">
-          <i class="bi bi-box-arrow-up-right me-2"></i> Isi Formulir Pendaftaran
-        </a>
+    <div class="form-header animate-on-load delay-1">
+      <h1 class="form-title">Pendaftaran Anggota UPU-CC 2026</h1>
+      <p>Halo, Mahasiswa/i Aktif Universitas Potensi Utama! 👋</p>
+      <p>Silakan isi formulir di bawah ini untuk pendaftaran anggota baru UPU-CC (Universitas Potensi Utama Computer Club) 2026.</p>
+      <p>Silakan isi data diri kamu dengan benar dan pilih divisi yang sesuai dengan minat serta passion kamu:</p>
+      <ul style="padding-left: 20px; color: #5f6368;">
+        <li>Programming (Pengembangan software, web, dan aplikasi)</li>
+        <li>Network Security (Keamanan jaringan dan infrastruktur IT)</li>
+        <li>Multimedia (Desain grafis, video editing, dan content creation)</li>
+        <li>Knowledge of Technology (Eksplorasi dan edukasi teknologi terkini)</li>
+      </ul>
+      <p>Pastikan seluruh data diisi dengan valid.<br>Mari bergabung, belajar, dan berkembang bersama keluarga besar UPU-CC! 🚀</p>
+      <hr>
+      <div class="d-flex justify-content-between text-muted small">
+        <span>Menunjukkan pertanyaan yang wajib diisi <span class="required">*</span></span>
       </div>
-      <p class="small text-muted mt-4">Mari bergabung, belajar, dan berkembang bersama keluarga besar UPU-CC! 🚀</p>
     </div>
-  </div>
+
+    <!-- Email -->
+    <div class="form-card animate-on-load delay-2">
+      <div class="question-title">Email <span class="required">*</span></div>
+      <input type="email" class="form-control custom-input" id="email" name="email" placeholder="Jawaban Anda" required>
+    </div>
+
+    <!-- Nama Lengkap -->
+    <div class="form-card animate-on-load delay-3">
+      <div class="question-title">Nama Lengkap <span class="required">*</span></div>
+      <input type="text" class="form-control custom-input" id="nama" name="nama" placeholder="Jawaban Anda" required>
+    </div>
+
+    <!-- Nomor HP -->
+    <div class="form-card animate-on-load delay-4">
+      <div class="question-title">Nomor HP / WhatsApp Aktif <span class="required">*</span></div>
+      <input type="tel" class="form-control custom-input" id="nohp" name="nohp" placeholder="Jawaban Anda" required>
+    </div>
+
+    <!-- NIM -->
+    <div class="form-card animate-on-load delay-5">
+      <div class="question-title">NIM / Nomor Induk Mahasiswa <span class="required">*</span></div>
+      <input type="number" class="form-control custom-input" id="nim" name="nim" placeholder="Jawaban Anda" required>
+    </div>
+
+    <!-- Prodi -->
+    <div class="form-card animate-on-load delay-6">
+      <div class="question-title">Program Studi (Prodi) <span class="required">*</span></div>
+      <input type="text" class="form-control custom-input" id="prodi" name="prodi" placeholder="Jawaban Anda" required>
+    </div>
+
+    <!-- Semester -->
+    <div class="form-card animate-on-load delay-7">
+      <div class="question-title">Semester <span class="required">*</span></div>
+      <div class="form-check custom-radio">
+        <input class="form-check-input" type="radio" name="semester" id="sem1" value="1" required>
+        <label class="form-check-label" for="sem1">1</label>
+      </div>
+      <div class="form-check custom-radio">
+        <input class="form-check-input" type="radio" name="semester" id="sem3" value="3" required>
+        <label class="form-check-label" for="sem3">3</label>
+      </div>
+      <div class="form-check custom-radio">
+        <input class="form-check-input" type="radio" name="semester" id="sem5" value="5" required>
+        <label class="form-check-label" for="sem5">5</label>
+      </div>
+    </div>
+
+    <!-- Divisi -->
+    <div class="form-card animate-on-load delay-8">
+      <div class="question-title">Pemilihan Divisi <span class="required">*</span></div>
+      <div class="form-check custom-radio">
+        <input class="form-check-input" type="radio" name="divisi" id="divProg" value="Programming" required>
+        <label class="form-check-label" for="divProg">Programming</label>
+      </div>
+      <div class="form-check custom-radio">
+        <input class="form-check-input" type="radio" name="divisi" id="divNet" value="Network Security" required>
+        <label class="form-check-label" for="divNet">Network Security</label>
+      </div>
+      <div class="form-check custom-radio">
+        <input class="form-check-input" type="radio" name="divisi" id="divMulti" value="Multimedia" required>
+        <label class="form-check-label" for="divMulti">Multimedia</label>
+      </div>
+      <div class="form-check custom-radio">
+        <input class="form-check-input" type="radio" name="divisi" id="divKnow" value="Knowledge of Technology" required>
+        <label class="form-check-label" for="divKnow">Knowledge of Technology</label>
+      </div>
+    </div>
+
+    <!-- Upload Bukti -->
+    <div class="form-card animate-on-load delay-9">
+      <div class="question-title">Upload bukti sudah mengikuti akun Instagram UPUCC (<a href="https://www.instagram.com/upucc.or.id" target="_blank">@upucc.or.id</a>) <span class="required">*</span></div>
+      <p class="small text-muted mb-3">Upload maksimum 5 file yang didukung: PDF, drawing, atau image. Maks 10 MB per file.</p>
+      <input type="file" class="form-control" id="buktiFollow" name="buktiFollow" accept="image/*,.pdf" multiple required>
+      <div id="fileHelpBlock" class="form-text mt-2 text-danger d-none">
+        Maksimal 5 file, ukuran maksimum 10 MB per file.
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-5 animate-on-load delay-10">
+      <button type="submit" class="btn btn-submit" id="submitBtn">Kirim</button>
+      <button type="button" class="btn text-primary" style="font-weight: 500;">Kosongkan formulir</button>
+    </div>
+  </form>
   
   <div id="successMessage" class="d-none">
     <div class="form-card text-center py-5 shadow-lg border-0" style="border-top: 10px solid #673ab7;">

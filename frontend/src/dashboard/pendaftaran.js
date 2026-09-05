@@ -115,35 +115,6 @@ async function loadStatus() {
             }
         });
         
-        const gformInput = document.getElementById('gformLinkInput');
-        const btnSaveGform = document.getElementById('btnSaveGformLink');
-        
-        if (docSnap.exists() && docSnap.data().gformLink) {
-            gformInput.value = docSnap.data().gformLink;
-        }
-        
-        if (gformInput && btnSaveGform) {
-            gformInput.disabled = false;
-            btnSaveGform.disabled = false;
-
-            btnSaveGform.addEventListener('click', async () => {
-                const link = gformInput.value.trim();
-                btnSaveGform.disabled = true;
-                btnSaveGform.innerText = "Menyimpan...";
-                
-                try {
-                    await updateDoc(docRef, { gformLink: link });
-                    Swal.fire({icon: 'success', title: 'Berhasil', text: "Link Google Form berhasil disimpan!", timer: 1500, showConfirmButton: false});
-                } catch (err) {
-                    console.error(err);
-                    Swal.fire({icon: 'error', title: 'Gagal', text: "Gagal menyimpan link Google Form"});
-                } finally {
-                    btnSaveGform.disabled = false;
-                    btnSaveGform.innerText = "Simpan Link";
-                }
-            });
-        }
-        
     } catch (err) {
         console.error("Gagal memuat status pendaftaran", err);
     }
