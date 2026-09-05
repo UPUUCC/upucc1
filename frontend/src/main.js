@@ -120,6 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchHomeData();
   }
 
+  // Set Automatic Footer Year
+  const footerYear = document.getElementById('footerYear');
+  if (footerYear) {
+    footerYear.textContent = new Date().getFullYear();
+  }
+
   // Check Maintenance Mode
   const isLoginPage = window.location.pathname.includes('login.html');
   if (!isLoginPage && !window.location.pathname.includes('/dashboard/')) {
