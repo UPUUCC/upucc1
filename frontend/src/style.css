@@ -1,6 +1,6 @@
 :root {
-  --upucc-primary: #0d2b4e;
-  --upucc-secondary: #1e6fd9;
+  --upucc-primary: #002A54;
+  --upucc-secondary: #24ACDF;
   --upucc-accent: #f2a900;
 }
 body { background:#f5f7fa; font-family:'Segoe UI',Roboto,Arial,sans-serif; color:#222; }
