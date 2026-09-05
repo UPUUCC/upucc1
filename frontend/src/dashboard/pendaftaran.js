@@ -36,6 +36,18 @@ async function loadData() {
             if (data.status === 'Ditolak') badgeClass = 'bg-danger';
             if (data.status === 'Menunggu Review') badgeClass = 'bg-warning text-dark';
 
+            // Bukti link
+            let buktiHtml = '-';
+            if (data.buktiFollow && data.buktiFollow.length > 0) {
+                buktiHtml = `<a href="${data.buktiFollow[0]}" target="_blank" class="text-primary text-decoration-none small"><i class="bi bi-image"></i> Lihat Bukti</a>`;
+                if (data.buktiFollow.length > 1) {
+                    buktiHtml += `<br><span class="text-muted" style="font-size:0.7rem;">(+${data.buktiFollow.length - 1} file)</span>`;
+                }
+            } else if (data.buktiUrl) { // Fallback to old property just in case
+                buktiHtml = `<a href="${data.buktiUrl}" target="_blank" class="text-primary text-decoration-none small"><i class="bi bi-image"></i> Lihat Bukti</a>`;
+                if (!data.buktiFollow) data.buktiFollow = [data.buktiUrl]; // patch for modal
+            }
+
             html += `
                 <tr>
                     <td>${dateStr}</td>
@@ -45,10 +57,11 @@ async function loadData() {
                     <td>${data.nohp || '-'}</td>
                     <td>${data.prodi || '-'} (Smt ${data.semester || '-'})</td>
                     <td><span class="badge bg-primary">${data.divisi}</span></td>
+                    <td>${buktiHtml}</td>
                     <td><span class="badge ${badgeClass}">${data.status || 'Menunggu Review'}</span></td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary me-1" onclick="viewDetail('${data.id}')"><i class="bi bi-eye"></i> Detail</button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="deleteData('${data.id}')"><i class="bi bi-trash"></i></button>
+                        <button class="btn btn-sm btn-outline-primary me-1 mb-1" onclick="viewDetail('${data.id}')"><i class="bi bi-eye"></i> Detail</button>
+                        <button class="btn btn-sm btn-outline-danger mb-1" onclick="deleteData('${data.id}')"><i class="bi bi-trash"></i></button>
                     </td>
                 </tr>
             `;
@@ -58,7 +71,7 @@ async function loadData() {
         
     } catch (error) {
         console.error("Error loading pendaftaran:", error);
-        tbody.innerHTML = '<tr><td colspan="10" class="text-center text-danger">Gagal memuat data.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="11" class="text-center text-danger">Gagal memuat data.</td></tr>';
     }
 }
 
