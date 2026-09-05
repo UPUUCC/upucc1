@@ -1,5 +1,5 @@
 import { app, auth, db } from '../firebase.js';
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, setDoc } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, doc, addDoc, updateDoc, deleteDoc, setDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 
@@ -49,10 +49,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const divSnap = await getDocs(query(collection(db, "divisions"), orderBy("id", "asc")));
         let divOptions = '<option value="">-- Tidak ada / Pengurus Inti --</option>';
-        divSnap.forEach(d => {
-            divisions.push({ id: d.id, ...d.data() });
-            divOptions += `<option value="${d.id}">${d.data().nama}</option>`;
-        });
+        if (divSnap.empty) {
+            const defaultDivisions = [
+                { id: "1_programming", nama: "Programming" },
+                { id: "2_netsect", nama: "Network Security" },
+                { id: "3_knowtech", nama: "Knowledge of Technology" },
+                { id: "4_multimedia", nama: "Multimedia" }
+            ];
+            for (const d of defaultDivisions) {
+                await setDoc(doc(db, "divisions", d.id), d);
+                divisions.push(d);
+                divOptions += `<option value="${d.id}">${d.nama}</option>`;
+            }
+        } else {
+            divSnap.forEach(d => {
+                divisions.push({ id: d.id, ...d.data() });
+                divOptions += `<option value="${d.id}">${d.data().nama}</option>`;
+            });
+        }
         document.getElementById('addDivisi').innerHTML = divOptions;
         document.getElementById('editDivisi').innerHTML = divOptions;
     } catch (err) {

@@ -1,5 +1,5 @@
 import { db } from '../firebase.js';
-import { collection, getDocs, query, orderBy, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, doc, updateDoc, setDoc } from "firebase/firestore";
 
 const CLOUDINARY_CLOUD_NAME = "xg0djsvz";
 const CLOUDINARY_UPLOAD_PRESET = "ml_default";
@@ -36,9 +36,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             const divSnap = await getDocs(query(collection(db, "divisions"), orderBy("id", "asc")));
             divisions = [];
-            divSnap.forEach(d => {
-                divisions.push({ id: d.id, ...d.data() });
-            });
+            
+            if (divSnap.empty) {
+                const defaultDivisions = [
+                    { id: "1_programming", nama: "Programming", deskripsi: "", sejarah: "" },
+                    { id: "2_netsect", nama: "Network Security", deskripsi: "", sejarah: "" },
+                    { id: "3_knowtech", nama: "Knowledge of Technology", deskripsi: "", sejarah: "" },
+                    { id: "4_multimedia", nama: "Multimedia", deskripsi: "", sejarah: "" }
+                ];
+                for (const d of defaultDivisions) {
+                    await setDoc(doc(db, "divisions", d.id), d);
+                    divisions.push(d);
+                }
+            } else {
+                divSnap.forEach(d => {
+                    divisions.push({ id: d.id, ...d.data() });
+                });
+            }
 
             let html = '';
             divisions.forEach(d => {

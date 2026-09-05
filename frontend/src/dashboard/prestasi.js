@@ -1,5 +1,5 @@
 import { db } from '../firebase.js';
-import { collection, getDocs, query, orderBy, doc, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, doc, addDoc, updateDoc, deleteDoc, setDoc } from "firebase/firestore";
 
 const CLOUDINARY_CLOUD_NAME = "xg0djsvz";
 const CLOUDINARY_UPLOAD_PRESET = "ml_default";
@@ -46,18 +46,41 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function loadDivisi() {
         try {
             const snap = await getDocs(query(collection(db, "divisions"), orderBy("id", "asc")));
-            snap.forEach(d => {
-                divisions.push({ id: d.id, nama: d.data().nama });
-                const opt1 = document.createElement('option');
-                opt1.value = d.id;
-                opt1.textContent = d.data().nama;
-                selAddDiv.appendChild(opt1);
+            if (snap.empty) {
+                const defaultDivisions = [
+                    { id: "1_programming", nama: "Programming" },
+                    { id: "2_netsect", nama: "Network Security" },
+                    { id: "3_knowtech", nama: "Knowledge of Technology" },
+                    { id: "4_multimedia", nama: "Multimedia" }
+                ];
+                for (const d of defaultDivisions) {
+                    await setDoc(doc(db, "divisions", d.id), d);
+                    divisions.push(d);
+                    
+                    const opt1 = document.createElement('option');
+                    opt1.value = d.id;
+                    opt1.textContent = d.nama;
+                    document.getElementById('addDivisi').appendChild(opt1);
+                    
+                    const opt2 = document.createElement('option');
+                    opt2.value = d.id;
+                    opt2.textContent = d.nama;
+                    document.getElementById('editDivisi').appendChild(opt2);
+                }
+            } else {
+                snap.forEach(d => {
+                    divisions.push({ id: d.id, nama: d.data().nama });
+                    const opt1 = document.createElement('option');
+                    opt1.value = d.id;
+                    opt1.textContent = d.data().nama;
+                    document.getElementById('addDivisi').appendChild(opt1);
 
-                const opt2 = document.createElement('option');
-                opt2.value = d.id;
-                opt2.textContent = d.data().nama;
-                selEditDiv.appendChild(opt2);
-            });
+                    const opt2 = document.createElement('option');
+                    opt2.value = d.id;
+                    opt2.textContent = d.data().nama;
+                    document.getElementById('editDivisi').appendChild(opt2);
+                });
+            }
         } catch (err) {
             console.error("Gagal load divisi", err);
         }
