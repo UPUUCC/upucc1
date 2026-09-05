@@ -30,7 +30,7 @@
         <li class="nav-item"><a class="nav-link" href="/struktur.html">Struktur Organisasi</a></li>
         <li class="nav-item"><a class="nav-link" href="/sejarah.html">Sejarah</a></li>
         <li class="nav-item"><a class="nav-link" href="/acara.html">Acara</a></li>
-        <li class="nav-item"><a class="nav-link active" href="/pendaftaran.html">Pendaftaran</a></li>
+        
         <li class="nav-item"><a class="nav-link btn btn-sm btn-outline-light ms-lg-2 px-3" href="/login.html"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
       </ul>
     </div>
@@ -41,84 +41,21 @@
   <div class="row justify-content-center">
     <div class="col-lg-8">
       <div class="card shadow-sm border-0 rounded-4">
-        <div class="card-body p-5">
-          <h2 class="card-title fw-bold text-center mb-4 text-primary"><i class="bi bi-person-plus"></i> Form Rekrutmen Anggota Baru</h2>
-          <p class="text-center text-muted mb-4">Silakan isi formulir di bawah ini dengan data yang benar untuk bergabung dengan Universitas Potensi Utama Computer Club (UPUCC).</p>
-          
-          <div id="alertPlaceholder"></div>
-
-          <form id="formPendaftaran">
-            <div class="row g-3">
-              <!-- Nama -->
-              <div class="col-md-12">
-                <label for="nama" class="form-label fw-bold">Nama Lengkap <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="nama" name="nama" required placeholder="Masukkan nama lengkap Anda">
-              </div>
-
-              <!-- Email -->
-              <div class="col-md-6">
-                <label for="email" class="form-label fw-bold">Email <span class="text-danger">*</span></label>
-                <input type="email" class="form-control" id="email" name="email" required placeholder="email@contoh.com">
-              </div>
-
-              <!-- Nomor WhatsApp -->
-              <div class="col-md-6">
-                <label for="whatsapp" class="form-label fw-bold">Nomor WhatsApp <span class="text-danger">*</span></label>
-                <input type="tel" class="form-control" id="whatsapp" name="whatsapp" required placeholder="08xxxxxxxxxx">
-              </div>
-
-              <!-- NIM -->
-              <div class="col-md-6">
-                <label for="nim" class="form-label fw-bold">NIM <span class="text-muted fw-normal">(Opsional)</span></label>
-                <input type="text" class="form-control" id="nim" name="nim" placeholder="Masukkan NIM (jika ada)">
-              </div>
-
-              <!-- Prodi -->
-              <div class="col-md-6">
-                <label for="prodi" class="form-label fw-bold">Program Studi (Prodi) <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="prodi" name="prodi" required placeholder="Contoh: Sistem Informasi">
-              </div>
-
-              <!-- Semester -->
-              <div class="col-md-6">
-                <label for="semester" class="form-label fw-bold">Semester Saat Ini <span class="text-danger">*</span></label>
-                <select class="form-select" id="semester" name="semester" required>
-                  <option value="" selected disabled>-- Pilih Semester --</option>
-                  <option value="1">Semester 1</option>
-                  <option value="2">Semester 2</option>
-                  <option value="3">Semester 3</option>
-                  <option value="4">Semester 4</option>
-                  <option value="5">Semester 5</option>
-                  <option value="6">Semester 6</option>
-                  <option value="7">Semester 7</option>
-                  <option value="8">Semester 8</option>
-                  <option value="Lainnya">Lainnya</option>
-                </select>
-              </div>
-
-              <!-- Divisi -->
-              <div class="col-md-6">
-                <label for="divisi" class="form-label fw-bold">Pilihan Divisi <span class="text-danger">*</span></label>
-                <select class="form-select" id="divisi" name="divisi" required>
-                  <option value="" selected disabled>-- Memuat Divisi... --</option>
-                </select>
-              </div>
-
-              <!-- Alasan -->
-              <div class="col-12">
-                <label for="alasan" class="form-label fw-bold">Alasan Masuk UPUCC & Divisi Tersebut <span class="text-danger">*</span></label>
-                <textarea class="form-control" id="alasan" name="alasan" rows="4" required placeholder="Jelaskan alasan Anda bergabung dengan UPUCC dan mengapa Anda memilih divisi tersebut..."></textarea>
-              </div>
-
-              <!-- Submit -->
-              <div class="col-12 mt-4 text-center">
-                <button type="submit" class="btn btn-primary btn-lg px-5 rounded-pill w-100" id="btnSubmit">
-                  <span class="spinner-border spinner-border-sm d-none" id="spinnerSubmit" role="status" aria-hidden="true"></span>
-                  Kirim Pendaftaran
-                </button>
-              </div>
-            </div>
-          </form>
+        <div class="card-body p-5 text-center">
+          <i class="bi bi-person-plus" style="font-size:3.5rem;color:var(--upucc-secondary);"></i>
+          <h2 class="card-title fw-bold mb-4 mt-3 text-primary">Pendaftaran Anggota Baru</h2>
+          <p class="text-muted mb-4" style="font-size:1.1rem;">
+            Pendaftaran anggota baru secara mandiri saat ini sudah <strong>ditiadakan</strong> dari sistem website.
+          </p>
+          <div class="alert alert-info text-start d-inline-block mx-auto">
+            Silakan hubungi <b>Ketua Umum</b>, <b>Wakil Ketua Umum</b>, atau <b>Sekretaris</b> UPUCC
+            untuk dibuatkan akun keanggotaan Anda terlebih dahulu. 
+            <br><br>
+            Setelah akun Anda terdaftar, Anda bisa login lewat halaman <a href="/login.html" class="fw-bold">Login</a> sesuai dengan divisi Anda.
+          </div>
+          <div class="mt-4">
+            <a href="/login.html" class="btn btn-primary px-4 py-2"><i class="bi bi-box-arrow-in-right"></i> Pergi ke Halaman Login</a>
+          </div>
         </div>
       </div>
     </div>
@@ -135,6 +72,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module" src="/src/main.js"></script>
-<script type="module" src="/src/pendaftaran.js"></script>
 </body>
 </html>
