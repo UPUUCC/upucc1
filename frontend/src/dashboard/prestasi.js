@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { db } from '../firebase.js';
 import { collection, getDocs, query, orderBy, doc, addDoc, updateDoc, deleteDoc, setDoc } from "firebase/firestore";
 
@@ -185,12 +186,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     tableBody.addEventListener('click', async (e) => {
         const btnDel = e.target.closest('.btnDelete');
         if (btnDel) {
-            if (confirm('Yakin ingin menghapus prestasi ini?')) {
+            const confirmResult = await Swal.fire({title: 'Yakin ingin menghapus prestasi ini?', icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya', cancelButtonText: 'Batal'});
+            if (confirmResult.isConfirmed) {
                 try {
                     await deleteDoc(doc(db, "prestasi", btnDel.getAttribute('data-id')));
                     await loadPrestasi();
                 } catch (err) {
-                    alert('Gagal menghapus: ' + err.message);
+                    Swal.fire({icon: 'info', title: 'Perhatian', text: 'Gagal menghapus: ' + err.message})
                 }
             }
         }

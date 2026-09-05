@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { app, auth, db } from '../firebase.js';
 import { collection, getDocs, query, orderBy, doc, addDoc, updateDoc, deleteDoc, setDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
@@ -195,12 +196,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const btnDelete = e.target.closest('.btn-delete');
         if (btnDelete) {
             const id = btnDelete.getAttribute('data-id');
-            if (confirm('Yakin ingin menghapus anggota ini? Catatan: Akun Auth Firebase tidak akan terhapus otomatis dari sini, hanya profil datanya.')) {
+            const confirmResult = await Swal.fire({title: 'Yakin ingin menghapus anggota ini? Catatan: Akun Auth Firebase tidak akan terhapus otomatis dari sini, hanya profil datanya.', icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya', cancelButtonText: 'Batal'});
+            if (confirmResult.isConfirmed) {
                 try {
                     await deleteDoc(doc(db, "members", id));
                     await loadMembers();
                 } catch (err) {
-                    alert('Gagal menghapus: ' + err.message);
+                    Swal.fire({icon: 'info', title: 'Perhatian', text: 'Gagal menghapus: ' + err.message})
                 }
             }
         }

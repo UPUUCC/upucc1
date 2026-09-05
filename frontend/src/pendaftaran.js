@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { db } from './firebase.js';
 import { collection, addDoc, serverTimestamp, doc, getDoc } from "firebase/firestore";
 
@@ -99,12 +100,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const files = fileInput.files;
 
         if (!email || !nama || !nohp || !nim || !prodi || !semester || !divisi || files.length === 0) {
-            alert("Harap lengkapi semua data wajib.");
+            Swal.fire({icon: 'info', title: 'Perhatian', text: "Harap lengkapi semua data wajib."})
             return;
         }
 
         if (files.length > 5) {
-            alert("Maksimal 5 file upload.");
+            Swal.fire({icon: 'info', title: 'Perhatian', text: "Maksimal 5 file upload."})
             return;
         }
 
@@ -138,7 +139,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         } catch (error) {
             console.error("Error submitting form: ", error);
-            alert("Terjadi kesalahan saat mengirim pendaftaran. Silakan coba lagi.");
+            Swal.fire({icon: 'info', title: 'Perhatian', text: "Terjadi kesalahan saat mengirim pendaftaran. Silakan coba lagi."})
             submitBtn.innerHTML = 'Kirim';
             submitBtn.disabled = false;
         }

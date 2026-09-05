@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { db } from '../firebase.js';
 import { collection, getDocs, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
@@ -33,7 +34,7 @@ async function loadMaintenanceStatus() {
                 textStatus.className = newState ? "mb-0 fw-bold small text-warning" : "mb-0 fw-bold small text-info opacity-75";
             } catch (err) {
                 console.error(err);
-                alert("Gagal mengubah status maintenance");
+                Swal.fire({icon: 'info', title: 'Perhatian', text: "Gagal mengubah status maintenance"})
                 e.target.checked = !newState; // revert
             } finally {
                 toggleBtn.disabled = false;

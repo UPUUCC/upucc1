@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { db } from '../firebase.js';
 import { collection, getDocs, getDoc, setDoc, query, orderBy, doc, updateDoc, deleteDoc } from "firebase/firestore";
 
@@ -107,7 +108,7 @@ async function loadStatus() {
                 textStatus.className = newState ? "me-3 fw-bold small text-success" : "me-3 fw-bold small text-danger";
             } catch (err) {
                 console.error(err);
-                alert("Gagal mengubah status pendaftaran");
+                Swal.fire({icon: 'info', title: 'Perhatian', text: "Gagal mengubah status pendaftaran"})
                 e.target.checked = !newState; // revert
             } finally {
                 toggleBtn.disabled = false;
@@ -152,13 +153,14 @@ window.viewDetail = (id) => {
 };
 
 window.deleteData = async (id) => {
-    if(confirm("Yakin ingin menghapus data pendaftaran ini?")) {
+    const confirmResult = await Swal.fire({title: "Yakin ingin menghapus data pendaftaran ini?", icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya', cancelButtonText: 'Batal'});
+            if (confirmResult.isConfirmed) {
         try {
             await deleteDoc(doc(db, "pendaftaran", id));
             loadData();
         } catch (error) {
             console.error("Error deleting:", error);
-            alert("Gagal menghapus data.");
+            Swal.fire({icon: 'info', title: 'Perhatian', text: "Gagal menghapus data."})
         }
     }
 };
@@ -171,20 +173,21 @@ document.getElementById('btnTerima').addEventListener('click', async () => {
         loadData();
     } catch (err) {
         console.error(err);
-        alert("Gagal mengupdate status.");
+        Swal.fire({icon: 'info', title: 'Perhatian', text: "Gagal mengupdate status."})
     }
 });
 
 document.getElementById('btnTolak').addEventListener('click', async () => {
     if(!currentId) return;
-    if(confirm("Yakin ingin menolak pendaftaran ini?")) {
+    const confirmResult = await Swal.fire({title: "Yakin ingin menolak pendaftaran ini?", icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya', cancelButtonText: 'Batal'});
+            if (confirmResult.isConfirmed) {
         try {
             await updateDoc(doc(db, "pendaftaran", currentId), { status: "Ditolak" });
             bootstrap.Modal.getInstance(document.getElementById('detailModal')).hide();
             loadData();
         } catch (err) {
             console.error(err);
-            alert("Gagal mengupdate status.");
+            Swal.fire({icon: 'info', title: 'Perhatian', text: "Gagal mengupdate status."})
         }
     }
 });

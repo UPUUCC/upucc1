@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { db } from '../firebase.js';
 import { collection, getDocs, query, orderBy, doc, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
 
@@ -124,12 +125,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     container.addEventListener('click', async (e) => {
         const btnDel = e.target.closest('.btnDelete');
         if (btnDel) {
-            if (confirm('Yakin ingin menghapus slider ini?')) {
+            const confirmResult = await Swal.fire({title: 'Yakin ingin menghapus slider ini?', icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya', cancelButtonText: 'Batal'});
+            if (confirmResult.isConfirmed) {
                 try {
                     await deleteDoc(doc(db, "sliders", btnDel.getAttribute('data-id')));
                     await loadSlider();
                 } catch (err) {
-                    alert('Gagal menghapus: ' + err.message);
+                    Swal.fire({icon: 'info', title: 'Perhatian', text: 'Gagal menghapus: ' + err.message})
                 }
             }
         }

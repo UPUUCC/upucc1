@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { db } from '../firebase.js';
 import { collection, getDocs, query, orderBy, doc, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
 
@@ -149,12 +150,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     container.addEventListener('click', async (e) => {
         const btnDel = e.target.closest('.btnDelete');
         if (btnDel) {
-            if (confirm('Yakin ingin menghapus seluruh postingan acara ini?')) {
+            const confirmResult = await Swal.fire({title: 'Yakin ingin menghapus seluruh postingan acara ini?', icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya', cancelButtonText: 'Batal'});
+            if (confirmResult.isConfirmed) {
                 try {
                     await deleteDoc(doc(db, "acara", btnDel.getAttribute('data-id')));
                     await loadAcara();
                 } catch (err) {
-                    alert('Gagal menghapus: ' + err.message);
+                    Swal.fire({icon: 'info', title: 'Perhatian', text: 'Gagal menghapus: ' + err.message})
                 }
             }
         }
@@ -183,7 +185,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const btnDelFoto = e.target.closest('.btnDeleteFoto');
         if (btnDelFoto) {
-            if (confirm('Yakin ingin menghapus foto ini?')) {
+            const confirmResult = await Swal.fire({title: 'Yakin ingin menghapus foto ini?', icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya', cancelButtonText: 'Batal'});
+            if (confirmResult.isConfirmed) {
                 try {
                     const id = btnDelFoto.getAttribute('data-id');
                     const idx = parseInt(btnDelFoto.getAttribute('data-index'));
@@ -195,7 +198,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         await loadAcara();
                     }
                 } catch (err) {
-                    alert('Gagal menghapus foto: ' + err.message);
+                    Swal.fire({icon: 'info', title: 'Perhatian', text: 'Gagal menghapus foto: ' + err.message})
                 }
             }
         }
