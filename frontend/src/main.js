@@ -186,6 +186,48 @@ function initMain() {
     }).catch(err => console.error(err));
   }
 
+  // Check Registration (Oprec) Popup
+  if (!isLoginPage && !window.location.pathname.includes('/dashboard/')) {
+    getDoc(doc(db, "settings", "pendaftaran")).then(regSnap => {
+        if (regSnap.exists() && regSnap.data().isOpen === true) {
+            const hasSeenPopup = sessionStorage.getItem('oprecPopupShown');
+            if (!hasSeenPopup) {
+                sessionStorage.setItem('oprecPopupShown', 'true');
+                const thumbnailUrl = regSnap.data().thumbnailUrl || null;
+                
+                let swalConfig = {
+                    title: 'Open Recruitment UPU-CC',
+                    html: 'Pendaftaran anggota baru UPU-CC telah dibuka!<br>Mari bergabung dan kembangkan potensimu di bidang teknologi bersama kami.',
+                    confirmButtonText: 'Daftar Sekarang',
+                    showCancelButton: true,
+                    cancelButtonText: 'Nanti Saja',
+                    confirmButtonColor: '#2563eb',
+                    reverseButtons: true,
+                    padding: '1.5em',
+                    customClass: {
+                        popup: 'rounded-4'
+                    }
+                };
+
+                if (thumbnailUrl) {
+                    swalConfig.imageUrl = thumbnailUrl;
+                    swalConfig.imageWidth = 400;
+                    swalConfig.imageAlt = 'Oprec UPU-CC';
+                    swalConfig.imageClass = 'rounded-3 shadow-sm border mb-3';
+                }
+
+                setTimeout(() => {
+                    Swal.fire(swalConfig).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/pendaftaran.html';
+                        }
+                    });
+                }, 1000); // 1 second delay for better UX
+            }
+        }
+    }).catch(err => console.error(err));
+  }
+
   // Handle Authentication State for Navbar Login Button
   onAuthStateChanged(auth, (user) => {
     const loginLink = document.querySelector('a[href="/login.html"]');

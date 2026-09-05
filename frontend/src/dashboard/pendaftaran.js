@@ -85,16 +85,103 @@ async function loadStatus() {
         const docSnap = await getDoc(docRef);
         
         let isOpen = true; // Default to true if not set
+        let thumbnailUrl = '';
         if (docSnap.exists()) {
             isOpen = docSnap.data().isOpen;
+            thumbnailUrl = docSnap.data().thumbnailUrl || '';
         } else {
-            await setDoc(docRef, { isOpen: true });
+            await setDoc(docRef, { isOpen: true, thumbnailUrl: '' });
         }
         
         toggleBtn.checked = isOpen;
         toggleBtn.disabled = false;
         textStatus.innerText = isOpen ? "Status: DIBUKA" : "Status: DITUTUP";
         textStatus.className = isOpen ? "me-3 fw-bold small text-success" : "me-3 fw-bold small text-danger";
+        
+        // Popup Settings Logic
+        const btnPopupSettings = document.getElementById('btnPopupSettings');
+        if(btnPopupSettings) btnPopupSettings.disabled = false;
+        
+        const previewImg = document.getElementById('popupThumbnailPreview');
+        const urlInput = document.getElementById('popupThumbnailUrl');
+        
+        if (thumbnailUrl) {
+            previewImg.src = thumbnailUrl;
+            urlInput.value = thumbnailUrl;
+        }
+        
+        urlInput.addEventListener('input', (e) => {
+            if(e.target.value) previewImg.src = e.target.value;
+        });
+        
+        const CLOUDINARY_CLOUD_NAME = "xg0djsvz";
+        const CLOUDINARY_UPLOAD_PRESET = "ml_default";
+        
+        async function uploadToCloudinary(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+            
+            try {
+                const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    return data.secure_url;
+                } else {
+                    throw new Error(data.error.message);
+                }
+            } catch (err) {
+                console.error("Cloudinary Error:", err);
+                throw new Error("Gagal mengupload gambar ke Cloudinary.");
+            }
+        }
+        
+        document.getElementById('btnUploadThumbnail').addEventListener('click', () => {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.onchange = async (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    const btn = document.getElementById('btnUploadThumbnail');
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Mengunggah...';
+                    btn.disabled = true;
+                    
+                    try {
+                        const url = await uploadToCloudinary(e.target.files[0]);
+                        urlInput.value = url;
+                        previewImg.src = url;
+                        Swal.fire({icon: 'success', title: 'Berhasil', text: 'Thumbnail berhasil diunggah! Jangan lupa klik Simpan Pengaturan.', timer: 2000, showConfirmButton: false});
+                    } catch(err) {
+                        Swal.fire({icon: 'error', title: 'Gagal', text: err.message});
+                    } finally {
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                    }
+                }
+            };
+            fileInput.click();
+        });
+        
+        document.getElementById('btnSavePopupSettings').addEventListener('click', async () => {
+            const btn = document.getElementById('btnSavePopupSettings');
+            btn.innerHTML = 'Menyimpan...';
+            btn.disabled = true;
+            try {
+                await updateDoc(docRef, { thumbnailUrl: urlInput.value });
+                Swal.fire({icon: 'success', title: 'Tersimpan', text: 'Pengaturan Pop-up berhasil disimpan!', timer: 1500, showConfirmButton: false});
+                bootstrap.Modal.getInstance(document.getElementById('popupSettingsModal')).hide();
+            } catch(err) {
+                console.error(err);
+                Swal.fire({icon: 'error', title: 'Gagal', text: 'Gagal menyimpan pengaturan.'});
+            } finally {
+                btn.innerHTML = 'Simpan Pengaturan';
+                btn.disabled = false;
+            }
+        });
         
         toggleBtn.addEventListener('change', async (e) => {
             const newState = e.target.checked;

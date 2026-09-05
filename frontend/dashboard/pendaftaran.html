@@ -77,10 +77,13 @@
   <div class="container-fluid p-4">
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
       <h4 class="mb-0">Kelola Pendaftaran Baru</h4>
-      <div class="d-flex align-items-center bg-white p-2 px-3 rounded-pill shadow-sm">
-        <span class="me-3 fw-bold text-muted small" id="statusPendaftaranText">Status: Memuat...</span>
-        <div class="form-check form-switch mb-0 fs-5">
-          <input class="form-check-input" type="checkbox" role="switch" id="togglePendaftaran" disabled>
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#popupSettingsModal" id="btnPopupSettings"><i class="bi bi-gear"></i> Pop-up Oprec</button>
+        <div class="d-flex align-items-center bg-white p-2 px-3 rounded-pill shadow-sm">
+          <span class="me-3 fw-bold text-muted small" id="statusPendaftaranText">Status: Memuat...</span>
+          <div class="form-check form-switch mb-0 fs-5">
+            <input class="form-check-input" type="checkbox" role="switch" id="togglePendaftaran" disabled>
+          </div>
         </div>
       </div>
     </div>
@@ -156,6 +159,36 @@
           <button class="btn btn-warning flex-grow-1" id="btnTolak">Tolak (Ditolak)</button>
         </div>
         <p class="small text-muted mt-3 text-center"><i class="bi bi-info-circle"></i> Catatan: "Terima" hanya mengubah status menjadi Diterima. Akun login mereka harus dibuat terpisah di menu Anggota & Struktur oleh Admin jika ingin diberikan akses.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popup Settings Modal -->
+<div class="modal fade" id="popupSettingsModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content border-0 rounded-4">
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold">Pengaturan Pop-up Oprec</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4 pt-0">
+        <p class="text-muted small">Gambar thumbnail (poster) ini akan muncul di pop-up pendaftaran saat pengunjung pertama kali membuka website (hanya muncul saat pendaftaran DIBUKA).</p>
+        
+        <div class="mb-3 text-center">
+            <img id="popupThumbnailPreview" src="https://via.placeholder.com/400x200?text=Belum+Ada+Thumbnail" class="img-fluid rounded border mb-2" style="max-height: 200px; object-fit: cover;">
+            <br>
+            <button class="btn btn-sm btn-outline-primary" id="btnUploadThumbnail"><i class="bi bi-upload"></i> Upload Thumbnail (Cloudinary)</button>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label text-muted small">Atau Masukkan URL Gambar Manual</label>
+          <input type="text" id="popupThumbnailUrl" class="form-control" placeholder="https://...">
+        </div>
+        
+        <div class="d-grid mt-4">
+          <button class="btn btn-primary" id="btnSavePopupSettings">Simpan Pengaturan</button>
+        </div>
       </div>
     </div>
   </div>
