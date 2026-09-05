@@ -131,9 +131,9 @@
   <form id="pendaftaranForm" class="d-none">
     <!-- Header Block -->
     <div class="form-header animate-on-load delay-1">
-      <h1 class="form-title">Pendaftaran Anggota UPU-CC 2026</h1>
+      <h1 class="form-title">Pendaftaran Anggota UPU-CC <span class="current-year-display"></span></h1>
       <p>Halo, Mahasiswa/i Aktif Universitas Potensi Utama! 👋</p>
-      <p>Silakan isi formulir di bawah ini untuk pendaftaran anggota baru UPU-CC (Universitas Potensi Utama Computer Club) 2026.</p>
+      <p>Silakan isi formulir di bawah ini untuk pendaftaran anggota baru UPU-CC (Universitas Potensi Utama Computer Club) <span class="current-year-display"></span>.</p>
       <p>Silakan isi data diri kamu dengan benar dan pilih divisi yang sesuai dengan minat serta passion kamu:</p>
       <ul style="padding-left: 20px; color: #5f6368;">
         <li>Programming (Pengembangan software, web, dan aplikasi)</li>
@@ -338,7 +338,16 @@
 </div>
 
 <script>
-  const SHARE_TEXT = `✨ OPEN RECRUITMENT UPU-CC 2026 ✨
+  const currentYear = new Date().getFullYear();
+  
+  // Update year in DOM
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.current-year-display').forEach(el => {
+      el.textContent = currentYear;
+    });
+  });
+
+  const SHARE_TEXT = `✨ OPEN RECRUITMENT UPU-CC ${currentYear} ✨
 
 🎯 Hei, Mahasiswa Universitas Potensi Utama!
 Ini kesempatan emasmu untuk bergabung bersama kami — UPU-CC (Universitas Potensi Utama Computer Club)!
@@ -354,7 +363,7 @@ Ini kesempatan emasmu untuk bergabung bersama kami — UPU-CC (Universitas Poten
 🔗 Daftar sekarang di:
 ${window.location.href.replace(/https?:\/\/(www\.)?/, 'www.')}
 
-#UPUCC #OpenRecruitment #UPU #Oprec2026 #ComputerClub #MahasiswaBerprestasi`;
+#UPUCC #OpenRecruitment #UPU #Oprec${currentYear} #ComputerClub #MahasiswaBerprestasi`;
 
   function showShareModal() {
     const pageUrl = encodeURIComponent(window.location.href);
