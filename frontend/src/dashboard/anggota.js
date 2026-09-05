@@ -8,8 +8,8 @@ const secondaryApp = initializeApp(app.options, "SecondaryApp");
 const secondaryAuth = getAuth(secondaryApp);
 
 // Konfigurasi Cloudinary (Silakan ganti dengan milik Anda)
-const CLOUDINARY_CLOUD_NAME = "mvhjuh83";
-const CLOUDINARY_UPLOAD_PRESET = "ganti_dengan_upload_preset_anda";
+const CLOUDINARY_CLOUD_NAME = "xg0djsvz";
+const CLOUDINARY_UPLOAD_PRESET = "ml_default";
 
 async function uploadToCloudinary(file) {
     if (!file) return '';
