@@ -1,7 +1,7 @@
 import { db } from '../firebase.js';
 import { collection, getDocs, query, orderBy, doc, updateDoc } from "firebase/firestore";
 
-const CLOUDINARY_CLOUD_NAME = "ganti_dengan_cloud_name_anda";
+const CLOUDINARY_CLOUD_NAME = "mvhjuh83";
 const CLOUDINARY_UPLOAD_PRESET = "ganti_dengan_upload_preset_anda";
 
 async function uploadToCloudinary(file) {
