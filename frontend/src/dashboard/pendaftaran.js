@@ -14,7 +14,7 @@ async function loadData() {
         let html = '';
         
         if (snapshot.empty) {
-            tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Belum ada pendaftar baru.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="10" class="text-center text-muted">Belum ada pendaftar baru.</td></tr>';
             return;
         }
 
@@ -41,6 +41,9 @@ async function loadData() {
                     <td>${dateStr}</td>
                     <td class="fw-bold">${data.nama}</td>
                     <td>${data.nim}</td>
+                    <td>${data.email || '-'}</td>
+                    <td>${data.nohp || '-'}</td>
+                    <td>${data.prodi || '-'} (Smt ${data.semester || '-'})</td>
                     <td><span class="badge bg-primary">${data.divisi}</span></td>
                     <td><span class="badge ${badgeClass}">${data.status || 'Menunggu Review'}</span></td>
                     <td>
@@ -55,7 +58,7 @@ async function loadData() {
         
     } catch (error) {
         console.error("Error loading pendaftaran:", error);
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Gagal memuat data.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" class="text-center text-danger">Gagal memuat data.</td></tr>';
     }
 }
 
