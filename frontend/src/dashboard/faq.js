@@ -5,7 +5,7 @@ import { collection, getDocs, deleteDoc, doc, query, orderBy, addDoc, updateDoc 
 
 let faqData = [];
 
-document.addEventListener('DOMContentLoaded', () => {
+function initFaq() {
     onAuthStateChanged(auth, (user) => {
         if (!user) {
             window.location.href = '/login.html';
@@ -14,8 +14,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.getElementById('formFaq').addEventListener('submit', handleSaveFaq);
-});
+    const form = document.getElementById('formFaq');
+    if(form) form.addEventListener('submit', handleSaveFaq);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFaq);
+} else {
+    initFaq();
+}
 
 async function loadFaq() {
     const tableBody = document.getElementById('faqTableBody');

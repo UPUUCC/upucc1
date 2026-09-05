@@ -116,7 +116,7 @@ async function fetchHomeData() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function initMain() {
   if (document.getElementById('infoUPUCC') || document.getElementById('sliderIndicators')) {
     fetchHomeData();
   }
@@ -204,7 +204,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initMain);
+} else {
+  initMain();
+}
 
 
 async function fetchFaq() {
