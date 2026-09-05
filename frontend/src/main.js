@@ -48,7 +48,6 @@ async function fetchHomeData() {
         <div class="d-flex align-items-center justify-content-center text-white" style="height:480px; background:linear-gradient(120deg,#0d2b4e,#1e6fd9);">
           <div class="text-center">
             <h1 class="fw-bold">Selamat Datang di UPUCC</h1>
-            <p>Sistem baru berbasis Firebase telah aktif.</p>
           </div>
         </div>
       `;
