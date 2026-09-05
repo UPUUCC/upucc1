@@ -1,5 +1,5 @@
 import { db } from '../firebase.js';
-import { collection, getDocs, query, orderBy, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, getDoc, setDoc, query, orderBy, doc, updateDoc, deleteDoc } from "firebase/firestore";
 
 let allData = [];
 let currentId = null;
@@ -75,6 +75,50 @@ async function loadData() {
     }
 }
 
+async function loadStatus() {
+    try {
+        const toggleBtn = document.getElementById('togglePendaftaran');
+        const textStatus = document.getElementById('statusPendaftaranText');
+        
+        const docRef = doc(db, "settings", "pendaftaran");
+        const docSnap = await getDoc(docRef);
+        
+        let isOpen = true; // Default to true if not set
+        if (docSnap.exists()) {
+            isOpen = docSnap.data().isOpen;
+        } else {
+            await setDoc(docRef, { isOpen: true });
+        }
+        
+        toggleBtn.checked = isOpen;
+        toggleBtn.disabled = false;
+        textStatus.innerText = isOpen ? "Status: DIBUKA" : "Status: DITUTUP";
+        textStatus.className = isOpen ? "me-3 fw-bold small text-success" : "me-3 fw-bold small text-danger";
+        
+        toggleBtn.addEventListener('change', async (e) => {
+            const newState = e.target.checked;
+            toggleBtn.disabled = true;
+            textStatus.innerText = "Menyimpan...";
+            textStatus.className = "me-3 fw-bold small text-muted";
+            
+            try {
+                await updateDoc(docRef, { isOpen: newState });
+                textStatus.innerText = newState ? "Status: DIBUKA" : "Status: DITUTUP";
+                textStatus.className = newState ? "me-3 fw-bold small text-success" : "me-3 fw-bold small text-danger";
+            } catch (err) {
+                console.error(err);
+                alert("Gagal mengubah status pendaftaran");
+                e.target.checked = !newState; // revert
+            } finally {
+                toggleBtn.disabled = false;
+            }
+        });
+        
+    } catch (err) {
+        console.error("Gagal memuat status pendaftaran", err);
+    }
+}
+
 window.viewDetail = (id) => {
     const data = allData.find(d => d.id === id);
     if(!data) return;
@@ -145,4 +189,7 @@ document.getElementById('btnTolak').addEventListener('click', async () => {
     }
 });
 
-document.addEventListener('DOMContentLoaded', loadData);
+document.addEventListener('DOMContentLoaded', () => {
+    loadData();
+    loadStatus();
+});

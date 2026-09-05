@@ -1,5 +1,5 @@
 import { db } from './firebase.js';
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, doc, getDoc } from "firebase/firestore";
 
 const CLOUDINARY_CLOUD_NAME = "mvhjuh83"; // The one user provided
 const CLOUDINARY_UPLOAD_PRESET = "ml_default";
@@ -28,8 +28,27 @@ async function uploadToCloudinary(file) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const form = document.getElementById('pendaftaranForm');
+    const closedMsg = document.getElementById('closedMessage');
+    
+    // Check if form is open
+    try {
+        const docSnap = await getDoc(doc(db, "settings", "pendaftaran"));
+        if (docSnap.exists() && docSnap.data().isOpen === false) {
+            closedMsg.classList.remove('d-none');
+            form.classList.add('d-none');
+            return; // Stop execution, form is closed
+        }
+        
+        // If open, show form
+        form.classList.remove('d-none');
+        closedMsg.classList.add('d-none');
+    } catch (e) {
+        console.error("Gagal cek status pendaftaran", e);
+        form.classList.remove('d-none'); // default to open on error
+    }
+
     const fileInput = document.getElementById('buktiFollow');
     const fileHelpBlock = document.getElementById('fileHelpBlock');
     const submitBtn = document.getElementById('submitBtn');
