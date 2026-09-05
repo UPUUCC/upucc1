@@ -32,62 +32,46 @@
 
 <div class="card border-0 shadow-sm p-4 mb-4">
   <h5>Tambah Postingan Acara Baru</h5>
-  <form method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="action" value="add">
-    <div class="mb-3"><label class="form-label">Judul *</label><input type="text" name="judul" class="form-control" required></div>
-    <div class="mb-3"><label class="form-label">Deskripsi</label><textarea name="deskripsi" class="form-control" rows="3"></textarea></div>
-    <div class="mb-3"><label class="form-label">Foto (bisa pilih beberapa sekaligus, seperti Instagram)</label>
-      <input type="file" name="fotos[]" class="form-control" accept="image/*" multiple>
+  <div id="addAlert" class="alert d-none"></div>
+  <form id="formAddAcara">
+    <div class="mb-3"><label class="form-label">Judul *</label><input type="text" id="addJudul" class="form-control" required></div>
+    <div class="mb-3"><label class="form-label">Deskripsi</label><textarea id="addDeskripsi" class="form-control" rows="3"></textarea></div>
+    <div class="mb-3"><label class="form-label">Foto (Pilih foto acara, bisa lebih dari satu)</label>
+      <input type="file" id="addFotos" class="form-control" accept="image/*" multiple required>
     </div>
-    <button class="btn btn-primary"><i class="bi bi-plus"></i> Posting</button>
+    <button type="submit" class="btn btn-primary" id="btnAdd"><i class="bi bi-plus"></i> Posting</button>
   </form>
 </div>
 
-<div class="card border-0 shadow-sm p-4 mb-3">
-  <div class="d-flex justify-content-between">
-    <h5><!-- Dynamic: e($a['judul']) --></h5>
-    <div>
-      <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editA<!-- Dynamic: $a['id'] -->"><i class="bi bi-pencil"></i> Edit Teks</button>
-      <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#addFoto<!-- Dynamic: $a['id'] -->"><i class="bi bi-image"></i> Tambah Foto</button>
-      <a href="?hapus=<!-- Dynamic: $a['id'] -->" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus seluruh postingan ini beserta fotonya?')"><i class="bi bi-trash"></i> Hapus</a>
-    </div>
-  </div>
-  <p class="text-muted small"><!-- Dynamic: tgl_indo(date('Y-m-d', strtotime($a['created_at']))) --></p>
-  <p><!-- Dynamic: nl2br(e($a['deskripsi'])) --></p>
-  <div class="d-flex flex-wrap gap-2">
-    
-    <div style="position:relative;">
-      <img src="../uploads/acara/<!-- Dynamic: e($f['foto']) -->" style="width:100px;height:100px;object-fit:cover;border-radius:8px;">
-      <a href="?hapus_foto=<!-- Dynamic: $f['id'] -->" onclick="return confirm('Hapus foto ini?')" class="btn btn-sm btn-danger" style="position:absolute;top:2px;right:2px;padding:0 6px;">&times;</a>
-    </div>
-    
-    <p class="text-muted small">Belum ada foto.</p>
-  </div>
+<div id="acaraContainer">
+  <div class="text-center text-muted"><div class="spinner-border spinner-border-sm"></div> Memuat data acara...</div>
 </div>
 
-<div class="modal fade" id="editA<!-- Dynamic: $a['id'] -->">
+<!-- Modal Edit Teks -->
+<div class="modal fade" id="modalEditAcara">
   <div class="modal-dialog"><div class="modal-content">
-    <form method="POST">
-      <input type="hidden" name="action" value="edit"><input type="hidden" name="id" value="<!-- Dynamic: $a['id'] -->">
-      <div class="modal-header"><h5 class="modal-title">Edit Postingan</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+    <form id="formEditAcara">
+      <div class="modal-header"><h5 class="modal-title">Edit Postingan</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
       <div class="modal-body">
-        <div class="mb-2"><label class="form-label">Judul</label><input type="text" name="judul" class="form-control" value="<!-- Dynamic: e($a['judul']) -->" required></div>
-        <div class="mb-2"><label class="form-label">Deskripsi</label><textarea name="deskripsi" class="form-control" rows="4"><!-- Dynamic: e($a['deskripsi']) --></textarea></div>
+        <div id="editAlert" class="alert d-none"></div>
+        <div class="mb-2"><label class="form-label">Judul</label><input type="text" id="editJudul" class="form-control" required></div>
+        <div class="mb-2"><label class="form-label">Deskripsi</label><textarea id="editDeskripsi" class="form-control" rows="4"></textarea></div>
       </div>
-      <div class="modal-footer"><button class="btn btn-primary">Simpan</button></div>
+      <div class="modal-footer"><button type="submit" class="btn btn-primary" id="btnEditSave">Simpan</button></div>
     </form>
   </div></div>
 </div>
 
-<div class="modal fade" id="addFoto<!-- Dynamic: $a['id'] -->">
+<!-- Modal Tambah Foto -->
+<div class="modal fade" id="modalAddFoto">
   <div class="modal-dialog"><div class="modal-content">
-    <form method="POST" enctype="multipart/form-data">
-      <input type="hidden" name="action" value="add_foto"><input type="hidden" name="acara_id" value="<!-- Dynamic: $a['id'] -->">
-      <div class="modal-header"><h5 class="modal-title">Tambah Foto</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+    <form id="formAddFoto">
+      <div class="modal-header"><h5 class="modal-title">Tambah Foto</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
       <div class="modal-body">
-        <input type="file" name="fotos[]" class="form-control" accept="image/*" multiple required>
+        <div id="addFotoAlert" class="alert d-none"></div>
+        <input type="file" id="newFotos" class="form-control" accept="image/*" multiple required>
       </div>
-      <div class="modal-footer"><button class="btn btn-primary">Upload</button></div>
+      <div class="modal-footer"><button type="submit" class="btn btn-primary" id="btnAddFotoSave">Upload</button></div>
     </form>
   </div></div>
 </div>
@@ -96,5 +80,6 @@
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="/src/dashboard/acara.js"></script>
 </body>
 </html>

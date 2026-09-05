@@ -32,68 +32,58 @@
 
 <div class="card border-0 shadow-sm p-4 mb-4">
   <h5>Tambah Slider Baru</h5>
-  <form method="POST" enctype="multipart/form-data" class="row g-3">
-    <input type="hidden" name="action" value="add">
+  <div id="addAlert" class="alert d-none"></div>
+  <form id="formAddSlider" class="row g-3">
     <div class="col-md-4">
       <label class="form-label">Gambar *</label>
-      <input type="file" name="gambar" class="form-control" required accept="image/*">
+      <input type="file" id="addGambarFile" class="form-control" required accept="image/*">
     </div>
     <div class="col-md-3">
       <label class="form-label">Judul</label>
-      <input type="text" name="judul" class="form-control">
+      <input type="text" id="addJudul" class="form-control">
     </div>
     <div class="col-md-3">
       <label class="form-label">Deskripsi Singkat</label>
-      <input type="text" name="deskripsi" class="form-control">
+      <input type="text" id="addDeskripsi" class="form-control">
     </div>
     <div class="col-md-2">
       <label class="form-label">Urutan</label>
-      <input type="number" name="urutan" class="form-control" value="0">
+      <input type="number" id="addUrutan" class="form-control" value="0">
     </div>
     <div class="col-12">
-      <button class="btn btn-primary"><i class="bi bi-plus"></i> Tambah Slider</button>
+      <button type="submit" class="btn btn-primary" id="btnAdd"><i class="bi bi-plus"></i> Tambah Slider</button>
     </div>
   </form>
 </div>
 
-<div class="row g-3">
-  
-  <div class="col-md-4">
-    <div class="card border-0 shadow-sm">
-      <img src="../uploads/slider/<!-- Dynamic: e($s['gambar']) -->" class="card-img-top" style="height:160px;object-fit:cover;">
-      <div class="card-body">
-        <h6><!-- Dynamic: e($s['judul'] ?: '(tanpa judul)') --></h6>
-        <p class="small text-muted"><!-- Dynamic: e($s['deskripsi']) --></p>
-        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#edit<!-- Dynamic: $s['id'] -->"><i class="bi bi-pencil"></i> Edit</button>
-        <a href="?hapus=<!-- Dynamic: $s['id'] -->" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus slider ini?')"><i class="bi bi-trash"></i> Hapus</a>
-      </div>
-    </div>
+<div class="row g-3" id="sliderContainer">
+  <div class="col-12 text-center text-muted">
+    <div class="spinner-border spinner-border-sm"></div> Memuat data slider...
   </div>
+</div>
 
-  <div class="modal fade" id="edit<!-- Dynamic: $s['id'] -->">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form method="POST" enctype="multipart/form-data">
-          <input type="hidden" name="action" value="edit">
-          <input type="hidden" name="id" value="<!-- Dynamic: $s['id'] -->">
-          <div class="modal-header"><h5 class="modal-title">Edit Slider</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-          <div class="modal-body">
-            <div class="mb-3"><label class="form-label">Ganti Gambar (kosongkan jika tidak ganti)</label><input type="file" name="gambar" class="form-control" accept="image/*"></div>
-            <div class="mb-3"><label class="form-label">Judul</label><input type="text" name="judul" class="form-control" value="<!-- Dynamic: e($s['judul']) -->"></div>
-            <div class="mb-3"><label class="form-label">Deskripsi</label><input type="text" name="deskripsi" class="form-control" value="<!-- Dynamic: e($s['deskripsi']) -->"></div>
-            <div class="mb-3"><label class="form-label">Urutan</label><input type="number" name="urutan" class="form-control" value="<!-- Dynamic: $s['urutan'] -->"></div>
-          </div>
-          <div class="modal-footer"><button class="btn btn-primary">Simpan</button></div>
-        </form>
-      </div>
+<div class="modal fade" id="modalEditSlider">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="formEditSlider">
+        <div class="modal-header"><h5 class="modal-title">Edit Slider</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body">
+          <div id="editAlert" class="alert d-none"></div>
+          <div class="mb-3"><label class="form-label">Ganti Gambar (kosongkan jika tidak ganti)</label><input type="file" id="editGambarFile" class="form-control" accept="image/*"></div>
+          <div class="mb-3"><label class="form-label">Judul</label><input type="text" id="editJudul" class="form-control"></div>
+          <div class="mb-3"><label class="form-label">Deskripsi</label><input type="text" id="editDeskripsi" class="form-control"></div>
+          <div class="mb-3"><label class="form-label">Urutan</label><input type="number" id="editUrutan" class="form-control"></div>
+        </div>
+        <div class="modal-footer"><button type="submit" class="btn btn-primary" id="btnEditSave">Simpan</button></div>
+      </form>
     </div>
   </div>
-  
 </div>
 
     </div>
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="/src/dashboard/slider.js"></script>
 </body>
 </html>

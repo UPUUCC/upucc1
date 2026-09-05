@@ -33,11 +33,12 @@
 <div class="card border-0 shadow-sm p-4">
   <h5>Edit Informasi Umum UPUCC</h5>
   <p class="text-muted small">Konten ini akan tampil di halaman Beranda dan halaman Informasi.</p>
-  <form method="POST">
+  <div id="alertInfo" class="alert d-none"></div>
+  <form id="formInfo">
     <div class="mb-3">
-      <textarea name="konten" class="form-control" rows="10"><!-- Dynamic: e($info['konten'] ?? '') --></textarea>
+      <textarea id="kontenInfo" class="form-control" rows="10" placeholder="Memuat..."></textarea>
     </div>
-    <button class="btn btn-primary"><i class="bi bi-save"></i> Simpan</button>
+    <button type="submit" class="btn btn-primary" id="btnSave"><i class="bi bi-save"></i> Simpan</button>
   </form>
 </div>
 
@@ -45,5 +46,6 @@
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="/src/dashboard/informasi.js"></script>
 </body>
 </html>
