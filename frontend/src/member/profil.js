@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const skills = userData.skills || '';
                 const github = userData.github || '';
                 const linkedin = userData.linkedin || '';
+                const instagram = userData.instagram || '';
 
                 document.getElementById('displayNama').textContent = nama;
                 document.getElementById('cardNama').textContent = nama;
@@ -75,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('inputSkills').value = skills;
                 document.getElementById('inputGithub').value = github;
                 document.getElementById('inputLinkedin').value = linkedin;
+                document.getElementById('inputInstagram').value = instagram;
 
                 // Skills UI
                 updateSkillsUI(skills);
@@ -88,7 +90,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('linkLinkedin').href = linkedin;
                     document.getElementById('linkLinkedin').style.display = 'block';
                 }
-                if (github || linkedin) {
+                if (instagram) {
+                    document.getElementById('linkInstagram').href = instagram;
+                    document.getElementById('linkInstagram').style.display = 'block';
+                }
+                if (github || linkedin || instagram) {
                     document.getElementById('noLinksMsg').style.display = 'none';
                 }
                 
@@ -131,7 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
             bio: document.getElementById('inputBio').value,
             skills: document.getElementById('inputSkills').value,
             github: document.getElementById('inputGithub').value,
-            linkedin: document.getElementById('inputLinkedin').value
+            linkedin: document.getElementById('inputLinkedin').value,
+            instagram: document.getElementById('inputInstagram').value
         };
 
         try {
@@ -153,7 +160,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('linkLinkedin').style.display = 'none';
             }
 
-            if (updates.github || updates.linkedin) {
+            if (updates.instagram) {
+                document.getElementById('linkInstagram').href = updates.instagram;
+                document.getElementById('linkInstagram').style.display = 'block';
+            } else {
+                document.getElementById('linkInstagram').style.display = 'none';
+            }
+
+            if (updates.github || updates.linkedin || updates.instagram) {
                 document.getElementById('noLinksMsg').style.display = 'none';
             } else {
                 document.getElementById('noLinksMsg').style.display = 'block';

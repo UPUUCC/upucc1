@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Social links
         const github = document.getElementById('profileGithub');
         const linkedin = document.getElementById('profileLinkedin');
+        const instagram = document.getElementById('profileInstagram');
         let hasLinks = false;
         if (m.github) {
             github.href = m.github;
@@ -104,6 +105,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (m.linkedin) {
             linkedin.href = m.linkedin;
             linkedin.style.display = 'inline-flex';
+            hasLinks = true;
+        }
+        if (m.instagram) {
+            instagram.href = m.instagram;
+            instagram.style.display = 'inline-flex';
             hasLinks = true;
         }
         if (hasLinks) {
