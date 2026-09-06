@@ -28,6 +28,9 @@ export default defineConfig({
         dashboard_slider: resolve(__dirname, 'dashboard/slider.html'),
         dashboard_saran: resolve(__dirname, 'dashboard/saran.html'),
         dashboard_faq: resolve(__dirname, 'dashboard/faq.html'),
+        dashboard_keuangan: resolve(__dirname, 'dashboard/keuangan.html'),
+        kalender: resolve(__dirname, 'kalender.html'),
+        member_profil: resolve(__dirname, 'member/profil.html'),
       }
     }
   }
