@@ -7,6 +7,7 @@
   <link rel="icon" type="image/jpeg" href="/logo.jpg">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script>
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('keydown', e => {
@@ -16,6 +17,188 @@
     });
   </script>
   <script src="/src/cf_check.js"></script>
+
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Outfit', sans-serif; background: #f0f4f8; color: #1e293b; }
+
+    /* --- Hero Section --- */
+    .profile-hero {
+      background: linear-gradient(135deg, #002A54 0%, #005fa3 50%, #24ACDF 100%);
+      min-height: 240px;
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='rgba(255,255,255,0.08)'/%3E%3C/svg%3E");
+    }
+    .profile-hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 60px;
+      background: #f0f4f8;
+      clip-path: ellipse(60% 100% at 50% 100%);
+    }
+
+    /* --- Profile Card --- */
+    .profile-card {
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+      overflow: hidden;
+      position: relative;
+      margin-top: -80px;
+      z-index: 10;
+    }
+
+    /* --- Avatar --- */
+    .avatar-wrap {
+      position: relative;
+      display: inline-block;
+    }
+    .avatar-img {
+      width: 130px;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid #fff;
+      box-shadow: 0 8px 30px rgba(0,42,84,0.2);
+    }
+    .avatar-status {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      width: 18px;
+      height: 18px;
+      background: #22c55e;
+      border-radius: 50%;
+      border: 3px solid #fff;
+    }
+
+    /* --- Name & Badge --- */
+    .profile-name { font-size: 1.6rem; font-weight: 800; color: #0f172a; }
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #002A54, #24ACDF);
+      color: #fff;
+      border-radius: 50px;
+      padding: 5px 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    /* --- Info Grid --- */
+    .info-item {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 16px 20px;
+      border: 1px solid #e2e8f0;
+      transition: 0.2s;
+    }
+    .info-item:hover { border-color: #24ACDF; background: #f0faff; }
+    .info-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #94a3b8;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .info-value { font-size: 1rem; font-weight: 600; color: #0f172a; }
+
+    /* --- Section Titles --- */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .section-header span {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #002A54;
+    }
+    .section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e2e8f0;
+    }
+
+    /* --- Skills --- */
+    .skill-chip {
+      display: inline-block;
+      background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+      color: #1d4ed8;
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: 1px solid #bfdbfe;
+      transition: 0.2s;
+    }
+    .skill-chip:hover { background: linear-gradient(135deg, #1d4ed8, #24ACDF); color: #fff; border-color: transparent; }
+
+    /* --- Social Buttons --- */
+    .social-btn {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.2s;
+      border: 2px solid;
+    }
+    .social-btn.github {
+      color: #0f172a;
+      border-color: #0f172a;
+      background: transparent;
+    }
+    .social-btn.github:hover { background: #0f172a; color: #fff; }
+    .social-btn.linkedin {
+      color: #0a66c2;
+      border-color: #0a66c2;
+      background: transparent;
+    }
+    .social-btn.linkedin:hover { background: #0a66c2; color: #fff; }
+
+    /* --- Back Button --- */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+    .back-btn:hover { color: #fff; }
+
+    /* --- Bio --- */
+    #profileBio { white-space: pre-wrap; line-height: 1.8; color: #475569; }
+
+    /* --- Loading spinner overlay --- */
+    .loading-wrap { min-height: 60vh; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .spinner-ring {
+      width: 50px; height: 50px;
+      border: 4px solid #e2e8f0;
+      border-top-color: #24ACDF;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
 </head>
 <body>
 
@@ -48,89 +231,113 @@
 </nav>
 
 <!-- Loading State -->
-<div id="pageLoading" class="container my-5 text-center">
-  <div class="spinner-border text-primary" role="status"></div>
-  <p class="mt-2 text-muted">Memuat profil...</p>
+<div id="pageLoading">
+  <div class="loading-wrap">
+    <div class="spinner-ring mb-3"></div>
+    <p class="text-muted">Memuat profil...</p>
+  </div>
 </div>
 
-<!-- Profile Card -->
-<div id="profileContent" class="container my-5" style="display:none; max-width:750px;">
-  <a href="/struktur.html" class="btn btn-outline-secondary btn-sm mb-4">
-    <i class="bi bi-arrow-left"></i> Kembali ke Struktur Organisasi
-  </a>
+<!-- Profile Content -->
+<div id="profileContent" style="display:none;">
+  <!-- Hero -->
+  <div class="profile-hero">
+    <div class="container py-4 position-relative" style="z-index:5;">
+      <a href="/struktur.html" class="back-btn">
+        <i class="bi bi-arrow-left"></i> Struktur Organisasi
+      </a>
+    </div>
+  </div>
 
-  <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-    <!-- Header banner -->
-    <div style="height:120px; background: linear-gradient(135deg, #002A54, #24ACDF);"></div>
+  <div class="container pb-5" style="max-width:820px; margin-top:-60px; position:relative; z-index:10;">
+    <div class="profile-card p-4 p-md-5">
 
-    <div class="card-body pt-0 px-4 pb-4">
-      <!-- Avatar -->
-      <div class="d-flex align-items-end gap-3" style="margin-top:-60px;">
-        <img id="profileAvatar"
-             src="https://via.placeholder.com/110"
-             alt="Foto Anggota"
-             style="width:110px; height:110px; object-fit:cover; border-radius:50%; border:4px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-        <div class="pb-2">
-          <h4 class="mb-0 fw-bold" id="profileNama">Memuat...</h4>
-          <span class="badge text-white mt-1" id="profileRoleBadge" style="background:#24ACDF;">Anggota</span>
+      <!-- Avatar + Name -->
+      <div class="d-flex flex-column flex-sm-row align-items-center align-items-sm-end gap-4 mb-4">
+        <div class="avatar-wrap flex-shrink-0">
+          <img id="profileAvatar" src="" alt="Foto" class="avatar-img">
+          <div class="avatar-status"></div>
+        </div>
+        <div class="text-center text-sm-start">
+          <div class="profile-name mb-1" id="profileNama">-</div>
+          <div class="role-badge" id="profileRoleBadge">
+            <i class="bi bi-patch-check-fill"></i> Anggota
+          </div>
         </div>
       </div>
 
+      <hr style="border-color:#f1f5f9; margin: 0 0 24px;">
+
       <!-- Info Grid -->
-      <div class="row g-3 mt-3">
-        <div class="col-md-6">
-          <div class="rounded-3 p-3" style="background:#f8fafc;">
-            <div class="text-muted small mb-1"><i class="bi bi-diagram-3 me-1"></i> Divisi</div>
-            <div class="fw-semibold" id="profileDivisi">-</div>
+      <div class="row g-3 mb-4">
+        <div class="col-sm-6">
+          <div class="info-item h-100">
+            <div class="info-label"><i class="bi bi-diagram-3 me-1"></i> Divisi</div>
+            <div class="info-value" id="profileDivisi">-</div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="rounded-3 p-3" style="background:#f8fafc;">
-            <div class="text-muted small mb-1"><i class="bi bi-briefcase me-1"></i> Jabatan</div>
-            <div class="fw-semibold" id="profileJabatan">-</div>
+        <div class="col-sm-6">
+          <div class="info-item h-100">
+            <div class="info-label"><i class="bi bi-briefcase me-1"></i> Jabatan</div>
+            <div class="info-value" id="profileJabatan">-</div>
           </div>
         </div>
-        <div class="col-md-6" id="nimContainer" style="display:none;">
-          <div class="rounded-3 p-3" style="background:#f8fafc;">
-            <div class="text-muted small mb-1"><i class="bi bi-card-text me-1"></i> NIM</div>
-            <div class="fw-semibold" id="profileNim">-</div>
+        <div class="col-sm-6" id="nimContainer" style="display:none;">
+          <div class="info-item h-100">
+            <div class="info-label"><i class="bi bi-123 me-1"></i> NIM</div>
+            <div class="info-value" id="profileNim">-</div>
           </div>
         </div>
       </div>
 
       <!-- Bio -->
-      <div class="mt-4" id="bioContainer" style="display:none;">
-        <h6 class="fw-bold text-muted mb-2">Tentang Saya</h6>
-        <p id="profileBio" class="mb-0" style="white-space: pre-wrap;"></p>
+      <div id="bioSection" style="display:none;" class="mb-4">
+        <div class="section-header">
+          <i class="bi bi-person-lines-fill" style="color:#24ACDF; font-size:1.1rem;"></i>
+          <span>Tentang Saya</span>
+        </div>
+        <p id="profileBio" class="mb-0"></p>
       </div>
 
       <!-- Skills -->
-      <div class="mt-4" id="skillsContainer" style="display:none;">
-        <h6 class="fw-bold text-muted mb-2">Skills</h6>
+      <div id="skillsSection" style="display:none;" class="mb-4">
+        <div class="section-header">
+          <i class="bi bi-stars" style="color:#24ACDF; font-size:1.1rem;"></i>
+          <span>Skills</span>
+        </div>
         <div id="profileSkills" class="d-flex flex-wrap gap-2"></div>
       </div>
 
-      <!-- Social Links -->
-      <div class="mt-4" id="socialContainer" style="display:none;">
-        <h6 class="fw-bold text-muted mb-2">Tautan</h6>
-        <div class="d-flex gap-3 flex-wrap">
-          <a id="profileGithub" href="#" target="_blank" class="btn btn-outline-dark btn-sm d-none">
-            <i class="bi bi-github me-1"></i> GitHub
+      <!-- Social -->
+      <div id="socialSection" style="display:none;">
+        <div class="section-header">
+          <i class="bi bi-share" style="color:#24ACDF; font-size:1.1rem;"></i>
+          <span>Tautan</span>
+        </div>
+        <div class="d-flex flex-wrap gap-3">
+          <a id="profileGithub" href="#" target="_blank" class="social-btn github">
+            <i class="bi bi-github fs-5"></i> GitHub
           </a>
-          <a id="profileLinkedin" href="#" target="_blank" class="btn btn-outline-primary btn-sm d-none">
-            <i class="bi bi-linkedin me-1"></i> LinkedIn
+          <a id="profileLinkedin" href="#" target="_blank" class="social-btn linkedin">
+            <i class="bi bi-linkedin fs-5"></i> LinkedIn
           </a>
         </div>
       </div>
+
     </div>
   </div>
 </div>
 
 <!-- Not Found -->
-<div id="notFound" class="container my-5 text-center" style="display:none;">
-  <i class="bi bi-person-x" style="font-size:4rem; color:#94a3b8;"></i>
-  <h4 class="mt-3 text-muted">Profil tidak ditemukan</h4>
-  <a href="/struktur.html" class="btn btn-primary mt-3">Kembali ke Struktur Organisasi</a>
+<div id="notFound" class="loading-wrap" style="display:none;">
+  <div class="text-center p-5">
+    <i class="bi bi-person-x" style="font-size:5rem; color:#cbd5e1;"></i>
+    <h4 class="mt-3 fw-bold text-muted">Profil tidak ditemukan</h4>
+    <p class="text-muted mb-4">Anggota yang Anda cari tidak ditemukan atau sudah tidak aktif.</p>
+    <a href="/struktur.html" class="btn btn-primary px-4 rounded-pill">
+      <i class="bi bi-arrow-left me-2"></i>Kembali ke Struktur Organisasi
+    </a>
+  </div>
 </div>
 
 <footer class="upucc-footer text-light mt-5">

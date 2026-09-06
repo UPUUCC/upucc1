@@ -1,5 +1,5 @@
 import { db } from './firebase.js';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, getDocs, query, where } from 'firebase/firestore';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
@@ -16,8 +16,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        const docRef = doc(db, 'members', memberId);
-        const docSnap = await getDoc(docRef);
+        // Fetch member dan semua divisi sekaligus
+        const [docSnap, divSnap] = await Promise.all([
+            getDoc(doc(db, 'members', memberId)),
+            getDocs(collection(db, 'divisions'))
+        ]);
+
+        // Buat map divisi_id → nama divisi
+        const divisionMap = {};
+        divSnap.forEach(d => {
+            divisionMap[d.id] = d.data().nama || d.id;
+        });
 
         loading.style.display = 'none';
 
@@ -33,13 +42,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Avatar
         const avatar = document.getElementById('profileAvatar');
-        avatar.src = m.fotoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.nama || 'A')}&background=002A54&color=fff&size=200`;
+        avatar.src = m.fotoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.nama || 'A')}&background=002A54&color=fff&size=300`;
 
         // Name
         document.getElementById('profileNama').textContent = m.nama || '-';
 
         // Role badge
-        const roleBadge = document.getElementById('profileRoleBadge');
         const roleMap = {
             'ketum': 'Ketua Umum',
             'waketum': 'Wakil Ketua Umum',
@@ -49,35 +57,36 @@ document.addEventListener('DOMContentLoaded', async () => {
             'wakadiv': 'Wakil Kepala Divisi',
             'anggota': 'Anggota Divisi'
         };
-        roleBadge.textContent = roleMap[m.role?.toLowerCase()] || m.role || 'Anggota';
+        const roleLower = (m.role || '').toLowerCase();
+        const roleLabel = roleMap[roleLower] || m.role || 'Anggota';
+        document.getElementById('profileRoleBadge').textContent = roleLabel;
 
-        // Division
-        document.getElementById('profileDivisi').textContent = m.divisi || m.divisi_id || 'Pengurus Inti';
+        // Division name — ambil dari map, fallback ke field divisi atau divisi_id
+        const divisiNama = divisionMap[m.divisi_id] || m.divisi || m.divisi_id || 'Pengurus Inti';
+        document.getElementById('profileDivisi').textContent = divisiNama;
 
         // Jabatan
-        document.getElementById('profileJabatan').textContent = m.jabatan_text || roleMap[m.role?.toLowerCase()] || '-';
+        document.getElementById('profileJabatan').textContent = m.jabatan_text || roleLabel;
 
         // NIM
         if (m.nim) {
-            document.getElementById('nimContainer').style.display = 'block';
+            document.getElementById('nimContainer').style.display = 'flex';
             document.getElementById('profileNim').textContent = m.nim;
         }
 
         // Bio
         if (m.bio) {
-            document.getElementById('bioContainer').style.display = 'block';
+            document.getElementById('bioSection').style.display = 'block';
             document.getElementById('profileBio').textContent = m.bio;
         }
 
         // Skills
         if (m.skills) {
-            document.getElementById('skillsContainer').style.display = 'block';
+            document.getElementById('skillsSection').style.display = 'block';
             const skillsEl = document.getElementById('profileSkills');
             m.skills.split(',').map(s => s.trim()).filter(s => s).forEach(s => {
                 const badge = document.createElement('span');
-                badge.className = 'badge rounded-pill fw-normal px-3 py-2';
-                badge.style.background = '#e0f2fe';
-                badge.style.color = '#0369a1';
+                badge.className = 'skill-chip';
                 badge.textContent = s;
                 skillsEl.appendChild(badge);
             });
@@ -86,15 +95,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Social links
         const github = document.getElementById('profileGithub');
         const linkedin = document.getElementById('profileLinkedin');
+        let hasLinks = false;
         if (m.github) {
             github.href = m.github;
-            github.classList.remove('d-none');
-            document.getElementById('socialContainer').style.display = 'block';
+            github.style.display = 'inline-flex';
+            hasLinks = true;
         }
         if (m.linkedin) {
             linkedin.href = m.linkedin;
-            linkedin.classList.remove('d-none');
-            document.getElementById('socialContainer').style.display = 'block';
+            linkedin.style.display = 'inline-flex';
+            hasLinks = true;
+        }
+        if (hasLinks) {
+            document.getElementById('socialSection').style.display = 'block';
         }
 
         content.style.display = 'block';
