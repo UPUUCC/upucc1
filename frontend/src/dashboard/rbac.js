@@ -22,20 +22,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const q = query(collection(db, "members"), where("email", "==", user.email.toLowerCase().trim()), limit(1));
             const snap = await getDocs(q);
 
-            if (snap.empty) {
-                // Bukan admin/pengurus, kembalikan ke profil
-                window.location.href = '/member/profil.html';
-                return;
+            // Jika email tidak ada di members → akun admin langsung (dibuat via Firebase Console)
+            // Beri akses penuh sebagai admin
+            let role = 'admin';
+            let userData = {};
+
+            if (!snap.empty) {
+                userData = snap.docs[0].data();
+                role = (userData.role || 'admin').toLowerCase();
+                
+                // Jika role 'anggota', lempar ke member area
+                if (role === 'anggota') {
+                    window.location.href = '/member/profil.html';
+                    return;
+                }
             }
 
-            const userData = snap.docs[0].data();
-            if ((userData.role || '').toLowerCase() === 'anggota') {
-                window.location.href = '/member/profil.html';
-                return;
-            }
-
-            // Default role is admin jika field role tidak ada (untuk kompatibilitas)
-            const role = (userData.role || 'admin').toLowerCase(); 
             const currentPath = window.location.pathname;
 
             // 1. Cek apakah role diizinkan membuka halaman ini

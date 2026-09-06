@@ -109,16 +109,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                 btnLogin.innerHTML = '<i class="bi bi-check-circle"></i> Berhasil Login';
                 btnLogin.classList.replace('btn-primary', 'btn-success');
                 
-                let targetUrl = "/member/profil.html";
+                // Default: arahkan ke dashboard admin
+                // Hanya arahkan ke member area jika email ditemukan di 'members' dengan role 'anggota'
+                let targetUrl = "/dashboard/index.html";
                 try {
                     const q = query(collection(db, "members"), where("email", "==", email.toLowerCase().trim()), limit(1));
                     const snap = await getDocs(q);
                     if (!snap.empty) {
-                        const role = snap.docs[0].data().role;
-                        if (role !== 'anggota') {
-                            targetUrl = "/dashboard/index.html"; // Admin/Pengurus
+                        const role = (snap.docs[0].data().role || '').toLowerCase();
+                        if (role === 'anggota') {
+                            targetUrl = "/member/profil.html"; // Anggota biasa
                         }
+                        // role lain (admin, bendahara, dll) → tetap dashboard
                     }
+                    // Jika tidak ditemukan di members → tetap dashboard (akun admin langsung)
                 } catch(e) {
                     console.error("Gagal mengecek role:", e);
                 }
