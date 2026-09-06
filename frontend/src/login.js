@@ -1,6 +1,6 @@
 import { auth, db } from './firebase.js';
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, where, limit } from "firebase/firestore";
 
 document.addEventListener('DOMContentLoaded', async () => {
     const loginForm = document.getElementById('loginForm');
@@ -109,8 +109,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                 btnLogin.innerHTML = '<i class="bi bi-check-circle"></i> Berhasil Login';
                 btnLogin.classList.replace('btn-primary', 'btn-success');
                 
+                let targetUrl = "/member/profil.html";
+                try {
+                    const q = query(collection(db, "users"), where("email", "==", email), limit(1));
+                    const snap = await getDocs(q);
+                    if (!snap.empty) {
+                        targetUrl = "/dashboard/index.html"; // Admin
+                    }
+                } catch(e) {
+                    console.error("Gagal mengecek role:", e);
+                }
+
                 setTimeout(() => {
-                    window.location.href = "/member/profil.html";
+                    window.location.href = targetUrl;
                 }, 1000);
             } catch (error) {
                 const errorCode = error.code;
