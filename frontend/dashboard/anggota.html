@@ -41,7 +41,6 @@
     td { white-space: nowrap; }
   </style>
 
-
   <script>
     // Proteksi kode sumber
     document.addEventListener('contextmenu', e => e.preventDefault());
@@ -53,7 +52,6 @@
   </script>
 </head>
 <body>
-
 
   <div class="sidebar" id="sidebar">
     <div class="brand">UPUCC Admin</div>
@@ -76,7 +74,6 @@
   </div>
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-
 <div class="main-content">
   
   <div class="top-navbar">
@@ -91,6 +88,87 @@
   </div>
 
   <div class="container-fluid p-4">
+    <p class="text-muted">Halaman ini adalah <b>satu-satunya tempat</b> untuk mendaftarkan/membuat akun anggota baru. Data di sini digunakan untuk menampilkan <b>Struktur Organisasi</b> di halaman publik, sekaligus menjadi <b>akun login Portal Anggota</b> (absensi &amp; kas) -- namun akun hanya bisa dibuat/diubah/dihapus <b>di sini</b>, tidak lagi bisa lewat Portal (termasuk oleh Ketua Umum/Wakil Ketua Umum). Username/password di sini terpisah dari akun login Dashboard CMS itu sendiri.</p>
+
+<div class="card border-0 shadow-sm p-4 mb-4">
+  <h5>Tambah Anggota Baru</h5>
+  <div id="addAlert" class="alert alert-info d-none"></div>
+  <form id="formAddAnggota" class="row g-3">
+    <div class="col-md-3"><label class="form-label">Nama Lengkap *</label><input type="text" id="addNama" class="form-control" required></div>
+    <div class="col-md-3"><label class="form-label">NIM</label><input type="text" id="addNim" class="form-control" placeholder="Nomor Induk Mahasiswa"></div>
+    <div class="col-md-3"><label class="form-label">Email (Firebase Login) *</label><input type="email" id="addEmail" class="form-control" required placeholder="email@upucc.com"></div>
+    <div class="col-md-3"><label class="form-label">Password *</label><input type="password" id="addPassword" class="form-control" required></div>
+    <div class="col-md-3"><label class="form-label">Foto Anggota</label><input type="file" id="addFotoFile" class="form-control" accept="image/*"></div>
+
+    <div class="col-md-3">
+      <label class="form-label">Role / Jabatan Akses *</label>
+      <select id="addRole" class="form-select" required>
+        <option value="ketum">Ketua Umum</option>
+        <option value="waketum">Wakil Ketua Umum</option>
+        <option value="bendahara">Bendahara</option>
+        <option value="sekretaris">Sekretaris</option>
+        <option value="kadiv">Kepala Divisi</option>
+        <option value="wakadiv">Wakil Kepala Divisi</option>
+        <option value="anggota">Anggota Divisi</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Divisi (jika Kadiv/Wakadiv/Anggota)</label>
+      <select id="addDivisi" class="form-select">
+        <option value="">-- Tidak ada / Pengurus Inti --</option>
+      </select>
+    </div>
+    <div class="col-md-3"><label class="form-label">Jabatan Tampil (teks)</label><input type="text" id="addJabatanText" class="form-control" placeholder="Ketua Divisi Programming"></div>
+    <div class="col-md-3"><label class="form-label">Urutan Tampil</label><input type="number" id="addUrutan" class="form-control" value="0"></div>
+
+    <div class="col-md-4">
+      <div class="form-check mt-4">
+        <input type="checkbox" id="addTampilStruktur" class="form-check-input" checked>
+        <label class="form-check-label" for="addTampilStruktur">Tampilkan di halaman Struktur Organisasi</label>
+      </div>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary" id="btnAdd"><i class="bi bi-plus"></i> Tambah Anggota</button>
+    </div>
+  </form>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-bordered bg-white align-middle text-nowrap">
+    <thead class="table-light">
+      <tr>
+        <th>Foto</th>
+        <th>Nama</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Divisi</th>
+        <th>Jabatan</th>
+        <th>Status</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="anggotaTableBody">
+      <tr><td colspan="8" class="text-center">Memuat data anggota...</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal Edit Global -->
+<div class="modal fade" id="modalEditAnggota">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="formEditAnggota">
+        <div class="modal-header"><h5 class="modal-title">Edit Anggota</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body">
+          <div id="editAlert" class="alert alert-info d-none"></div>
+          <div class="mb-2"><label class="form-label">Nama</label><input type="text" id="editNama" class="form-control" required></div>
+          <div class="mb-2"><label class="form-label">NIM</label><input type="text" id="editNim" class="form-control"></div>
+          <div class="mb-2">
+            <label class="form-label">Foto Anggota (biarkan kosong jika tidak ganti)</label>
+            <input type="file" id="editFotoFile" class="form-control" accept="image/*">
+            <div id="currentFotoPreview" class="mt-2"></div>
+          </div>
+          <div class="mb-2"><label class="form-label">Role</label>
             <select id="editRole" class="form-select">
               <option value="ketum">Ketua Umum</option>
               <option value="waketum">Wakil Ketua Umum</option>
