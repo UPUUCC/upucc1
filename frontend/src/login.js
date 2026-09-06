@@ -111,10 +111,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                 let targetUrl = "/member/profil.html";
                 try {
-                    const q = query(collection(db, "users"), where("email", "==", email), limit(1));
+                    const q = query(collection(db, "members"), where("email", "==", email), limit(1));
                     const snap = await getDocs(q);
                     if (!snap.empty) {
-                        targetUrl = "/dashboard/index.html"; // Admin
+                        const role = snap.docs[0].data().role;
+                        if (role !== 'anggota') {
+                            targetUrl = "/dashboard/index.html"; // Admin/Pengurus
+                        }
                     }
                 } catch(e) {
                     console.error("Gagal mengecek role:", e);

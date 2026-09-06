@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const q = query(collection(db, "users"), where("email", "==", user.email), limit(1));
+            const q = query(collection(db, "members"), where("email", "==", user.email), limit(1));
             const snap = await getDocs(q);
 
             if (snap.empty) {
@@ -29,6 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const userData = snap.docs[0].data();
+            if ((userData.role || '').toLowerCase() === 'anggota') {
+                window.location.href = '/member/profil.html';
+                return;
+            }
+
             // Default role is admin jika field role tidak ada (untuk kompatibilitas)
             const role = (userData.role || 'admin').toLowerCase(); 
             const currentPath = window.location.pathname;

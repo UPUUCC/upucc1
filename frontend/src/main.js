@@ -246,9 +246,11 @@ function initMain() {
       if (user) {
         let isPengurus = false;
         try {
-            const q = query(collection(db, "users"), where("email", "==", user.email), limit(1));
+            const q = query(collection(db, "members"), where("email", "==", user.email), limit(1));
             const snap = await getDocs(q);
-            if (!snap.empty) isPengurus = true;
+            if (!snap.empty && snap.docs[0].data().role !== 'anggota') {
+                isPengurus = true;
+            }
         } catch(e) {}
 
         if (isPengurus) {
