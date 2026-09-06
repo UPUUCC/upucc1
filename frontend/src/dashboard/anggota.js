@@ -164,6 +164,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // 2. Save data to Firestore 'members' collection using UID as document ID
             await setDoc(doc(db, "members", uid), {
                 nama: document.getElementById('addNama').value,
+                nim: document.getElementById('addNim').value,
                 email: email,
                 fotoUrl: fotoUrl,
                 role: document.getElementById('addRole').value,
@@ -215,6 +216,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (m) {
                 document.getElementById('editAlert').classList.add('d-none');
                 document.getElementById('editNama').value = m.nama || '';
+                document.getElementById('editNim').value = m.nim || '';
                 
                 // Tampilkan foto saat ini (jika ada)
                 const preview = document.getElementById('currentFotoPreview');
@@ -261,6 +263,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             await updateDoc(doc(db, "members", id), {
                 nama: document.getElementById('editNama').value,
+                nim: document.getElementById('editNim').value,
                 fotoUrl: fotoUrl,
                 role: document.getElementById('editRole').value,
                 divisi_id: document.getElementById('editDivisi').value,
