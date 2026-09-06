@@ -39,24 +39,17 @@ document.addEventListener('DOMContentLoaded', () => {
         let isPengurus = false;
         
         try {
-            // First check 'users' collection (usually for CMS login)
-            let q = query(collection(db, "users"), where("email", "==", user.email));
+            // Data anggota disimpan di koleksi 'members' dengan email sebagai query
+            let q = query(collection(db, "members"), where("email", "==", user.email.toLowerCase().trim()));
             let snapshot = await getDocs(q);
             
             if (!snapshot.empty) {
                 userData = snapshot.docs[0].data();
                 currentUserDocId = snapshot.docs[0].id;
-                // Pengurus/Admin
-                isPengurus = true;
-                btnAdminPanel.classList.remove('d-none');
-            } else {
-                // Check 'anggota' collection (regular member)
-                q = query(collection(db, "anggota"), where("email", "==", user.email));
-                snapshot = await getDocs(q);
-                
-                if (!snapshot.empty) {
-                    userData = snapshot.docs[0].data();
-                    currentUserDocId = snapshot.docs[0].id;
+                // Jika bukan role anggota biasa, tampilkan tombol Panel Admin
+                const role = (userData.role || '').toLowerCase();
+                if (role && role !== 'anggota') {
+                    btnAdminPanel.classList.remove('d-none');
                 }
             }
 
@@ -64,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Populate Profile
                 const nama = userData.nama || userData.nama_lengkap || user.displayName || 'Anggota UPU-CC';
                 const nim = userData.nim || 'Tidak ada NIM';
-                const divisi = userData.divisi || userData.role || 'Anggota';
+                const divisi = userData.jabatan_text || userData.divisi || userData.role || 'Anggota';
                 const bio = userData.bio || '';
                 const skills = userData.skills || '';
                 const github = userData.github || '';
@@ -99,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('noLinksMsg').style.display = 'none';
                 }
                 
-                document.getElementById('displayAvatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(nama)}&background=0f172a&color=fff&size=150`;
+                document.getElementById('displayAvatar').src = userData.fotoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(nama)}&background=0f172a&color=fff&size=150`;
             } else {
                 Swal.fire('Error', 'Data profil tidak ditemukan di database.', 'error');
             }
@@ -142,13 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            // Check which collection to update
-            let colName = 'anggota';
-            if (!btnAdminPanel.classList.contains('d-none')) {
-                colName = 'users';
-            }
-            
-            await updateDoc(doc(db, colName, currentUserDocId), updates);
+            // Selalu update ke koleksi 'members'
+            await updateDoc(doc(db, 'members', currentUserDocId), updates);
             Swal.fire({ icon: 'success', title: 'Berhasil', text: 'Profil berhasil diperbarui', timer: 1500 });
             
             if (updates.github) {
