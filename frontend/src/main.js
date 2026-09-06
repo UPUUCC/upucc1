@@ -202,6 +202,9 @@ function initMain() {
   if (!isLoginPage && !window.location.pathname.includes('/dashboard/')) {
     getDoc(doc(db, "settings", "pendaftaran")).then(regSnap => {
         if (regSnap.exists() && regSnap.data().isOpen === true) {
+            if (sessionStorage.getItem('oprecPopupShown')) return;
+            sessionStorage.setItem('oprecPopupShown', 'true');
+            
             const thumbnailUrl = regSnap.data().thumbnailUrl || null;
             
             let swalConfig = {
