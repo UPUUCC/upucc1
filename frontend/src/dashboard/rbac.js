@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const q = query(collection(db, "members"), where("email", "==", user.email), limit(1));
+            const q = query(collection(db, "members"), where("email", "==", user.email.toLowerCase().trim()), limit(1));
             const snap = await getDocs(q);
 
             if (snap.empty) {

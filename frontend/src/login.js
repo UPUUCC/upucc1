@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                 let targetUrl = "/member/profil.html";
                 try {
-                    const q = query(collection(db, "members"), where("email", "==", email), limit(1));
+                    const q = query(collection(db, "members"), where("email", "==", email.toLowerCase().trim()), limit(1));
                     const snap = await getDocs(q);
                     if (!snap.empty) {
                         const role = snap.docs[0].data().role;
