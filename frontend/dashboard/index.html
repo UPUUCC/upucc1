@@ -92,44 +92,44 @@
 
   <div class="container-fluid p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="mb-0">Dashboard Utama</h4>
-    <span class="text-muted">Halo, <b id="adminName">Admin</b></span>
-  </div>
+      <h4 class="mb-0">Dashboard Utama</h4>
+      <span class="text-muted">Halo, <b id="adminName">Admin</b></span>
+    </div>
 
-  <!-- Maintenance Mode Card -->
-  <div class="card border-0 shadow-sm p-4 mb-4" style="background: linear-gradient(135deg, #1e293b, #0f172a); color: white;">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-      <div>
-        <h5 class="fw-bold mb-1"><i class="bi bi-tools text-warning me-2"></i> Mode Maintenance Web</h5>
-        <p class="mb-0 text-light small opacity-75" id="maintenanceStatusText">Sedang memeriksa status server...</p>
+    <!-- Maintenance Mode Card -->
+    <div class="card border-0 shadow-sm p-4 mb-4" id="maintenanceCard" style="background: linear-gradient(135deg, #1e293b, #0f172a); color: white;">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div>
+          <h5 class="fw-bold mb-1"><i class="bi bi-tools text-warning me-2"></i> Mode Maintenance Web</h5>
+          <p class="mb-0 text-light small opacity-75" id="maintenanceStatusText">Sedang memeriksa status server...</p>
+        </div>
+        <div class="form-check form-switch fs-4 mb-0">
+          <input class="form-check-input" type="checkbox" role="switch" id="toggleMaintenance" disabled>
+        </div>
       </div>
-      <div class="form-check form-switch fs-4 mb-0">
-        <input class="form-check-input" type="checkbox" role="switch" id="toggleMaintenance" disabled>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-md-3 col-6">
+        <div class="card border-0 shadow-sm p-3 text-center"><i class="bi bi-images fs-2 text-primary"></i><h3 id="countSlider">0</h3><p class="mb-0 text-muted">Slider</p></div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="card border-0 shadow-sm p-3 text-center"><i class="bi bi-trophy fs-2 text-warning"></i><h3 id="countPrestasi">0</h3><p class="mb-0 text-muted">Prestasi</p></div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="card border-0 shadow-sm p-3 text-center"><i class="bi bi-people fs-2 text-success"></i><h3 id="countAnggota">0</h3><p class="mb-0 text-muted">Anggota</p></div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="card border-0 shadow-sm p-3 text-center"><i class="bi bi-calendar-event fs-2 text-danger"></i><h3 id="countAcara">0</h3><p class="mb-0 text-muted">Postingan Acara</p></div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="card border-0 shadow-sm p-3 text-center"><i class="bi bi-chat-left-heart fs-2 text-info"></i><h3 id="countSaran">0</h3><p class="mb-0 text-muted">Saran Masuk</p></div>
       </div>
     </div>
-  </div>
 
-  <div class="row g-3">
-    <div class="col-md-3 col-6">
-      <div class="card border-0 shadow-sm p-3 text-center"><i class="bi bi-images fs-2 text-primary"></i><h3 id="countSlider">0</h3><p class="mb-0 text-muted">Slider</p></div>
+    <div class="alert alert-info mt-4">
+      <i class="bi bi-info-circle"></i> Gunakan menu di samping untuk mengelola seluruh isi halaman publik (index), mulai dari slider, informasi, divisi, prestasi, struktur organisasi/anggota, sejarah, hingga acara. Menu pendaftaran anggota sudah tidak digunakan -- akun anggota baru dibuat langsung lewat menu <b>Anggota / Struktur</b> di Dashboard ini.
     </div>
-    <div class="col-md-3 col-6">
-      <div class="card border-0 shadow-sm p-3 text-center"><i class="bi bi-trophy fs-2 text-warning"></i><h3 id="countPrestasi">0</h3><p class="mb-0 text-muted">Prestasi</p></div>
-    </div>
-    <div class="col-md-3 col-6">
-      <div class="card border-0 shadow-sm p-3 text-center"><i class="bi bi-people fs-2 text-success"></i><h3 id="countAnggota">0</h3><p class="mb-0 text-muted">Anggota</p></div>
-    </div>
-    <div class="col-md-3 col-6">
-      <div class="card border-0 shadow-sm p-3 text-center"><i class="bi bi-calendar-event fs-2 text-danger"></i><h3 id="countAcara">0</h3><p class="mb-0 text-muted">Postingan Acara</p></div>
-    </div>
-    <div class="col-md-3 col-6">
-      <div class="card border-0 shadow-sm p-3 text-center"><i class="bi bi-chat-left-heart fs-2 text-info"></i><h3 id="countSaran">0</h3><p class="mb-0 text-muted">Saran Masuk</p></div>
-    </div>
-  </div>
-
-  <div class="alert alert-info mt-4">
-    <i class="bi bi-info-circle"></i> Gunakan menu di samping untuk mengelola seluruh isi halaman publik (index), mulai dari slider, informasi, divisi, prestasi, struktur organisasi/anggota, sejarah, hingga acara. Menu pendaftaran anggota sudah tidak digunakan -- akun anggota baru dibuat langsung lewat menu <b>Anggota / Struktur</b> di Dashboard ini.
-  </div>
   </div>
 </div>
 
@@ -150,5 +150,6 @@
 </script>
 
 <script type="module" src="/src/dashboard/index.js"></script>
+<script type="module" src="/src/dashboard/rbac.js"></script>
 </body>
 </html>
