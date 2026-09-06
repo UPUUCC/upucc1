@@ -74,12 +74,20 @@
   <div id="loginContainer" style="display:none;">
     <!-- STEP 0: PILIHAN LOGIN -->
     <div id="loginStep0" class="login-step active">
-      <h3 class="text-center mb-1"><i class="bi bi-person-badge"></i> Login Anggota</h3>
+      <h3 class="text-center mb-1"><i class="bi bi-person-badge"></i> Login Sistem UPU-CC</h3>
       <p class="text-center text-muted small mb-4">
-        Silakan pilih jenis akun Anda untuk masuk ke sistem UPUCC.
+        Silakan pilih jenis akun Anda untuk masuk ke sistem.
       </p>
 
-      <div class="row g-3">
+      <div class="row g-3 justify-content-center">
+        <!-- ADMIN LOGIN ADDED HERE -->
+        <div class="col-6 col-md-4">
+          <div class="login-menu-card" data-action="form" data-title="Login Admin Sistem" data-icon="bi-shield-lock">
+            <i class="bi bi-shield-lock text-danger"></i>
+            <div class="lbl">Admin / Pengurus</div>
+            <div class="sub">Masuk Panel Admin</div>
+          </div>
+        </div>
         <div class="col-6 col-md-4">
           <div class="login-menu-card" data-action="form" data-title="Login Ketua Umum / Wakil Ketua Umum" data-icon="bi-award">
             <i class="bi bi-award"></i>
@@ -115,9 +123,9 @@
             <div class="sub">Termasuk Multimedia, dll.</div>
           </div>
         </div>
-        <div class="col-6 col-md-4">
-          <div class="login-menu-card" data-action="step" data-target="stepDaftar">
-            <i class="bi bi-person-plus"></i>
+        <div class="col-6 col-md-4 mt-md-4">
+          <div class="login-menu-card shadow-sm" data-action="step" data-target="stepDaftar" style="background:#f8fafc; border: 1px dashed #cbd5e1;">
+            <i class="bi bi-person-plus text-secondary"></i>
             <div class="lbl">Pendaftaran</div>
             <div class="sub">Belum punya akun?</div>
           </div>
