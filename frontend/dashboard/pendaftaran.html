@@ -93,6 +93,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
       <h4 class="mb-0">Kelola Pendaftaran Baru</h4>
       <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-sm btn-success text-white fw-bold shadow-sm" id="btnExportExcel" onclick="exportToExcel()"><i class="bi bi-file-earmark-excel"></i> Export Excel</button>
         <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#popupSettingsModal" id="btnPopupSettings"><i class="bi bi-gear"></i> Pop-up Oprec</button>
         <div class="d-flex align-items-center bg-white p-2 px-3 rounded-pill shadow-sm">
           <span class="me-3 fw-bold text-muted small" id="statusPendaftaranText">Status: Memuat...</span>
@@ -210,6 +211,8 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- SheetJS for Excel Export -->
+<script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 
 <script>
   function toggleSidebar() {
@@ -223,6 +226,38 @@
       if(link.getAttribute('href') === currentUrl) link.classList.add('active');
     });
   });
+  
+  // Export Excel function
+  window.exportToExcel = function() {
+    // Select the table
+    const table = document.querySelector(".table");
+    
+    // Convert table to worksheet, ignoring the last column ("Aksi")
+    const wb = XLSX.utils.book_new();
+    
+    // We clone the table to modify it before export
+    const clonedTable = table.cloneNode(true);
+    // Remove the "Aksi" column header
+    const ths = clonedTable.querySelectorAll('th');
+    if(ths.length > 0) ths[ths.length - 1].remove();
+    
+    // Remove the "Aksi" column from each row
+    const rows = clonedTable.querySelectorAll('tr');
+    rows.forEach(row => {
+        const tds = row.querySelectorAll('td');
+        if(tds.length > 0) {
+            // Remove the buttons cell
+            tds[tds.length - 1].remove();
+        }
+    });
+
+    const ws = XLSX.utils.table_to_sheet(clonedTable);
+    XLSX.utils.book_append_sheet(wb, ws, "Data Pendaftar");
+    
+    // Save file
+    const dateStr = new Date().toISOString().split('T')[0];
+    XLSX.writeFile(wb, `Data_Pendaftaran_UPUCC_${dateStr}.xlsx`);
+  }
 </script>
 
 <script type="module" src="/src/dashboard/pendaftaran.js"></script>
