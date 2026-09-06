@@ -14,6 +14,15 @@ body {
   font-family: 'Outfit', sans-serif; 
   color: var(--text-dark); 
   line-height: 1.6;
+  /* Sticky footer: pastikan footer selalu di bawah */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Semua konten utama (bukan navbar & footer) harus mengisi sisa ruang */
+body > *:not(.upucc-navbar):not(.upucc-footer) {
+  flex: 1 0 auto;
 }
 
 /* --- Typography --- */
