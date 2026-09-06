@@ -31,6 +31,7 @@ export default defineConfig({
         dashboard_keuangan: resolve(__dirname, 'dashboard/keuangan.html'),
         kalender: resolve(__dirname, 'kalender.html'),
         member_profil: resolve(__dirname, 'member/profil.html'),
+        anggota_detail: resolve(__dirname, 'anggota_detail.html'),
       }
     }
   }

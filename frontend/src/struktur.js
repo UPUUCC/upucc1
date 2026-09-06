@@ -23,9 +23,12 @@ function renderPerson(person, roleClass, defaultLabel) {
   const fotoHTML = fotoUrl 
     ? `<img src="${fotoUrl}" alt="${person.nama}">` 
     : `<div class="oc-avatar-placeholder"><i class="bi bi-person-fill"></i></div>`;
+
+  // Bungkus dalam tag <a> agar bisa diklik ke halaman detail
+  const link = person.id ? `/anggota_detail.html?id=${person.id}` : '#';
   
   return `
-    <div class="oc-person role-${roleClass}">
+    <a href="${link}" class="oc-person role-${roleClass} text-decoration-none" style="cursor:pointer;" title="Lihat profil ${person.nama}">
       <div class="oc-avatar-ring">
         ${fotoHTML}
       </div>
@@ -33,7 +36,7 @@ function renderPerson(person, roleClass, defaultLabel) {
         <div class="oc-label-name">${person.nama}</div>
         <div class="oc-label-jabatan">${person.jabatan_text || person.jabatan || person.role || roleClass}</div>
       </div>
-    </div>`;
+    </a>`;
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
