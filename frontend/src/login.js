@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 btnLogin.classList.replace('btn-primary', 'btn-success');
                 
                 setTimeout(() => {
-                    window.location.href = "/";
+                    window.location.href = "/member/profil.html";
                 }, 1000);
             } catch (error) {
                 const errorCode = error.code;

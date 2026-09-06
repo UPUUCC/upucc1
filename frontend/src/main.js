@@ -244,8 +244,8 @@ function initMain() {
     const loginLink = document.querySelector('a[href="/login.html"]');
     if (loginLink) {
       if (user) {
-        loginLink.innerHTML = '<i class="bi bi-speedometer2"></i> Dashboard';
-        loginLink.href = "/dashboard/anggota.html";
+        loginLink.innerHTML = '<i class="bi bi-person-circle"></i> Member Area';
+        loginLink.href = "/member/profil.html";
         loginLink.classList.replace('btn-outline-light', 'btn-light');
         loginLink.classList.add('text-dark');
       } else {
