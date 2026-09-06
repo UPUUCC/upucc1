@@ -2,7 +2,7 @@ import './style.css'; // Vite supports CSS imports
 import Swal from 'sweetalert2';
 import { db, auth } from './firebase.js';
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs, doc, getDoc, query, orderBy, limit, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, query, orderBy, limit, addDoc, serverTimestamp, where } from "firebase/firestore";
 
 // === Proteksi Kode Sumber ===
 // Disable klik kanan (context menu)
@@ -240,12 +240,25 @@ function initMain() {
   }
 
   // Handle Authentication State for Navbar Login Button
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
     const loginLink = document.querySelector('a[href="/login.html"]');
     if (loginLink) {
       if (user) {
-        loginLink.innerHTML = '<i class="bi bi-person-circle"></i> Member Area';
-        loginLink.href = "/member/profil.html";
+        let isPengurus = false;
+        try {
+            const q = query(collection(db, "users"), where("email", "==", user.email), limit(1));
+            const snap = await getDocs(q);
+            if (!snap.empty) isPengurus = true;
+        } catch(e) {}
+
+        if (isPengurus) {
+            loginLink.innerHTML = '<i class="bi bi-speedometer2"></i> Panel Admin';
+            loginLink.href = "/dashboard/index.html";
+        } else {
+            loginLink.innerHTML = '<i class="bi bi-person-circle"></i> Member Area';
+            loginLink.href = "/member/profil.html";
+        }
+        
         loginLink.classList.replace('btn-outline-light', 'btn-light');
         loginLink.classList.add('text-dark');
       } else {
