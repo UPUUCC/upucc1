@@ -15,8 +15,12 @@ async function fetchShowcases() {
             return;
         }
 
+        let cardsHTML = '';
+        let modalsHTML = '';
+
         snapshot.forEach(docSnap => {
             const data = docSnap.data();
+            const id = docSnap.id;
             
             let badgeClass = 'bg-primary';
             let borderClass = 'border-primary';
@@ -26,22 +30,59 @@ async function fetchShowcases() {
                 badgeClass = 'bg-success'; borderClass = 'border-success';
             }
 
-            const linkHTML = data.link ? `<a href="${data.link}" target="_blank" class="text-decoration-none text-light mt-2 d-inline-block border-bottom ${borderClass} pb-1">Lihat Project <i class="bi bi-arrow-right"></i></a>` : '';
+            const linkHTML = data.link ? `<a href="${data.link}" target="_blank" class="btn btn-outline-primary mt-3"><i class="bi bi-link-45deg"></i> Kunjungi Project</a>` : '';
+            
+            const summary = data.deskripsi.length > 100 ? data.deskripsi.substring(0, 100) + '...' : data.deskripsi;
+            const fullText = data.deskripsi.replace(/\n/g, '<br>');
 
-            showcaseContainer.innerHTML += `
-                <div class="col-md-6 col-lg-4">
-                    <div class="project-card h-100">
-                        <img src="${data.gambar}" class="project-img" alt="${data.judul}">
-                        <div class="p-4">
-                            <span class="badge ${badgeClass} mb-2">${data.kategori}</span>
+            cardsHTML += `
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="project-card h-100 d-flex flex-column">
+                        <img src="${data.gambar}" class="project-img" alt="${data.judul}" style="height: 200px; object-fit: cover;">
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <span class="badge ${badgeClass} mb-2 align-self-start">${data.kategori}</span>
                             <h5 class="fw-bold">${data.judul}</h5>
-                            <p class="small opacity-75">${data.deskripsi}</p>
-                            ${linkHTML}
+                            <p class="small opacity-75 mb-3 flex-grow-1">${summary}</p>
+                            <div>
+                                <button type="button" class="btn btn-sm btn-light border px-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#showcaseModal${id}">Baca <i class="bi bi-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modalsHTML += `
+                <div class="modal fade" id="showcaseModal${id}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header border-0 pb-0">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-4 p-md-5 pt-2">
+                                <span class="badge ${badgeClass} mb-3 px-3 py-2 rounded-pill">${data.kategori}</span>
+                                <h2 class="fw-bold mb-3">${data.judul}</h2>
+                                <img src="${data.gambar}" class="img-fluid rounded mb-4 w-100" style="max-height: 400px; object-fit: cover;" alt="${data.judul}">
+                                <div class="showcase-content" style="font-size: 1.05rem; line-height: 1.8; color: #4b5563;">
+                                    ${fullText}
+                                </div>
+                                ${linkHTML}
+                            </div>
                         </div>
                     </div>
                 </div>
             `;
         });
+        
+        showcaseContainer.innerHTML = cardsHTML;
+        
+        let modalContainer = document.getElementById('showcaseModalsContainer');
+        if (!modalContainer) {
+            modalContainer = document.createElement('div');
+            modalContainer.id = 'showcaseModalsContainer';
+            document.body.appendChild(modalContainer);
+        }
+        modalContainer.innerHTML = modalsHTML;
+
     } catch (error) {
         console.error("Error fetching showcases: ", error);
         showcaseContainer.innerHTML = '<div class="col-12 text-center text-danger py-5">Gagal memuat karya. Silakan muat ulang halaman.</div>';
