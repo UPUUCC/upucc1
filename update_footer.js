@@ -13,7 +13,7 @@ const newFooter = `<footer class="upucc-footer text-light mt-5">
       </div>
       <div class="col-md-6 text-center text-md-end">
         <div class="social-icons">
-          <a href="https://www.instagram.com/upucc.official/" target="_blank" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a href="https://www.instagram.com/upucc.or.id/" target="_blank" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
           <a href="https://www.youtube.com/@UPUCC" target="_blank" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
           <a href="#" aria-label="Github"><i class="bi bi-github"></i></a>
         </div>

@@ -37,7 +37,7 @@ const faqs = [
     },
     {
         pertanyaan: "Bagaimana cara mendaftar menjadi anggota baru?",
-        jawaban: "Pendaftaran dapat dilakukan melalui menu Pendaftaran di website ini saat periode Open Recruitment (Oprec) sedang dibuka. Untuk mengetahui jadwal Oprec, silakan pantau terus informasi terbaru melalui Instagram resmi kami di @upucc.official.",
+        jawaban: "Pendaftaran dapat dilakukan melalui menu Pendaftaran di website ini saat periode Open Recruitment (Oprec) sedang dibuka. Untuk mengetahui jadwal Oprec, silakan pantau terus informasi terbaru melalui Instagram resmi kami di @upucc.or.id.",
         order: 5
     }
 ];
