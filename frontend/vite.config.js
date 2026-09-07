@@ -25,6 +25,8 @@ export default defineConfig({
         dashboard_pendaftaran: resolve(__dirname, 'dashboard/pendaftaran.html'),
         dashboard_prestasi: resolve(__dirname, 'dashboard/prestasi.html'),
         dashboard_sejarah: resolve(__dirname, 'dashboard/sejarah.html'),
+        dashboard_evoting: resolve(__dirname, 'dashboard/evoting_admin.html'),
+        member_evoting: resolve(__dirname, 'member/evoting.html'),
         dashboard_slider: resolve(__dirname, 'dashboard/slider.html'),
         dashboard_saran: resolve(__dirname, 'dashboard/saran.html'),
         dashboard_faq: resolve(__dirname, 'dashboard/faq.html'),
