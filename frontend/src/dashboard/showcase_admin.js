@@ -1,6 +1,6 @@
 // src/dashboard/showcase_admin.js
 import { db } from "../firebase.js";
-import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy } from "firebase/firestore";
 
 const form = document.getElementById('formShowcase');
 const tableBody = document.getElementById('tableBody');
