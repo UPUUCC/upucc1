@@ -4,6 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, addDoc, doc, deleteDoc, query, orderBy, serverTimestamp } from "firebase/firestore";
 
 let chartInstance = null;
+let keuanganDataRaw = [];
 
 // Periksa Auth
 onAuthStateChanged(auth, (user) => {
@@ -89,14 +90,18 @@ async function fetchKeuangan() {
             tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Belum ada transaksi</td></tr>';
             updateStats(0, 0);
             updateChart([], [], []);
+            keuanganDataRaw = [];
             return;
         }
 
         let html = '';
+        keuanganDataRaw = [];
         snapshot.forEach(docSnap => {
             const data = docSnap.data();
             const id = docSnap.id;
             
+            keuanganDataRaw.push(data);
+
             // Format for table
             const typeBadge = data.tipe === 'pemasukan' 
                 ? '<span class="badge bg-success bg-opacity-10 text-success px-2 py-1"><i class="bi bi-arrow-down-left"></i> Pemasukan</span>'
@@ -216,3 +221,54 @@ window.deleteKeuangan = async (id) => {
         }
     }
 };
+
+// Export to Excel
+document.getElementById('btnExportExcel').addEventListener('click', () => {
+    if (keuanganDataRaw.length === 0) {
+        Swal.fire({ icon: 'warning', title: 'Data Kosong', text: 'Tidak ada data keuangan untuk diexport.' });
+        return;
+    }
+
+    const excelData = [
+        ['Laporan Kas Organisasi UPUCC'],
+        ['Diunduh pada:', new Date().toLocaleString('id-ID')],
+        [],
+        ['Tanggal', 'Keterangan', 'Tipe', 'Nominal (Rp)']
+    ];
+
+    let totalPemasukan = 0;
+    let totalPengeluaran = 0;
+
+    // Use a copy and reverse so oldest is first or keep descending
+    // It's usually better to have chronological order in export, but we can just use the UI order
+    keuanganDataRaw.forEach(item => {
+        excelData.push([
+            item.tanggal,
+            item.keterangan,
+            item.tipe === 'pemasukan' ? 'Pemasukan' : 'Pengeluaran',
+            item.nominal
+        ]);
+        if (item.tipe === 'pemasukan') totalPemasukan += item.nominal;
+        else totalPengeluaran += item.nominal;
+    });
+
+    excelData.push([]);
+    excelData.push(['', '', 'Total Pemasukan', totalPemasukan]);
+    excelData.push(['', '', 'Total Pengeluaran', totalPengeluaran]);
+    excelData.push(['', '', 'Saldo Kas', totalPemasukan - totalPengeluaran]);
+
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet(excelData);
+
+    ws['!cols'] = [
+        { wch: 15 },
+        { wch: 40 },
+        { wch: 15 },
+        { wch: 20 }
+    ];
+
+    XLSX.utils.book_append_sheet(wb, ws, "Laporan Kas");
+    
+    const dateStr = new Date().toISOString().split('T')[0];
+    XLSX.writeFile(wb, `Laporan_Kas_UPUCC_${dateStr}.xlsx`);
+});
