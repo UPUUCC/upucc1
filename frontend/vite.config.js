@@ -32,6 +32,11 @@ export default defineConfig({
         kalender: resolve(__dirname, 'kalender.html'),
         member_profil: resolve(__dirname, 'member/profil.html'),
         anggota_detail: resolve(__dirname, 'anggota_detail.html'),
+        blog: resolve(__dirname, 'blog.html'),
+        showcase: resolve(__dirname, 'showcase.html'),
+        member_dashboard: resolve(__dirname, 'member/dashboard.html'),
+        member_scan: resolve(__dirname, 'member/scan.html'),
+        portal_event_admin: resolve(__dirname, 'portal/event_admin.html'),
       }
     }
   }
