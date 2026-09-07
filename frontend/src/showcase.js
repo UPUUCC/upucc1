@@ -38,7 +38,7 @@ async function fetchShowcases() {
             cardsHTML += `
                 <div class="col-md-6 col-lg-4 mb-4">
                     <div class="project-card h-100 d-flex flex-column">
-                        <img src="${data.gambar}" class="project-img" alt="${data.judul}" style="height: 200px; object-fit: cover;">
+                        <img src="${data.gambar}" class="project-img" alt="${data.judul}" style="height: 200px; object-fit: contain; background-color: #f8f9fa;">
                         <div class="p-4 d-flex flex-column flex-grow-1">
                             <span class="badge ${badgeClass} mb-2 align-self-start">${data.kategori}</span>
                             <h5 class="fw-bold">${data.judul}</h5>
@@ -61,7 +61,7 @@ async function fetchShowcases() {
                             <div class="modal-body p-4 p-md-5 pt-2">
                                 <span class="badge ${badgeClass} mb-3 px-3 py-2 rounded-pill">${data.kategori}</span>
                                 <h2 class="fw-bold mb-3">${data.judul}</h2>
-                                <img src="${data.gambar}" class="img-fluid rounded mb-4 w-100" style="max-height: 400px; object-fit: cover;" alt="${data.judul}">
+                                <img src="${data.gambar}" class="img-fluid rounded mb-4 w-100" style="max-height: 400px; object-fit: contain; background-color: #f8f9fa;" alt="${data.judul}">
                                 <div class="showcase-content" style="font-size: 1.05rem; line-height: 1.8; color: #4b5563;">
                                     ${fullText}
                                 </div>

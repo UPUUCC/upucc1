@@ -119,7 +119,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; }
 .struktur-card .jabatan { color: var(--upucc-secondary); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; }
 
 /* Prestasi */
-.prestasi-card img { height: 220px; object-fit: cover; }
+.prestasi-card img { height: 220px; object-fit: contain; background-color: #f8f9fa; }
 .prestasi-card .card-body { padding: 25px; }
 .prestasi-card .badge { border-radius: 8px; padding: 6px 12px; font-weight: 600; letter-spacing: 0.5px; }
 .prestasi-excerpt { min-height: 50px; color: var(--text-light); }

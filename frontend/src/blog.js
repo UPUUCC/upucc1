@@ -31,7 +31,7 @@ async function fetchBlogs() {
                 <div class="col-md-4 mb-4">
                     <div class="card blog-card h-100 shadow-sm border-0">
                         <span class="badge bg-primary position-absolute m-3 px-3 py-2 rounded-pill shadow-sm" style="z-index: 2;">${data.kategori}</span>
-                        <img src="${data.gambar}" class="card-img-top" alt="${data.judul}" style="height: 200px; object-fit: cover;">
+                        <img src="${data.gambar}" class="card-img-top" alt="${data.judul}" style="height: 200px; object-fit: contain; background-color: #f8f9fa;">
                         <div class="card-body p-4 d-flex flex-column">
                             <h5 class="card-title fw-bold text-dark">${data.judul}</h5>
                             <p class="card-text text-muted small mb-3">${summary}</p>
@@ -55,7 +55,7 @@ async function fetchBlogs() {
                                 <span class="badge bg-primary mb-3 px-3 py-2 rounded-pill">${data.kategori}</span>
                                 <h2 class="fw-bold mb-3">${data.judul}</h2>
                                 <p class="text-muted mb-4"><i class="bi bi-calendar3 me-2"></i>${date}</p>
-                                <img src="${data.gambar}" class="img-fluid rounded mb-4 w-100" style="max-height: 400px; object-fit: cover;" alt="${data.judul}">
+                                <img src="${data.gambar}" class="img-fluid rounded mb-4 w-100" style="max-height: 400px; object-fit: contain; background-color: #f8f9fa;" alt="${data.judul}">
                                 <div class="blog-content" style="font-size: 1.05rem; line-height: 1.8; color: #4b5563;">
                                     ${fullText}
                                 </div>
