@@ -186,3 +186,15 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; }
 .delay-2 { animation-delay: 0.2s; }
 .delay-3 { animation-delay: 0.3s; }
 .delay-4 { animation-delay: 0.4s; }
+
+/* --- New Navbar Styles --- */
+.upucc-navbar { padding: 12px 0; }
+.upucc-navbar .nav-link { position: relative; padding: 8px 12px !important; }
+.upucc-navbar .nav-item:not(.dropdown) .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 50%; background-color: var(--upucc-accent); transition: all 0.3s ease; transform: translateX(-50%); }
+.upucc-navbar .nav-item:not(.dropdown) .nav-link:hover::after, .upucc-navbar .nav-item:not(.dropdown) .nav-link.active::after { width: 80%; }
+.upucc-navbar .dropdown-menu { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 10px; min-width: 220px; }
+.upucc-navbar .dropdown-item { border-radius: 8px; transition: all 0.2s; font-weight: 500; color: var(--text-dark); display: flex; align-items: center; }
+.upucc-navbar .dropdown-item:hover { background-color: rgba(36, 172, 223, 0.1); color: var(--upucc-primary); transform: translateX(5px); }
+.hover-lift { transition: transform 0.2s ease, box-shadow 0.2s ease !important; }
+.hover-lift:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3) !important; }
+.tracking-wide { letter-spacing: 1.5px; }
