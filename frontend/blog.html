@@ -66,56 +66,14 @@
 <div class="container my-5">
     <div class="row g-4" id="blogContainer">
         
-        <!-- Blog Item 1 -->
-        <div class="col-md-4">
-            <div class="card blog-card h-100">
-                <span class="badge-category">Programming</span>
-                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Blog 1">
-                <div class="card-body p-4">
-                    <h5 class="card-title fw-bold">Memahami React.js untuk Pemula</h5>
-                    <p class="card-text text-muted small mb-3">Belajar komponen dasar dan hooks di React.js untuk membangun antarmuka web modern yang interaktif.</p>
-                    <div class="d-flex justify-content-between align-items-center mt-auto">
-                        <small class="text-muted"><i class="bi bi-calendar me-1"></i> 10 Sep 2026</small>
-                        <a href="#" class="btn btn-sm btn-primary">Baca <i class="bi bi-arrow-right"></i></a>
-                    </div>
-                </div>
-            </div>
+        <div class="col-12 text-center py-5" id="loadingBlog">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="text-muted mt-3">Memuat artikel...</p>
         </div>
-
-        <!-- Blog Item 2 -->
-        <div class="col-md-4">
-            <div class="card blog-card h-100">
-                <span class="badge-category">NetSect</span>
-                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Blog 2">
-                <div class="card-body p-4">
-                    <h5 class="card-title fw-bold">Dasar-dasar Keamanan Siber</h5>
-                    <p class="card-text text-muted small mb-3">Langkah pertama melindungi aplikasi web Anda dari serangan SQL Injection dan XSS.</p>
-                    <div class="d-flex justify-content-between align-items-center mt-auto">
-                        <small class="text-muted"><i class="bi bi-calendar me-1"></i> 8 Sep 2026</small>
-                        <a href="#" class="btn btn-sm btn-primary">Baca <i class="bi bi-arrow-right"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Blog Item 3 -->
-        <div class="col-md-4">
-            <div class="card blog-card h-100">
-                <span class="badge-category">Multimedia</span>
-                <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Blog 3">
-                <div class="card-body p-4">
-                    <h5 class="card-title fw-bold">Tren Desain UI/UX 2026</h5>
-                    <p class="card-text text-muted small mb-3">Mengeksplorasi gaya Glassmorphism dan dark mode yang elegan untuk aplikasi generasi berikutnya.</p>
-                    <div class="d-flex justify-content-between align-items-center mt-auto">
-                        <small class="text-muted"><i class="bi bi-calendar me-1"></i> 5 Sep 2026</small>
-                        <a href="#" class="btn btn-sm btn-primary">Baca <i class="bi bi-arrow-right"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 </div>
+
+<script type="module" src="/src/blog.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

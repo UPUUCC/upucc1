@@ -37,6 +37,8 @@ export default defineConfig({
         member_dashboard: resolve(__dirname, 'member/dashboard.html'),
         member_scan: resolve(__dirname, 'member/scan.html'),
         portal_event_admin: resolve(__dirname, 'portal/event_admin.html'),
+        dashboard_blog_admin: resolve(__dirname, 'dashboard/blog_admin.html'),
+        dashboard_showcase_admin: resolve(__dirname, 'dashboard/showcase_admin.html'),
       }
     }
   }
