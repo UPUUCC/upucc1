@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 import { db } from './firebase.js';
 import { collection, addDoc, serverTimestamp, doc, getDoc } from "firebase/firestore";
 
-const CLOUDINARY_CLOUD_NAME = "mvhjuh83"; // The one user provided
+const CLOUDINARY_CLOUD_NAME = "xg0djsvz"; 
 const CLOUDINARY_UPLOAD_PRESET = "ml_default";
 
 async function uploadToCloudinary(file) {
