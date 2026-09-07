@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         } catch (error) {
             console.error("Error submitting form: ", error);
-            Swal.fire({icon: 'info', title: 'Perhatian', text: "Terjadi kesalahan saat mengirim pendaftaran. Silakan coba lagi."})
+            Swal.fire({icon: 'error', title: 'Perhatian', text: `Terjadi kesalahan: ${error.message}. Silakan coba lagi.`})
             submitBtn.innerHTML = 'Kirim';
             submitBtn.disabled = false;
         }
