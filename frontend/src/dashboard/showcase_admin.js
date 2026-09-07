@@ -1,6 +1,7 @@
 // src/dashboard/showcase_admin.js
-import { db } from "../firebase.js";
+import { db, storage } from "../firebase.js";
 import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const form = document.getElementById('formShowcase');
 const tableBody = document.getElementById('tableBody');
@@ -52,12 +53,25 @@ form.addEventListener('submit', async (e) => {
     const showcaseData = {
         judul: document.getElementById('judul').value,
         kategori: document.getElementById('kategori').value,
-        gambar: document.getElementById('gambar').value,
         deskripsi: document.getElementById('deskripsi').value,
         link: document.getElementById('link').value
     };
 
+    const fileInput = document.getElementById('gambarFile');
+    const file = fileInput.files[0];
+
     try {
+        if (file) {
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Mengunggah Gambar...';
+            const storageRef = ref(storage, 'showcase_images/' + Date.now() + '_' + file.name);
+            await uploadBytes(storageRef, file);
+            showcaseData.gambar = await getDownloadURL(storageRef);
+        } else if (!editingId) {
+            throw new Error("Gambar wajib diunggah untuk karya baru.");
+        }
+
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Menyimpan Data...';
+
         if (editingId) {
             await updateDoc(doc(db, "showcases", editingId), showcaseData);
         } else {
@@ -70,7 +84,7 @@ form.addEventListener('submit', async (e) => {
         fetchShowcases();
     } catch (error) {
         console.error("Error saving showcase: ", error);
-        alert("Gagal menyimpan karya.");
+        alert("Gagal menyimpan karya: " + error.message);
     } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Simpan Karya';
@@ -88,9 +102,9 @@ window.editShowcase = (id, judul, kategori, gambar, deskripsi, link) => {
     editingId = id;
     document.getElementById('judul').value = judul;
     document.getElementById('kategori').value = kategori;
-    document.getElementById('gambar').value = gambar;
     document.getElementById('deskripsi').value = deskripsi;
     document.getElementById('link').value = link;
+    document.getElementById('gambarFile').removeAttribute('required'); // tidak wajib diisi saat edit
     
     formTitle.textContent = 'Edit Karya';
     btnCancel.classList.remove('d-none');
@@ -101,6 +115,7 @@ function resetForm() {
     editingId = null;
     formTitle.textContent = 'Tambah Karya Baru';
     btnCancel.classList.add('d-none');
+    document.getElementById('gambarFile').setAttribute('required', 'true');
     form.reset();
 }
 

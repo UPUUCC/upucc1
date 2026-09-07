@@ -1,6 +1,7 @@
 // src/dashboard/blog_admin.js
-import { db } from "../firebase.js";
+import { db, storage } from "../firebase.js";
 import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const form = document.getElementById('formBlog');
 const tableBody = document.getElementById('tableBody');
@@ -54,11 +55,24 @@ form.addEventListener('submit', async (e) => {
     const blogData = {
         judul: document.getElementById('judul').value,
         kategori: document.getElementById('kategori').value,
-        gambar: document.getElementById('gambar').value,
         isi: document.getElementById('isi').value
     };
 
+    const fileInput = document.getElementById('gambarFile');
+    const file = fileInput.files[0];
+
     try {
+        if (file) {
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Mengunggah Gambar...';
+            const storageRef = ref(storage, 'blog_images/' + Date.now() + '_' + file.name);
+            await uploadBytes(storageRef, file);
+            blogData.gambar = await getDownloadURL(storageRef);
+        } else if (!editingId) {
+            throw new Error("Gambar wajib diunggah untuk artikel baru.");
+        }
+
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Menyimpan Data...';
+
         if (editingId) {
             await updateDoc(doc(db, "blogs", editingId), blogData);
         } else {
@@ -71,7 +85,7 @@ form.addEventListener('submit', async (e) => {
         fetchBlogs();
     } catch (error) {
         console.error("Error saving blog: ", error);
-        alert("Gagal menyimpan artikel.");
+        alert("Gagal menyimpan artikel: " + error.message);
     } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Simpan Artikel';
@@ -89,8 +103,8 @@ window.editBlog = (id, judul, kategori, gambar, isi) => {
     editingId = id;
     document.getElementById('judul').value = judul;
     document.getElementById('kategori').value = kategori;
-    document.getElementById('gambar').value = gambar;
     document.getElementById('isi').value = isi;
+    document.getElementById('gambarFile').removeAttribute('required'); // tidak wajib diisi saat edit
     
     formTitle.textContent = 'Edit Artikel';
     btnCancel.classList.remove('d-none');
@@ -101,6 +115,7 @@ function resetForm() {
     editingId = null;
     formTitle.textContent = 'Tulis Artikel Baru';
     btnCancel.classList.add('d-none');
+    document.getElementById('gambarFile').setAttribute('required', 'true');
     form.reset();
 }
 
