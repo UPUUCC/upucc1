@@ -6,7 +6,7 @@ fs.readdirSync(dir).forEach(file => {
         let content = fs.readFileSync(path, 'utf8');
         content = content.replace(
             /<a href="#" aria-label="Instagram"><i class="bi bi-instagram"><\/i><\/a>\s*<a href="#" aria-label="YouTube"><i class="bi bi-youtube"><\/i><\/a>\s*<a href="#" aria-label="Github"><i class="bi bi-github"><\/i><\/a>/g,
-            `<a href="https://www.instagram.com/upuccofficial.com/" target="_blank" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            `<a href="https://www.instagram.com/upucc.or.id/" target="_blank" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
           <a href="https://www.youtube.com/@upuccooficial" target="_blank" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
           <a href="#" aria-label="Github"><i class="bi bi-github"></i></a>`
         );
