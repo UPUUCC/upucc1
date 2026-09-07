@@ -1,7 +1,31 @@
 // src/dashboard/showcase_admin.js
-import { db, storage } from "../firebase.js";
+import { db } from "../firebase.js";
 import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+const CLOUDINARY_CLOUD_NAME = "xg0djsvz";
+const CLOUDINARY_UPLOAD_PRESET = "ml_default";
+
+async function uploadToCloudinary(file) {
+    if (!file) return '';
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+    try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+        if (data.secure_url) {
+            return data.secure_url;
+        } else {
+            throw new Error(data.error?.message || 'Gagal upload foto');
+        }
+    } catch (err) {
+        throw new Error('Gagal menghubungi server upload foto');
+    }
+}
 
 const form = document.getElementById('formShowcase');
 const tableBody = document.getElementById('tableBody');
@@ -63,9 +87,7 @@ form.addEventListener('submit', async (e) => {
     try {
         if (file) {
             submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Mengunggah Gambar...';
-            const storageRef = ref(storage, 'showcase_images/' + Date.now() + '_' + file.name);
-            await uploadBytes(storageRef, file);
-            showcaseData.gambar = await getDownloadURL(storageRef);
+            showcaseData.gambar = await uploadToCloudinary(file);
         } else if (!editingId) {
             throw new Error("Gambar wajib diunggah untuk karya baru.");
         }
