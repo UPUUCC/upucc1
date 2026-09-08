@@ -6,10 +6,10 @@ import { collection, query, where, limit, getDocs } from 'firebase/firestore';
 // Peta menu yang diperbolehkan untuk setiap role
 const ROLE_PERMISSIONS = {
     'admin': ['*'], // Akses ke semua menu
-    'bendahara': ['/dashboard/index.html', '/dashboard/keuangan.html', '/dashboard/logout.html'],
-    'sekretaris': ['/dashboard/index.html', '/dashboard/pendaftaran.html', '/dashboard/anggota.html', '/dashboard/logout.html'],
-    'kadiv': ['/dashboard/index.html', '/dashboard/anggota.html', '/dashboard/acara.html', '/dashboard/kadiv_panel.html', '/dashboard/logout.html'],
-    'wakadiv': ['/dashboard/index.html', '/dashboard/anggota.html', '/dashboard/acara.html', '/dashboard/kadiv_panel.html', '/dashboard/logout.html']
+    'bendahara': ['/dashboard/keuangan.html', '/dashboard/logout.html'],
+    'sekretaris': ['/dashboard/pendaftaran.html', '/dashboard/logout.html'],
+    'kadiv': ['/dashboard/kadiv_panel.html', '/dashboard/logout.html'],
+    'wakadiv': ['/dashboard/kadiv_panel.html', '/dashboard/logout.html']
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -49,13 +49,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }) || currentPath === '/dashboard/' || currentPath === '/dashboard';
 
             if (!isAllowed) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Akses Ditolak',
-                    text: 'Anda tidak memiliki hak akses ke halaman ini.'
-                }).then(() => {
-                    window.location.href = '/dashboard/index.html';
-                });
+                // Jangan tampilkan pesan error jika user hanya mencoba ke index.html (langsung redirect saja)
+                const isTryingIndex = currentPath === '/dashboard/index.html' || currentPath === '/dashboard/' || currentPath === '/dashboard';
+                
+                let fallbackUrl = '/dashboard/index.html';
+                if (role === 'kadiv' || role === 'wakadiv') fallbackUrl = '/dashboard/kadiv_panel.html';
+                else if (role === 'sekretaris') fallbackUrl = '/dashboard/pendaftaran.html';
+                else if (role === 'bendahara') fallbackUrl = '/dashboard/keuangan.html';
+
+                if (isTryingIndex) {
+                    window.location.href = fallbackUrl;
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Akses Ditolak',
+                        text: 'Anda tidak memiliki hak akses ke halaman ini.'
+                    }).then(() => {
+                        window.location.href = fallbackUrl;
+                    });
+                }
                 return;
             }
 
