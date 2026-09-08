@@ -144,3 +144,10 @@ function resetForm() {
 btnCancel.addEventListener('click', resetForm);
 
 fetchBlogs();
+
+window.approveBlog = async (id) => {
+    if (confirm('Setujui dan publikasikan artikel ini?')) {
+        await updateDoc(doc(db, "blogs", id), { status: 'published' });
+        fetchBlogs();
+    }
+};

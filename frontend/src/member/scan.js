@@ -1,6 +1,6 @@
 import { db, auth } from '../firebase.js';
 import { onAuthStateChanged } from 'firebase/auth';
-import { collection, doc, getDoc, getDocs, addDoc, query, where, limit, serverTimestamp } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, addDoc, query, where, limit, serverTimestamp, updateDoc, increment } from "firebase/firestore";
 import Swal from "sweetalert2";
 
 let currentMember = null;
@@ -146,3 +146,4 @@ document.addEventListener('DOMContentLoaded', () => {
         startScanner();
     });
 });
+

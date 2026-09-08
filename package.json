@@ -19,6 +19,7 @@
     "express-session": "^1.19.0",
     "firebase": "^12.18.0",
     "firebase-admin": "^14.3.0",
+    "html2canvas": "^1.4.1",
     "multer": "^2.3.0"
   }
 }
