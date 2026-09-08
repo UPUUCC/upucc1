@@ -8,7 +8,8 @@ const ROLE_PERMISSIONS = {
     'admin': ['*'], // Akses ke semua menu
     'bendahara': ['/dashboard/index.html', '/dashboard/keuangan.html', '/dashboard/logout.html'],
     'sekretaris': ['/dashboard/index.html', '/dashboard/pendaftaran.html', '/dashboard/anggota.html', '/dashboard/logout.html'],
-    'kadiv': ['/dashboard/index.html', '/dashboard/anggota.html', '/dashboard/acara.html', '/dashboard/logout.html']
+    'kadiv': ['/dashboard/index.html', '/dashboard/anggota.html', '/dashboard/acara.html', '/dashboard/kadiv_panel.html', '/dashboard/logout.html'],
+    'wakadiv': ['/dashboard/index.html', '/dashboard/anggota.html', '/dashboard/acara.html', '/dashboard/kadiv_panel.html', '/dashboard/logout.html']
 };
 
 document.addEventListener('DOMContentLoaded', () => {

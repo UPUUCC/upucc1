@@ -1,96 +1,169 @@
-// src/member/dashboard.js
+import { db, auth } from '../firebase.js';
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { collection, query, where, getDocs, doc, getDoc, orderBy } from "firebase/firestore";
+
+let currentMember = null;
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Check authentication logic here (Mock for now)
-    const user = JSON.parse(sessionStorage.getItem('user')) || { nama: 'Member UPUCC', divisi: 'Programming' };
-    document.getElementById('welcomeMsg').textContent = `Selamat datang, ${user.nama}!`;
-
-    loadMateri();
-    loadSertifikat();
-    loadJadwal();
-
+    
     document.getElementById('btnLogout').addEventListener('click', () => {
-        sessionStorage.removeItem('user');
-        window.location.href = '/login.html';
+        signOut(auth).then(() => {
+            window.location.href = '/login.html';
+        });
     });
+
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+            window.location.href = '/login.html';
+            return;
+        }
+
+        try {
+            let q = query(collection(db, "members"), where("email", "==", user.email.toLowerCase().trim()));
+            let snapshot = await getDocs(q);
+            
+            if (!snapshot.empty) {
+                currentMember = snapshot.docs[0].data();
+                const nama = currentMember.nama || user.displayName || 'Member UPUCC';
+                document.getElementById('welcomeMsg').textContent = `Selamat datang, ${nama}!`;
+                
+                // Panggil fungsi load dengan mengirimkan divisi_id anggota tersebut
+                loadMateri(currentMember.divisi_id);
+                loadSertifikat(currentMember.divisi_id);
+                loadJadwal(currentMember.divisi_id);
+                checkAbsensiQR(currentMember.divisi_id);
+            } else {
+                document.getElementById('welcomeMsg').textContent = `Selamat datang, Member UPUCC!`;
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
+    });
+
 });
 
-function loadMateri() {
+async function loadMateri(divisiId) {
     const materiContainer = document.getElementById('materiList');
-    // Mock Data
-    const materiData = [
-        { title: 'Pengenalan HTML & CSS', type: 'PDF', date: '10 Sep 2026', link: '#' },
-        { title: 'Dasar-dasar JavaScript', type: 'Video', date: '12 Sep 2026', link: '#' },
-        { title: 'Membuat REST API dengan Node.js', type: 'PDF', date: '15 Sep 2026', link: '#' }
-    ];
+    if (!divisiId) {
+        materiContainer.innerHTML = '<p class="text-muted">Divisi tidak ditemukan.</p>';
+        return;
+    }
 
-    setTimeout(() => {
+    try {
+        const q = query(collection(db, "materials"), where("divisi_id", "==", divisiId), orderBy("created_at", "desc"));
+        const snap = await getDocs(q);
+        
         materiContainer.innerHTML = '';
-        materiData.forEach(item => {
-            const icon = item.type === 'PDF' ? 'bi-file-earmark-pdf text-danger' : 'bi-play-circle text-primary';
+        if (snap.empty) {
+            materiContainer.innerHTML = '<p class="text-muted">Belum ada materi belajar untuk divisi ini.</p>';
+            return;
+        }
+
+        snap.forEach(docSnap => {
+            const item = docSnap.data();
+            const icon = item.type === 'PDF' ? 'bi-file-earmark-pdf text-danger' : (item.type === 'Video' ? 'bi-play-circle text-primary' : 'bi-link-45deg text-success');
+            const date = item.created_at ? new Date(item.created_at.toMillis()).toLocaleDateString('id-ID') : '-';
+            
             materiContainer.innerHTML += `
-                <div class="material-item p-3 mb-3 shadow-sm d-flex justify-content-between align-items-center">
+                <div class="material-item p-3 mb-3 shadow-sm d-flex justify-content-between align-items-center rounded-3 bg-white border border-light">
                     <div class="d-flex align-items-center gap-3">
                         <i class="bi ${icon} fs-2"></i>
                         <div>
                             <h6 class="mb-1 fw-bold">${item.title}</h6>
-                            <small class="text-muted"><i class="bi bi-clock me-1"></i> ${item.date} • ${item.type}</small>
+                            <small class="text-muted"><i class="bi bi-clock me-1"></i> ${date} • ${item.type}</small>
                         </div>
                     </div>
-                    <a href="${item.link}" class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i> Unduh</a>
+                    <a href="${item.link}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-box-arrow-up-right"></i> Buka</a>
                 </div>
             `;
         });
-    }, 1000);
+    } catch (error) {
+        console.error(error);
+        materiContainer.innerHTML = '<p class="text-danger">Gagal memuat materi.</p>';
+    }
 }
 
-function loadSertifikat() {
+async function loadSertifikat(divisiId) {
     const certContainer = document.getElementById('sertifikatList');
-    // Mock Data
-    const certData = [
-        { title: 'Peserta Workshop Web Development 2026', issueDate: 'Agustus 2026', image: 'https://images.unsplash.com/photo-1596496181848-3091d4878b24?auto=format&fit=crop&w=400&q=80' },
-        { title: 'Panitia LDK UPU-CC 2025', issueDate: 'Desember 2025', image: 'https://images.unsplash.com/photo-1589330694653-ded6df03f754?auto=format&fit=crop&w=400&q=80' }
-    ];
+    if (!divisiId) {
+        certContainer.innerHTML = '<p class="text-muted">Divisi tidak ditemukan.</p>';
+        return;
+    }
 
-    setTimeout(() => {
+    try {
+        const q = query(collection(db, "certificates"), where("divisi_id", "==", divisiId), orderBy("created_at", "desc"));
+        const snap = await getDocs(q);
+        
         certContainer.innerHTML = '';
-        certData.forEach(item => {
+        if (snap.empty) {
+            certContainer.innerHTML = '<p class="text-muted">Belum ada E-Certificate.</p>';
+            return;
+        }
+
+        snap.forEach(docSnap => {
+            const item = docSnap.data();
             certContainer.innerHTML += `
                 <div class="col-md-6">
                     <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-                        <img src="${item.image}" class="card-img-top" alt="Certificate" style="height: 150px; object-fit: cover;">
+                        <img src="${item.imageUrl}" class="card-img-top" alt="Certificate" style="height: 150px; object-fit: cover;">
                         <div class="card-body">
                             <h6 class="fw-bold text-truncate" title="${item.title}">${item.title}</h6>
                             <p class="small text-muted mb-3">Diterbitkan: ${item.issueDate}</p>
-                            <a href="#" class="btn btn-sm btn-primary w-100"><i class="bi bi-eye"></i> Lihat Sertifikat</a>
+                            <a href="${item.imageUrl}" target="_blank" class="btn btn-sm btn-primary w-100"><i class="bi bi-eye"></i> Lihat Sertifikat</a>
                         </div>
                     </div>
                 </div>
             `;
         });
-    }, 1200);
+    } catch (error) {
+        console.error(error);
+        certContainer.innerHTML = '<p class="text-danger">Gagal memuat e-certificate.</p>';
+    }
 }
 
-function loadJadwal() {
+async function loadJadwal(divisiId) {
     const jadwalContainer = document.getElementById('jadwalList');
-    // Mock Data
-    const jadwalData = [
-        { title: 'Pertemuan Rutin Programming', time: 'Sabtu, 15:00 WIB', location: 'Lab Komputer 1', status: 'Upcoming' },
-        { title: 'Sharing Session UI/UX', time: 'Minggu, 10:00 WIB', location: 'Google Meet', status: 'Upcoming' }
-    ];
+    if (!divisiId) {
+        jadwalContainer.innerHTML = '<p class="text-muted">Divisi tidak ditemukan.</p>';
+        return;
+    }
 
-    setTimeout(() => {
+    try {
+        const q = query(collection(db, "schedules"), where("divisi_id", "==", divisiId), orderBy("created_at", "desc"));
+        const snap = await getDocs(q);
+        
         jadwalContainer.innerHTML = '';
-        jadwalData.forEach(item => {
+        if (snap.empty) {
+            jadwalContainer.innerHTML = '<p class="text-muted">Belum ada jadwal kegiatan.</p>';
+            return;
+        }
+
+        snap.forEach(docSnap => {
+            const item = docSnap.data();
+            let statusBadge = item.status === 'Upcoming' ? 'bg-warning text-dark' : (item.status === 'Done' ? 'bg-success' : 'bg-danger');
             jadwalContainer.innerHTML += `
-                <div class="d-flex p-3 mb-3 bg-light rounded-3 align-items-center justify-content-between border-start border-4 border-warning">
+                <div class="d-flex p-3 mb-3 bg-light rounded-3 align-items-center justify-content-between border-start border-4 ${item.status === 'Upcoming' ? 'border-warning' : (item.status === 'Done' ? 'border-success' : 'border-danger')}">
                     <div>
                         <h6 class="fw-bold mb-1">${item.title}</h6>
                         <small class="text-muted d-block"><i class="bi bi-clock me-1"></i> ${item.time}</small>
                         <small class="text-muted"><i class="bi bi-geo-alt me-1"></i> ${item.location}</small>
                     </div>
-                    <span class="badge bg-warning text-dark">${item.status}</span>
+                    <span class="badge ${statusBadge}">${item.status}</span>
                 </div>
             `;
         });
-    }, 1500);
+    } catch (error) {
+        console.error(error);
+        jadwalContainer.innerHTML = '<p class="text-danger">Gagal memuat jadwal.</p>';
+    }
+}
+
+async function checkAbsensiQR(divisiId) {
+    // Tombol absensi ada di halaman member dashboard atau di profil?
+    // User ingin "absensi qr code" di dashboard member
+    // Sebenarnya ada file /member/scan.html. Tapi karena kita di member/dashboard.html,
+    // kita bisa menyimpan logic jika ada link absensi yang aktif, kita bisa tampilkan alert.
+    
+    // Tapi karena tidak ada kontainer khusus di dashboard.js (kecuali tombol di profil),
+    // kita biarkan saja. Logika pembacaan akan diurus di scan.html jika ada.
 }

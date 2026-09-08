@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Divisi - UPUCC</title>
+  <link rel="icon" type="image/jpeg" href="/logo.jpg">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body { font-family: 'Outfit', sans-serif; background: #f8fafc; color: #1e293b; }
+    .sidebar { width: 260px; height: 100vh; position: fixed; top: 0; left: 0; background: #0f172a; color: #fff; overflow-y: auto; transition: 0.3s; z-index: 1045; }
+    .sidebar .brand { font-size: 1.2rem; font-weight: 700; padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 10px; }
+    .sidebar .nav-link { color: #94a3b8; padding: 12px 20px; font-weight: 500; border-radius: 8px; margin: 4px 15px; transition: 0.2s; }
+    .sidebar .nav-link:hover, .sidebar .nav-link.active { background: #1e293b; color: #fff; }
+    .sidebar .nav-link i { margin-right: 10px; font-size: 1.1rem; }
+    .main-content { margin-left: 260px; min-height: 100vh; transition: 0.3s; }
+    .top-navbar { background: #fff; padding: 15px 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); display: flex; align-items: center; justify-content: space-between; }
+    .toggle-btn { display: none; background: none; border: none; font-size: 1.5rem; color: #0f172a; cursor: pointer; }
+    
+    .card { border: none; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    .form-control, .form-select { border-radius: 10px; padding: 10px 15px; border: 1px solid #e2e8f0; }
+    .btn { border-radius: 10px; padding: 8px 20px; font-weight: 600; }
+    .btn-primary { background: #2563eb; border: none; }
+    .btn-primary:hover { background: #1d4ed8; }
+
+    @media (max-width: 992px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.show { transform: translateX(0); }
+      .main-content { margin-left: 0; }
+      .toggle-btn { display: block; }
+      .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 1040; }
+      .sidebar-overlay.show { display: block; }
+    }
+  
+    .table-responsive { border-radius: 8px; border: 1px solid #e2e8f0; }
+    table.table { margin-bottom: 0; }
+    th { white-space: nowrap; }
+    td { white-space: nowrap; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar" id="sidebar">
+    <div class="brand">UPUCC Admin</div>
+    <ul class="nav flex-column mt-2">
+      <li class="nav-item"><a class="nav-link" href="/dashboard/index.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li class="nav-item"><a class="nav-link active" href="/dashboard/kadiv_panel.html"><i class="bi bi-briefcase"></i> Panel Divisi</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/blog_admin.html"><i class="bi bi-journal-text"></i> Artikel Blog</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/showcase_admin.html"><i class="bi bi-grid"></i> Galeri Karya</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/slider.html"><i class="bi bi-images"></i> Slider</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/informasi.html"><i class="bi bi-info-circle"></i> Info UPUCC</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/divisi.html"><i class="bi bi-diagram-3"></i> Divisi</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/prestasi.html"><i class="bi bi-trophy"></i> Prestasi</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/sejarah.html"><i class="bi bi-clock-history"></i> Sejarah</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/acara.html"><i class="bi bi-calendar-event"></i> Acara</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/anggota.html"><i class="bi bi-people"></i> Anggota & Struktur</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/pendaftaran.html"><i class="bi bi-person-lines-fill"></i> Pendaftaran</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/keuangan.html"><i class="bi bi-wallet2"></i> Keuangan / Kas</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/saran.html"><i class="bi bi-chat-left-heart"></i> Kotak Saran</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/faq.html"><i class="bi bi-question-circle"></i> FAQ</a></li>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/evoting_admin.html"><i class="bi bi-box"></i> E-Voting</a></li>
+      <li class="nav-item mt-4"><a class="nav-link text-info" href="/" target="_blank"><i class="bi bi-box-arrow-up-right"></i> Lihat Website</a></li>
+      <li class="nav-item"><a class="nav-link text-danger" href="/dashboard/logout.html"><i class="bi bi-box-arrow-left"></i> Logout</a></li>
+    </ul>
+  </div>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="main-content">
+  
+  <div class="top-navbar">
+    <div class="d-flex align-items-center">
+      <button class="toggle-btn me-3" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
+      <h5 class="mb-0 fw-bold d-none d-sm-block">Panel Manajemen Divisi</h5>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <span class="text-muted small">UPUCC CMS v2.0</span>
+      <img src="https://ui-avatars.com/api/?name=Kadiv&background=0f172a&color=fff" class="rounded-circle" width="35" height="35">
+    </div>
+  </div>
+
+  <div class="container-fluid p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+      <div>
+        <h4 class="mb-1 fw-bold">Manajemen Data Divisi</h4>
+        <p class="text-muted mb-0">Kelola Materi Belajar, E-Certificate, Jadwal, dan Absensi untuk divisi <b id="displayNamaDivisi" class="text-primary">Memuat...</b></p>
+      </div>
+      
+      <div id="divisiFilterContainer" class="d-none">
+        <select class="form-select bg-light border-0 fw-bold" id="adminDivisiFilter">
+          <option value="">-- Semua Divisi (Super Admin) --</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card p-2 mb-4">
+      <ul class="nav nav-pills nav-fill" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active fw-bold" id="pills-materi-tab" data-bs-toggle="pill" data-bs-target="#pills-materi" type="button"><i class="bi bi-book"></i> Materi Belajar</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-bold" id="pills-sertifikat-tab" data-bs-toggle="pill" data-bs-target="#pills-sertifikat" type="button"><i class="bi bi-award"></i> E-Certificate</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-bold" id="pills-jadwal-tab" data-bs-toggle="pill" data-bs-target="#pills-jadwal" type="button"><i class="bi bi-calendar3"></i> Jadwal Divisi</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-bold" id="pills-absensi-tab" data-bs-toggle="pill" data-bs-target="#pills-absensi" type="button"><i class="bi bi-qr-code-scan"></i> Absensi QR</button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="tab-content" id="pills-tabContent">
+      
+      <!-- MATERI TAB -->
+      <div class="tab-pane fade show active" id="pills-materi">
+        <div class="card p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Daftar Materi Belajar</h5>
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalAddMateri"><i class="bi bi-plus"></i> Tambah Materi</button>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Judul Materi</th>
+                  <th>Jenis</th>
+                  <th>Tautan (Link)</th>
+                  <th>Tanggal Dibuat</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="materiTableBody">
+                <tr><td colspan="5" class="text-center">Memuat...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SERTIFIKAT TAB -->
+      <div class="tab-pane fade" id="pills-sertifikat">
+        <div class="card p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Daftar E-Certificate</h5>
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalAddSertifikat"><i class="bi bi-plus"></i> Tambah E-Certificate</button>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Gambar</th>
+                  <th>Judul Sertifikat</th>
+                  <th>Bulan/Tahun Rilis</th>
+                  <th>Tanggal Dibuat</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="sertifikatTableBody">
+                <tr><td colspan="5" class="text-center">Memuat...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- JADWAL TAB -->
+      <div class="tab-pane fade" id="pills-jadwal">
+        <div class="card p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Jadwal Pertemuan / Agenda</h5>
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalAddJadwal"><i class="bi bi-plus"></i> Tambah Jadwal</button>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Agenda Kegiatan</th>
+                  <th>Waktu</th>
+                  <th>Lokasi / Link</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="jadwalTableBody">
+                <tr><td colspan="5" class="text-center">Memuat...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABSENSI TAB -->
+      <div class="tab-pane fade" id="pills-absensi">
+        <div class="card p-4">
+          <h5 class="fw-bold mb-4">Pengaturan Absensi Kehadiran</h5>
+          
+          <div class="alert alert-info border-0 rounded-4 d-flex align-items-center mb-4">
+            <i class="bi bi-info-circle-fill fs-4 me-3 text-primary"></i>
+            <div>
+              <p class="mb-0 small">Masukkan tautan formulir kehadiran (misal: Google Form, Zoho) yang akan diakses anggota lewat pemindaian QR Code di Portal Member.</p>
+            </div>
+          </div>
+
+          <form id="formAbsensi">
+            <div class="mb-3">
+              <label class="form-label text-muted fw-bold">Link Absensi / Google Form</label>
+              <input type="url" class="form-control" id="linkAbsensi" placeholder="https://docs.google.com/forms/..." required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted fw-bold">Status Absensi</label>
+              <div class="form-check form-switch fs-5">
+                <input class="form-check-input" type="checkbox" role="switch" id="statusAbsensi">
+                <label class="form-check-label fs-6 ms-2 mt-1 fw-bold" for="statusAbsensi" id="lblStatusAbsensi">Ditutup</label>
+              </div>
+              <small class="text-muted">Jika diaktifkan, anggota yang scan QR di portal akan otomatis diarahkan ke link di atas.</small>
+            </div>
+            <button type="submit" class="btn btn-primary w-100" id="btnSaveAbsensi"><i class="bi bi-save"></i> Simpan Pengaturan Absensi</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal Tambah Materi -->
+<div class="modal fade" id="modalAddMateri" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4">
+      <form id="formAddMateri">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold">Tambah Materi Belajar</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Judul Materi</label>
+            <input type="text" class="form-control" id="materiJudul" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Jenis File/Konten</label>
+            <select class="form-select" id="materiJenis" required>
+              <option value="PDF">Dokumen (PDF/Word)</option>
+              <option value="Video">Video (YouTube/MP4)</option>
+              <option value="Link">Tautan Web</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Link Akses / URL (Google Drive, Youtube, dll)</label>
+            <input type="url" class="form-control" id="materiLink" placeholder="https://..." required>
+          </div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveMateri">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Tambah Sertifikat -->
+<div class="modal fade" id="modalAddSertifikat" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4">
+      <form id="formAddSertifikat">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold">Tambah E-Certificate</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Judul Kegiatan / Sertifikat</label>
+            <input type="text" class="form-control" id="certJudul" placeholder="Peserta Workshop UI/UX..." required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Bulan & Tahun (Bulan Rilis)</label>
+            <input type="text" class="form-control" id="certBulan" placeholder="Agustus 2026" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Gambar E-Certificate</label>
+            <input type="file" class="form-control" id="certFile" accept="image/*" required>
+            <small class="text-muted d-block mt-1">Upload gambar/foto e-certificate (.jpg, .png)</small>
+          </div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveSertifikat">Upload</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Tambah Jadwal -->
+<div class="modal fade" id="modalAddJadwal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4">
+      <form id="formAddJadwal">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold">Tambah Jadwal Kegiatan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Nama Agenda</label>
+            <input type="text" class="form-control" id="jadwalNama" placeholder="Pertemuan Rutin..." required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Waktu (Hari, Tanggal, Jam)</label>
+            <input type="text" class="form-control" id="jadwalWaktu" placeholder="Sabtu, 15:00 WIB" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Lokasi / Tautan (GMeet)</label>
+            <input type="text" class="form-control" id="jadwalLokasi" placeholder="Lab Komputer 1 / Link GMeet" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Status</label>
+            <select class="form-select" id="jadwalStatus">
+              <option value="Upcoming">Upcoming (Akan Datang)</option>
+              <option value="Done">Done (Selesai)</option>
+              <option value="Canceled">Canceled (Dibatalkan)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveJadwal">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('show');
+    document.getElementById('sidebarOverlay').classList.toggle('show');
+  }
+</script>
+
+<script type="module" src="/src/dashboard/rbac.js"></script>
+<script type="module" src="/src/dashboard/kadiv_panel.js"></script>
+</body>
+</html>
