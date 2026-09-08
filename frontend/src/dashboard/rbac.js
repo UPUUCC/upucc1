@@ -86,6 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
+            // Hapus pelindung anti-bocor sidebar
+            const rbacHide = document.getElementById('rbac-hide');
+            if (rbacHide) rbacHide.remove();
+
             // 3. UI Kustom di Dashboard Utama
             if (currentPath.includes('/dashboard/index.html') || currentPath === '/dashboard/' || currentPath === '/dashboard') {
                 const adminName = document.getElementById('adminName');
