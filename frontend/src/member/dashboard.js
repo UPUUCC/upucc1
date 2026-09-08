@@ -50,11 +50,15 @@ async function loadMateri(divisiId) {
     }
 
     try {
-        const q = query(collection(db, "materials"), where("divisi_id", "==", divisiId));
-        const snap = await getDocs(q);
+        const qDivisi = query(collection(db, "materials"), where("divisi_id", "==", divisiId));
+        const qPusat = query(collection(db, "materials"), where("divisi_id", "==", "upucc"));
+        const [snapDivisi, snapPusat] = await Promise.all([getDocs(qDivisi), getDocs(qPusat)]);
         
         let docsArray = [];
-        snap.forEach(docSnap => docsArray.push({ id: docSnap.id, ...docSnap.data() }));
+        snapDivisi.forEach(docSnap => docsArray.push({ id: docSnap.id, ...docSnap.data() }));
+        snapPusat.forEach(docSnap => {
+            if(!docsArray.find(d => d.id === docSnap.id)) docsArray.push({ id: docSnap.id, ...docSnap.data() });
+        });
         docsArray.sort((a, b) => (b.created_at?.toMillis() || 0) - (a.created_at?.toMillis() || 0));
 
         materiContainer.innerHTML = '';
@@ -94,11 +98,22 @@ async function loadSertifikat(divisiId) {
     }
 
     try {
-        const q = query(collection(db, "certificates"), where("divisi_id", "==", divisiId));
-        const snap = await getDocs(q);
+        const userEmail = currentMember ? currentMember.email : '';
+        const qDivisi = query(collection(db, "certificates"), where("divisi_id", "==", divisiId));
+        const qPusatAll = query(collection(db, "certificates"), where("divisi_id", "==", "upucc"), where("member_email", "==", "all"));
+        const qPusatSpecific = userEmail ? query(collection(db, "certificates"), where("divisi_id", "==", "upucc"), where("member_email", "==", userEmail)) : null;
+        
+        const promises = [getDocs(qDivisi), getDocs(qPusatAll)];
+        if(qPusatSpecific) promises.push(getDocs(qPusatSpecific));
+        
+        const results = await Promise.all(promises);
         
         let docsArray = [];
-        snap.forEach(docSnap => docsArray.push({ id: docSnap.id, ...docSnap.data() }));
+        results.forEach(snap => {
+            snap.forEach(docSnap => {
+                if(!docsArray.find(d => d.id === docSnap.id)) docsArray.push({ id: docSnap.id, ...docSnap.data() });
+            });
+        });
         docsArray.sort((a, b) => (b.created_at?.toMillis() || 0) - (a.created_at?.toMillis() || 0));
 
         certContainer.innerHTML = '';
@@ -135,11 +150,15 @@ async function loadJadwal(divisiId) {
     }
 
     try {
-        const q = query(collection(db, "schedules"), where("divisi_id", "==", divisiId));
-        const snap = await getDocs(q);
+        const qDivisi = query(collection(db, "schedules"), where("divisi_id", "==", divisiId));
+        const qPusat = query(collection(db, "schedules"), where("divisi_id", "==", "upucc"));
+        const [snapDivisi, snapPusat] = await Promise.all([getDocs(qDivisi), getDocs(qPusat)]);
         
         let docsArray = [];
-        snap.forEach(docSnap => docsArray.push({ id: docSnap.id, ...docSnap.data() }));
+        snapDivisi.forEach(docSnap => docsArray.push({ id: docSnap.id, ...docSnap.data() }));
+        snapPusat.forEach(docSnap => {
+            if(!docsArray.find(d => d.id === docSnap.id)) docsArray.push({ id: docSnap.id, ...docSnap.data() });
+        });
         docsArray.sort((a, b) => (b.created_at?.toMillis() || 0) - (a.created_at?.toMillis() || 0));
 
         jadwalContainer.innerHTML = '';
@@ -176,3 +195,4 @@ async function checkAbsensiQR(divisiId) {
     // Tapi karena tidak ada kontainer khusus di dashboard.js (kecuali tombol di profil),
     // kita biarkan saja. Logika pembacaan akan diurus di scan.html jika ada.
 }
+

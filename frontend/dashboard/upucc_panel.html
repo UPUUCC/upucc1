@@ -317,6 +317,13 @@
             <input type="text" class="form-control" id="certBulan" placeholder="Agustus 2026" required>
           </div>
           <div class="mb-3">
+            <label class="form-label small fw-bold">Penerima Sertifikat</label>
+            <select class="form-select" id="sertifikatPenerima" required>
+                <option value="all">Seluruh Anggota UPUCC (Umum)</option>
+                <!-- Opsi anggota lain akan dimuat di JS -->
+            </select>
+          </div>
+          <div class="mb-3">
             <label class="form-label small fw-bold">Gambar E-Certificate</label>
             <input type="file" class="form-control" id="certFile" accept="image/*" required>
             <small class="text-muted d-block mt-1">Upload gambar/foto e-certificate (.jpg, .png)</small>
@@ -409,6 +416,7 @@
 <script type="module" src="/src/dashboard/upucc_panel.js"></script>
 </body>
 </html>
+
 
 
 

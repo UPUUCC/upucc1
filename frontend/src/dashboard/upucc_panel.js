@@ -106,6 +106,7 @@ async function loadAllData() {
     
     
 
+    await loadMembersForSelect();
     await loadMateri();
     await loadSertifikat();
     await loadJadwal();
@@ -113,6 +114,30 @@ async function loadAllData() {
 }
 
 /* ================== MATERI ================== */
+async function loadMembersForSelect() {
+    const select = document.getElementById('sertifikatPenerima');
+    if (!select) return;
+    
+    try {
+        const q = query(collection(db, 'members'), orderBy('nama'));
+        const snap = await getDocs(q);
+        
+        // Keep the first option (all)
+        select.innerHTML = '<option value="all">Seluruh Anggota UPUCC (Umum)</option>';
+        
+        snap.forEach(docSnap => {
+            const data = docSnap.data();
+            const email = data.email || '';
+            const nama = data.nama || 'Tanpa Nama';
+            if(email) {
+                select.innerHTML += <option value=" + email + "> + nama +  ( + email + )</option>;
+            }
+        });
+    } catch (e) {
+        console.error('Error loading members:', e);
+    }
+}
+
 async function loadMateri() {
     const tbody = document.getElementById('materiTableBody');
     tbody.innerHTML = '<tr><td colspan="5" class="text-center">Memuat...</td></tr>';
@@ -486,5 +511,6 @@ window.deleteDocItem = async (collectionName, id, reloadCallback) => {
         } catch (e) { Swal.fire('Gagal', 'Terjadi kesalahan.', 'error'); }
     }
 };
+
 
 
