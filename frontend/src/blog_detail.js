@@ -60,7 +60,7 @@ async function loadBlogDetail() {
             
             <img src="${data.gambar}" class="img-fluid rounded-4 mb-5 shadow-sm w-100" style="max-height: 400px; object-fit: cover; background-color: #f8f9fa;" alt="${data.judul}">
             
-            <div class="blog-content" style="font-size: 1.1rem; line-height: 1.8; color: #334155;">
+            <div class="blog-content" style="font-size: 1.1rem; text-align: justify; line-height: 1.8; color: #334155;">
                 ${fullText}
             </div>
         `;
@@ -79,3 +79,4 @@ async function loadBlogDetail() {
 }
 
 document.addEventListener('DOMContentLoaded', loadBlogDetail);
+

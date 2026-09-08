@@ -71,7 +71,7 @@ async function loadShowcaseDetail() {
             
             ${mediaHTML}
             
-            <div class="showcase-content mt-4" style="font-size: 1.1rem; line-height: 1.8; color: #cbd5e1;">
+            <div class="showcase-content mt-4" style="font-size: 1.1rem; text-align: justify; line-height: 1.8; color: #cbd5e1;">
                 <h4 class="fw-bold mb-3 text-white">Deskripsi Karya</h4>
                 ${fullDesc}
             </div>
@@ -92,3 +92,4 @@ async function loadShowcaseDetail() {
 }
 
 document.addEventListener('DOMContentLoaded', loadShowcaseDetail);
+
