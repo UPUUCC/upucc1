@@ -217,6 +217,7 @@ document.getElementById('formAddCandidate').addEventListener('submit', async (e)
     const nama = document.getElementById('candName').value;
     const visi = document.getElementById('candVision').value;
     const misi = document.getElementById('candMission').value;
+    const instagram = document.getElementById('candInstagram') ? document.getElementById('candInstagram').value : '';
     
     let photoUrl = document.getElementById('candPhotoUrl').value;
     const photoFile = document.getElementById('candPhotoFile');
@@ -230,6 +231,7 @@ document.getElementById('formAddCandidate').addEventListener('submit', async (e)
       nama: nama,
       visi: visi,
       misi: misi,
+      instagram: instagram,
       photoUrl: photoUrl,
       votes: 0
     });
