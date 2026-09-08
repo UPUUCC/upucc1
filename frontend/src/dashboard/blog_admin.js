@@ -35,14 +35,14 @@ const formTitle = document.getElementById('formTitle');
 let editingId = null;
 
 async function fetchBlogs() {
-    tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Memuat data...</td></tr>';
+    tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Memuat data...</td></tr>';
     try {
         const q = query(collection(db, "blogs"), orderBy("createdAt", "desc"));
         const snapshot = await getDocs(q);
         
         tableBody.innerHTML = '';
         if (snapshot.empty) {
-            tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Belum ada artikel.</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Belum ada artikel.</td></tr>';
             return;
         }
 
@@ -50,23 +50,27 @@ async function fetchBlogs() {
             const data = docSnap.data();
             const id = docSnap.id;
             const date = data.createdAt ? data.createdAt.toDate().toLocaleDateString('id-ID') : 'Baru saja';
-            
+            let statusBadge = data.status === 'pending' ? '<span class="badge bg-warning text-dark">Pending</span>' : '<span class="badge bg-success">Published</span>';
+            let approveBtn = data.status === 'pending' ? `<button class="btn btn-sm btn-outline-success me-1" onclick="approveBlog('${id}')" title="Approve"><i class="bi bi-check-lg"></i></button>` : '';
+
             tableBody.innerHTML += `
                 <tr>
                     <td><img src="${data.gambar}" width="60" height="40" style="object-fit:cover; border-radius:4px;"></td>
                     <td class="fw-bold">${data.judul}</td>
                     <td><span class="badge bg-secondary">${data.kategori}</span></td>
                     <td>${date}</td>
+                    <td>${statusBadge}</td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary me-1" onclick="editBlog('${id}', \`${data.judul}\`, '${data.kategori}', '${data.gambar}', \`${data.isi}\`)"><i class="bi bi-pencil"></i></button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="deleteBlog('${id}')"><i class="bi bi-trash"></i></button>
+                        ${approveBtn}
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick="editBlog('${id}', \`${data.judul}\`, '${data.kategori}', '${data.gambar}', \`${data.isi}\`)" title="Edit"><i class="bi bi-pencil"></i></button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteBlog('${id}')" title="Hapus"><i class="bi bi-trash"></i></button>
                     </td>
                 </tr>
             `;
         });
     } catch (error) {
         console.error("Error fetching blogs: ", error);
-        tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Gagal memuat data.</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Gagal memuat data.</td></tr>';
     }
 }
 
