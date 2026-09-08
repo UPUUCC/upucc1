@@ -229,16 +229,16 @@ async function loadLeaderboard() {
             const points = data.points || 0;
             const rankBadge = rank === 1 ? '<span class="badge bg-warning text-dark"><i class="bi bi-trophy-fill"></i> 1</span>' :
                             (rank === 2 ? '<span class="badge bg-secondary"><i class="bi bi-award-fill"></i> 2</span>' :
-                            (rank === 3 ? '<span class="badge" style="background:#cd7f32"><i class="bi bi-award"></i> 3</span>' : <span class="badge bg-light text-dark"></span>));
+                            (rank === 3 ? '<span class="badge" style="background:#cd7f32"><i class="bi bi-award"></i> 3</span>' : '<span class="badge bg-light text-dark">' + rank + '</span>'));
             
-            html += 
+            html += `
                 <tr>
-                    <td class="fw-bold fs-5">+rankBadge+</td>
-                    <td class="fw-bold">+(data.nama || 'Anggota')+</td>
-                    <td><span class="badge bg-primary">+(data.divisi_name || data.divisi_id || 'Umum')+</span></td>
-                    <td class="fw-bold text-success">+points+ Pts</td>
+                    <td class="fw-bold fs-5">` + rankBadge + `</td>
+                    <td class="fw-bold">` + (data.nama || 'Anggota') + `</td>
+                    <td><span class="badge bg-primary">` + (data.divisi_name || data.divisi_id || 'Umum') + `</span></td>
+                    <td class="fw-bold text-success">` + points + ` Pts</td>
                 </tr>
-            ;
+            `;
             rank++;
         });
         tbody.innerHTML = html;
@@ -309,7 +309,7 @@ async function uploadToCloudinary(file) {
     formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
 
     try {
-        const res = await fetch(https://api.cloudinary.com/v1_1/+CLOUDINARY_CLOUD_NAME+/image/upload, {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
             method: 'POST',
             body: formData
         });
@@ -340,14 +340,14 @@ async function loadArtikelSaya() {
             const dateStr = data.createdAt ? new Date(data.createdAt.toMillis()).toLocaleDateString('id-ID') : '-';
             const statusBadge = data.status === 'published' ? '<span class="badge bg-success">Published</span>' : '<span class="badge bg-warning text-dark">Pending</span>';
             
-            html += 
+            html += `
                 <tr>
-                    <td class="fw-bold">+data.judul+</td>
-                    <td><span class="badge bg-secondary">+data.kategori+</span></td>
-                    <td>+dateStr+</td>
-                    <td>+statusBadge+</td>
+                    <td class="fw-bold">` + data.judul + `</td>
+                    <td><span class="badge bg-secondary">` + data.kategori + `</span></td>
+                    <td>` + dateStr + `</td>
+                    <td>` + statusBadge + `</td>
                 </tr>
-            ;
+            `;
         });
         
         // sort html by date roughly by pushing to array if needed, but since it's personal blog, simple foreach is fine for now
