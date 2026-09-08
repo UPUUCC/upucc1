@@ -82,6 +82,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Form Event Listeners
     document.getElementById('formAddMateri').addEventListener('submit', addMateri);
     document.getElementById('formAddSertifikat').addEventListener('submit', addSertifikat);
+    
+    // Toggle penerima select based on category
+    const catAnggota = document.getElementById('catAnggota');
+    const catPrestasi = document.getElementById('catPrestasi');
+    const penerimaContainer = document.getElementById('penerimaContainer');
+    
+    if (catAnggota && catPrestasi && penerimaContainer) {
+        catAnggota.addEventListener('change', () => {
+            if(catAnggota.checked) penerimaContainer.style.display = 'block';
+        });
+        catPrestasi.addEventListener('change', () => {
+            if(catPrestasi.checked) penerimaContainer.style.display = 'none';
+        });
+    }
     document.getElementById('formAddJadwal').addEventListener('submit', addJadwal);
     
     const formAddSession = document.getElementById('formAddSession');
@@ -274,13 +288,27 @@ async function addSertifikat(e) {
             throw new Error("File gambar wajib diupload.");
         }
 
-        await addDoc(collection(db, "certificates"), {
-            title: document.getElementById('certJudul').value,
-            issueDate: document.getElementById('certBulan').value,
-            imageUrl: imageUrl,
-            divisi_id: activeDivisiId,
-            created_at: new Date()
-        });
+        const kategori = document.querySelector('input[name="certKategori"]:checked')?.value || 'anggota';
+        
+        if (kategori === 'prestasi') {
+            await addDoc(collection(db, "prestasi"), {
+                judul: document.getElementById('certJudul').value,
+                divisi_id: activeDivisiId,
+                tanggal: document.getElementById('certBulan').value,
+                deskripsi: "E-Certificate Prestasi Divisi",
+                gambarUrl: imageUrl,
+                created_at: new Date()
+            });
+        } else {
+            await addDoc(collection(db, "certificates"), {
+                title: document.getElementById('certJudul').value,
+                issueDate: document.getElementById('certBulan').value,
+                imageUrl: imageUrl,
+                divisi_id: activeDivisiId,
+                member_email: document.getElementById('sertifikatPenerima') ? document.getElementById('sertifikatPenerima').value : 'all',
+                created_at: new Date()
+            });
+        }
         bootstrap.Modal.getInstance(document.getElementById('modalAddSertifikat')).hide();
         document.getElementById('formAddSertifikat').reset();
         Swal.fire('Berhasil', 'Sertifikat ditambahkan.', 'success');
@@ -521,5 +549,6 @@ window.deleteDocItem = async (collectionName, id, reloadCallback) => {
         } catch (e) { Swal.fire('Gagal', 'Terjadi kesalahan.', 'error'); }
     }
 };
+
 
 

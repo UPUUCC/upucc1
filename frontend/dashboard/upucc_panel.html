@@ -317,6 +317,21 @@
             <input type="text" class="form-control" id="certBulan" placeholder="Agustus 2026" required>
           </div>
           <div class="mb-3">
+            <label class="form-label small fw-bold">Kategori Sertifikat</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="certKategori" id="catAnggota" value="anggota" checked>
+              <label class="form-check-label" for="catAnggota">
+                Untuk Anggota (Tampil di Dasbor Member)
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="certKategori" id="catPrestasi" value="prestasi">
+              <label class="form-check-label" for="catPrestasi">
+                Untuk UPUCC / Prestasi (Tampil di Publik Web Prestasi)
+              </label>
+            </div>
+          </div>
+          <div class="mb-3" id="penerimaContainer">
             <label class="form-label small fw-bold">Penerima Sertifikat</label>
             <select class="form-select" id="sertifikatPenerima" required>
                 <option value="all">Seluruh Anggota UPUCC (Umum)</option>
