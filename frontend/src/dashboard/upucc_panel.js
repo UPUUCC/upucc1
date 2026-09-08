@@ -103,8 +103,8 @@ function getDivisiName(id) {
 async function loadAllData() {
     // Jika tidak ada divisi yang dipilih (Super Admin memilih "Semua Divisi"), kita bisa sembunyikan atau tampilkan pesan.
     // Tapi untuk materi/sertifikat, lebih baik harus milih divisi dulu untuk upload.
-    const namaDiv = !activeDivisiId ? "Semua Divisi (Pilih Divisi Dulu Untuk Upload)" : getDivisiName(activeDivisiId);
-    document.getElementById('displayNamaDivisi').textContent = namaDiv;
+    
+    
 
     await loadMateri();
     await loadSertifikat();
@@ -486,4 +486,5 @@ window.deleteDocItem = async (collectionName, id, reloadCallback) => {
         } catch (e) { Swal.fire('Gagal', 'Terjadi kesalahan.', 'error'); }
     }
 };
+
 
