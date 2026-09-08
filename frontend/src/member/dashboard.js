@@ -258,7 +258,9 @@ function renderKta() {
     const ktaQrCode = document.getElementById('ktaQrCode');
     
     if (ktaNama) ktaNama.textContent = currentMember.nama || currentMember.email.split('@')[0];
-    if (ktaDivisi) ktaDivisi.textContent = "DIVISI " + (currentMember.divisi_name || currentMember.divisi_id || 'UMUM').toUpperCase();
+    let divName = currentMember.divisi || currentMember.divisi_name || currentMember.divisi_id || 'UMUM';
+    divName = divName.replace(/^\d+_/, '').replace(/_/g, ' ');
+    if (ktaDivisi) ktaDivisi.textContent = "DIVISI " + divName.toUpperCase();
     if (ktaEmail) ktaEmail.textContent = currentMember.email;
     
     // Generate QR
