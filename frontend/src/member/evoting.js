@@ -78,18 +78,22 @@ async function loadElection() {
     candSnap.forEach(snap => {
       const c = snap.data();
       const candId = snap.id;
+      const safeNama = (c.nama || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const safeVisi = (c.visi || '').replace(/`/g, "'").replace(/\\/g, '\\\\');
+      const safeMisi = (c.misi || '').replace(/`/g, "'").replace(/\\/g, '\\\\');
+
       html += `
         <div class="col-md-6 col-lg-5">
           <div class="candidate-card h-100 d-flex flex-column position-relative">
-            <div class="no-urut">${c.nomorUrut}</div>
+            <div class="no-urut">${c.nomorUrut || '-'}</div>
             <img src="${c.photoUrl || 'https://via.placeholder.com/400x300'}" class="candidate-photo" alt="${c.nama}">
             <div class="p-4 d-flex flex-column flex-grow-1">
-              <h5 class="fw-bold mb-3 text-center">${c.nama}</h5>
+              <h5 class="fw-bold mb-3 text-center">${c.nama || 'Tanpa Nama'}</h5>
               <div class="d-flex justify-content-center gap-2 mt-auto pt-3 border-top">
-                <button class="btn btn-outline-secondary w-50" onclick="showDetail('${c.nama}', \`${c.visi.replace(/`/g, "'")}\`, \`${c.misi.replace(/`/g, "'")}\`)">
+                <button class="btn btn-outline-secondary w-50" onclick="showDetail('${safeNama}', \`${safeVisi}\`, \`${safeMisi}\`)">
                   <i class="bi bi-eye"></i> Detail
                 </button>
-                <button class="btn btn-primary w-50 fw-bold" onclick="castVote('${candId}', '${c.nama}')">
+                <button class="btn btn-primary w-50 fw-bold" onclick="castVote('${candId}', '${safeNama}')">
                   Pilih <i class="bi bi-check-circle"></i>
                 </button>
               </div>
@@ -103,7 +107,13 @@ async function loadElection() {
 
   } catch (error) {
     console.error("Error loading election:", error);
-    document.getElementById('votingStatusContainer').innerHTML = `<p class="text-danger">Terjadi kesalahan sistem.</p>`;
+    const container = document.getElementById('votingStatusContainer');
+    const activeContainer = document.getElementById('votingActiveContainer');
+    if (container && activeContainer) {
+      container.style.display = 'block';
+      activeContainer.style.display = 'none';
+      container.innerHTML = `<p class="text-danger fw-bold">Terjadi kesalahan saat memuat data kandidat.</p>`;
+    }
   }
 }
 

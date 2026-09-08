@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2';
 import { db, auth } from '../firebase.js';
 import { onAuthStateChanged } from 'firebase/auth';
-import { collection, doc, getDoc, getDocs, setDoc, addDoc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, setDoc, addDoc, updateDoc, deleteDoc, query, orderBy, where, limit } from 'firebase/firestore';
 
 let votingChart = null;
 
@@ -13,19 +13,23 @@ async function checkAdmin() {
         return resolve(false);
       }
       try {
-        const q = query(collection(db, "members"));
+        const q = query(collection(db, "members"), where("email", "==", user.email.toLowerCase().trim()), limit(1));
         const snap = await getDocs(q);
-        let isAdmin = false;
-        snap.forEach(docSnap => {
-          if (docSnap.data().email === user.email.toLowerCase().trim() && docSnap.data().role !== 'anggota') {
-            isAdmin = true;
-          }
-        });
-        if (!isAdmin) {
-          window.location.href = '/login.html';
+        
+        let role = 'admin';
+        if (!snap.empty) {
+          role = (snap.docs[0].data().role || 'admin').toLowerCase();
+        }
+
+        if (role !== 'admin') {
+          window.location.href = '/dashboard/index.html';
           return resolve(false);
         }
-        document.getElementById('adminName').textContent = user.displayName || 'Admin';
+        
+        const adminNameEl = document.getElementById('adminName');
+        if (adminNameEl) {
+           adminNameEl.textContent = user.displayName || 'Admin';
+        }
         resolve(true);
       } catch (e) {
         console.error(e);
