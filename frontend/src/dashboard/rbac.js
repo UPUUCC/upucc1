@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const isAllowed = allowedPaths.includes('*') || allowedPaths.some(path => {
                 const cleanPath = path.replace('.html', '');
                 return currentPath.includes(cleanPath);
-            }) || currentPath === '/dashboard/' || currentPath === '/dashboard';
+            });
 
             if (!isAllowed) {
                 // Jangan tampilkan pesan error jika user hanya mencoba ke index.html (langsung redirect saja)
