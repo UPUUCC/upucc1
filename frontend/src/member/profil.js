@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2';
 import { db, auth } from '../firebase.js';
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut, sendPasswordResetEmail } from "firebase/auth";
 import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -31,6 +31,38 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!user) {
             window.location.href = '/login.html';
             return;
+        }
+
+        const btnResetPassword = document.getElementById('btnResetPassword');
+        if (btnResetPassword) {
+            btnResetPassword.addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Reset Password?',
+                    text: `Kami akan mengirimkan link untuk mereset password ke email Anda (${user.email}).`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Kirim Email',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        btnResetPassword.disabled = true;
+                        btnResetPassword.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Mengirim...';
+                        
+                        sendPasswordResetEmail(auth, user.email)
+                            .then(() => {
+                                Swal.fire('Berhasil', 'Email reset password telah dikirim! Silakan periksa kotak masuk atau folder spam Anda.', 'success');
+                            })
+                            .catch((error) => {
+                                console.error(error);
+                                Swal.fire('Error', 'Gagal mengirim email reset: ' + error.message, 'error');
+                            })
+                            .finally(() => {
+                                btnResetPassword.disabled = false;
+                                btnResetPassword.innerHTML = '<i class="bi bi-key me-2"></i> Reset Password (via Email)';
+                            });
+                    }
+                });
+            });
         }
 
         // Fetch User Data from Firestore 'users' or 'anggota'
