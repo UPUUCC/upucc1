@@ -140,7 +140,7 @@ async function loadMembersForSelect() {
             
             // Tampilkan anggota jika sesuai divisi yang sedang aktif (atau jika admin belum pilih divisi, tampilkan semua)
             if(email && (!activeDivisiId || activeDivisiId === divisi_id)) {
-                select.innerHTML += <option value=" + email + "> + nama +  ( + email + )</option>;
+                select.innerHTML += '<option value="' + email + '">' + nama + ' (' + email + ')</option>';
             }
         });
     } catch (e) {

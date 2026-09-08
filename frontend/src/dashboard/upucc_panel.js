@@ -130,7 +130,7 @@ async function loadMembersForSelect() {
             const email = data.email || '';
             const nama = data.nama || 'Tanpa Nama';
             if(email) {
-                select.innerHTML += <option value=" + email + "> + nama +  ( + email + )</option>;
+                select.innerHTML += '<option value="' + email + '">' + nama + ' (' + email + ')</option>';
             }
         });
     } catch (e) {
