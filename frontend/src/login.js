@@ -110,7 +110,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 btnLogin.classList.replace('btn-primary', 'btn-success');
                 
                 // Default: arahkan ke dashboard admin
-                // Hanya arahkan ke member area jika email ditemukan di 'members' dengan role 'anggota'
                 let targetUrl = "/dashboard/index.html";
                 try {
                     const q = query(collection(db, "members"), where("email", "==", email.toLowerCase().trim()), limit(1));
@@ -119,8 +118,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const role = (snap.docs[0].data().role || '').toLowerCase();
                         if (role === 'anggota') {
                             targetUrl = "/member/profil.html"; // Anggota biasa
+                        } else if (role === 'kadiv' || role === 'wakadiv') {
+                            targetUrl = "/dashboard/kadiv_panel.html"; // Kadiv langsung ke panel divisi
+                        } else if (role === 'sekretaris') {
+                            targetUrl = "/dashboard/pendaftaran.html"; // Sekretaris langsung ke pendaftaran
+                        } else if (role === 'bendahara') {
+                            targetUrl = "/dashboard/keuangan.html"; // Bendahara langsung ke kas
                         }
-                        // role lain (admin, bendahara, dll) → tetap dashboard
+                        // role lain (admin, ketum, dll) → tetap dashboard utama
                     }
                     // Jika tidak ditemukan di members → tetap dashboard (akun admin langsung)
                 } catch(e) {

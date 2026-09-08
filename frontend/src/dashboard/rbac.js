@@ -43,7 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 1. Cek apakah role diizinkan membuka halaman ini
             const allowedPaths = ROLE_PERMISSIONS[role] || [];
-            const isAllowed = allowedPaths.includes('*') || allowedPaths.some(path => currentPath.includes(path)) || currentPath === '/dashboard/' || currentPath === '/dashboard';
+            const isAllowed = allowedPaths.includes('*') || allowedPaths.some(path => {
+                const cleanPath = path.replace('.html', '');
+                return currentPath.includes(cleanPath);
+            }) || currentPath === '/dashboard/' || currentPath === '/dashboard';
 
             if (!isAllowed) {
                 Swal.fire({
