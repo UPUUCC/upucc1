@@ -86,7 +86,7 @@ async function loadElection() {
         <div class="col-md-6 col-lg-5">
           <div class="candidate-card h-100 d-flex flex-column position-relative">
             <div class="no-urut">${c.nomorUrut || '-'}</div>
-            <img src="${c.photoUrl || 'https://via.placeholder.com/400x300'}" class="candidate-photo" alt="${c.nama}">
+            <img src="${c.photoUrl || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(c.nama || 'No Name') + '&background=e2e8f0&color=475569&size=400'}" onerror="this.src='https://ui-avatars.com/api/?name=' + encodeURIComponent('${safeNama}') + '&background=e2e8f0&color=475569&size=400'" class="candidate-photo" alt="${c.nama}">
             <div class="p-4 d-flex flex-column flex-grow-1">
               <h5 class="fw-bold mb-3 text-center">${c.nama || 'Tanpa Nama'}</h5>
               <div class="d-flex justify-content-center gap-2 mt-auto pt-3 border-top">

@@ -3,6 +3,28 @@ import { db, auth } from '../firebase.js';
 import { onAuthStateChanged } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, setDoc, addDoc, updateDoc, deleteDoc, query, orderBy, where, limit } from 'firebase/firestore';
 
+const CLOUDINARY_CLOUD_NAME = "xg0djsvz";
+const CLOUDINARY_UPLOAD_PRESET = "ml_default";
+
+async function uploadToCloudinary(file) {
+    if (!file) return '';
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+        if (data.secure_url) return data.secure_url;
+        throw new Error(data.error?.message || 'Gagal upload gambar');
+    } catch (err) {
+        console.error("Cloudinary Error:", err);
+        throw new Error("Gagal mengupload gambar ke Cloudinary.");
+    }
+}
+
 let votingChart = null;
 
 async function checkAdmin() {
@@ -195,8 +217,14 @@ document.getElementById('formAddCandidate').addEventListener('submit', async (e)
     const nama = document.getElementById('candName').value;
     const visi = document.getElementById('candVision').value;
     const misi = document.getElementById('candMission').value;
-    const photoUrl = document.getElementById('candPhotoUrl').value;
     
+    let photoUrl = document.getElementById('candPhotoUrl').value;
+    const photoFile = document.getElementById('candPhotoFile');
+    
+    if (photoFile.files.length > 0) {
+        photoUrl = await uploadToCloudinary(photoFile.files[0]);
+    }
+
     await addDoc(collection(db, "candidates"), {
       nomorUrut: no,
       nama: nama,
