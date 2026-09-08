@@ -146,20 +146,36 @@
 
 <!-- Modal Detail -->
 <div class="modal fade" id="modalDetail" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content rounded-4 border-0">
-      <div class="modal-header border-0 pb-0">
-        <h5 class="fw-bold modal-title" id="modalCandName">Nama Kandidat</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header border-0 bg-primary text-white" style="border-radius: 16px 16px 0 0; padding: 20px 24px; background: linear-gradient(135deg, #2563eb, #1e3a8a);">
+        <div>
+          <span class="badge bg-white text-primary mb-2 rounded-pill px-3 shadow-sm">Profil Kandidat</span>
+          <h4 class="fw-bold modal-title mb-0" id="modalCandName">Nama Kandidat</h4>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body p-4">
-        <h6 class="fw-bold text-primary">Visi</h6>
-        <p id="modalCandVision" class="text-muted"></p>
-        <h6 class="fw-bold text-primary mt-4">Misi</h6>
-        <p id="modalCandMission" class="text-muted" style="white-space: pre-wrap;"></p>
+      <div class="modal-body p-4 p-md-5" style="background-color: #f1f5f9;">
+        <div class="card border-0 shadow-sm rounded-4 mb-4" style="border-left: 5px solid #2563eb !important;">
+          <div class="card-body p-4">
+            <h6 class="fw-bold text-primary mb-3 text-uppercase" style="letter-spacing: 1px;">
+              <i class="bi bi-eye-fill me-2 fs-5"></i> Visi Utama
+            </h6>
+            <p id="modalCandVision" class="text-secondary mb-0" style="font-size: 1.1rem; line-height: 1.6;"></p>
+          </div>
+        </div>
+        
+        <div class="card border-0 shadow-sm rounded-4" style="border-left: 5px solid #10b981 !important;">
+          <div class="card-body p-4">
+            <h6 class="fw-bold text-success mb-3 text-uppercase" style="letter-spacing: 1px;">
+              <i class="bi bi-bullseye me-2 fs-5"></i> Misi & Program Kerja
+            </h6>
+            <p id="modalCandMission" class="text-secondary mb-0" style="white-space: pre-wrap; font-size: 1.05rem; line-height: 1.7;"></p>
+          </div>
+        </div>
       </div>
-      <div class="modal-footer border-0 pt-0">
-        <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Tutup</button>
+      <div class="modal-footer border-0 pb-4 pe-4" style="background-color: #f1f5f9; border-radius: 0 0 16px 16px;">
+        <button type="button" class="btn btn-dark rounded-pill px-5 fw-semibold" data-bs-dismiss="modal">Tutup</button>
       </div>
     </div>
   </div>
