@@ -42,7 +42,14 @@ async function loadBlogDetail() {
         }
 
         const date = data.createdAt ? data.createdAt.toDate().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'}) : '-';
-        const fullText = data.isi ? data.isi.replace(/\n/g, '<br>') : '';
+        
+        // Mempercantik paragraf dan spasi
+        let isi = data.isi || '';
+        // Bungkus setiap blok teks yang dipisah enter ganda menjadi paragraf
+        const fullText = isi.split(/\n\s*\n/).map(p => 
+            `<p style="margin-bottom: 1.8rem;">${p.replace(/\n/g, '<br>')}</p>`
+        ).join('');
+        
         const author = data.author || 'Admin UPUCC';
 
         blogDetailContainer.innerHTML = `
@@ -53,18 +60,20 @@ async function loadBlogDetail() {
                     </a>
                 </div>
                 <div class="mb-2">
-                    <span class="badge bg-primary px-3 py-2 rounded-pill">${data.kategori}</span>
+                    <span class="badge bg-primary px-3 py-2 rounded-pill shadow-sm">${data.kategori}</span>
                 </div>
-                <h1 class="fw-bold mb-3" style="color: #1e293b;">${data.judul}</h1>
-                <div class="d-flex align-items-center text-muted mb-4 gap-3">
-                    <span><i class="bi bi-person-circle me-1"></i> ${author}</span>
-                    <span><i class="bi bi-calendar3 me-1"></i> ${date}</span>
+                <h1 class="fw-bold mb-3" style="color: #0f172a; font-size: 2.2rem; line-height: 1.3;">${data.judul}</h1>
+                <div class="d-flex align-items-center text-secondary mb-4 gap-3 fw-medium">
+                    <span><i class="bi bi-person-circle me-1 text-primary"></i> ${author}</span>
+                    <span><i class="bi bi-calendar3 me-1 text-primary"></i> ${date}</span>
                 </div>
             </div>
             
-            <img src="${data.gambar}" class="img-fluid rounded-4 mb-5 shadow-sm w-100" style="max-height: 400px; object-fit: cover; background-color: #f8f9fa;" alt="${data.judul}">
+            <div class="rounded-4 overflow-hidden mb-5 shadow-sm bg-light">
+                <img src="${data.gambar}" class="img-fluid w-100" style="max-height: 450px; object-fit: cover;" alt="${data.judul}">
+            </div>
             
-            <div class="blog-content" style="font-size: 1.1rem; text-align: justify; line-height: 1.8; color: #334155;">
+            <div class="blog-content" style="font-size: 1.15rem; text-align: justify; line-height: 2; color: #334155; letter-spacing: 0.2px;">
                 ${fullText}
             </div>
         `;

@@ -31,52 +31,65 @@ async function loadShowcaseDetail() {
 
         const data = docSnap.data();
         const date = data.createdAt ? data.createdAt.toDate().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'}) : '-';
-        const fullDesc = data.deskripsi ? data.deskripsi.replace(/\n/g, '<br>') : '';
+        
+        let deskripsi = data.deskripsi || '';
+        const fullDesc = deskripsi.split(/\n\s*\n/).map(p => 
+            `<p style="margin-bottom: 1.8rem;">${p.replace(/\n/g, '<br>')}</p>`
+        ).join('');
+        
         const author = data.author || 'Anggota UPUCC';
 
         let mediaHTML = '';
         if (data.mediaUrl) {
             if (data.mediaUrl.match(/\.(jpeg|jpg|gif|png)$/i)) {
-                mediaHTML = `<img src="${data.mediaUrl}" class="img-fluid rounded-4 shadow-sm w-100 mb-4" style="max-height: 500px; object-fit: contain; background-color: #0f172a;" alt="${data.judul}">`;
+                mediaHTML = `
+                <div class="rounded-4 overflow-hidden mb-5 shadow-sm bg-dark border border-secondary border-opacity-25">
+                    <img src="${data.mediaUrl}" class="img-fluid w-100" style="max-height: 550px; object-fit: contain;" alt="${data.judul}">
+                </div>`;
             } else if (data.mediaUrl.match(/\.(mp4|webm|ogg)$/i)) {
                 mediaHTML = `
-                    <video controls class="w-100 rounded-4 shadow-sm mb-4" style="max-height: 500px; background-color: #0f172a;">
-                        <source src="${data.mediaUrl}" type="video/mp4">
-                        Video format tidak didukung browser.
-                    </video>`;
+                    <div class="rounded-4 overflow-hidden mb-5 shadow-sm bg-dark border border-secondary border-opacity-25">
+                        <video controls class="w-100" style="max-height: 550px;">
+                            <source src="${data.mediaUrl}" type="video/mp4">
+                            Video format tidak didukung browser.
+                        </video>
+                    </div>`;
             } else {
-                mediaHTML = `<img src="${data.mediaUrl}" class="img-fluid rounded-4 shadow-sm w-100 mb-4" style="max-height: 500px; object-fit: cover;" alt="${data.judul}">`;
+                mediaHTML = `
+                <div class="rounded-4 overflow-hidden mb-5 shadow-sm bg-dark border border-secondary border-opacity-25">
+                    <img src="${data.mediaUrl}" class="img-fluid w-100" style="max-height: 550px; object-fit: cover;" alt="${data.judul}">
+                </div>`;
             }
         }
 
         const repoHTML = data.repoUrl ? `
-            <div class="mt-5 p-4 rounded-4" style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2);">
-                <h5 class="fw-bold mb-3 d-flex align-items-center"><i class="bi bi-github me-2"></i> Tautan Repositori / Demo</h5>
-                <a href="${data.repoUrl}" target="_blank" class="btn btn-primary rounded-pill px-4">Buka Tautan <i class="bi bi-box-arrow-up-right ms-2"></i></a>
+            <div class="mt-5 p-4 rounded-4 shadow-sm" style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3);">
+                <h5 class="fw-bold mb-3 d-flex align-items-center text-primary"><i class="bi bi-github me-2"></i> Tautan Repositori / Demo</h5>
+                <a href="${data.repoUrl}" target="_blank" class="btn btn-primary rounded-pill px-4 shadow-sm">Buka Tautan <i class="bi bi-box-arrow-up-right ms-2"></i></a>
             </div>
         ` : '';
 
         showcaseDetailContainer.innerHTML = `
-            <div class="mb-4">
+            <div class="mb-5">
                 <div class="mb-4">
                     <a href="/showcase.html" class="btn btn-outline-light btn-sm">
                         <i class="bi bi-arrow-left"></i> Kembali ke Galeri
                     </a>
                 </div>
                 <div class="mb-2">
-                    <span class="badge bg-primary px-3 py-2 rounded-pill">${data.kategori}</span>
+                    <span class="badge bg-primary px-3 py-2 rounded-pill shadow-sm">${data.kategori}</span>
                 </div>
-                <h1 class="fw-bold mb-3">${data.judul}</h1>
-                <div class="d-flex align-items-center text-light opacity-75 mb-4 gap-3">
-                    <span><i class="bi bi-person-circle me-1"></i> ${author}</span>
-                    <span><i class="bi bi-calendar3 me-1"></i> ${date}</span>
+                <h1 class="fw-bold mb-3 text-white" style="font-size: 2.2rem; line-height: 1.3;">${data.judul}</h1>
+                <div class="d-flex align-items-center text-light opacity-75 mb-4 gap-3 fw-medium">
+                    <span><i class="bi bi-person-circle me-1 text-primary"></i> ${author}</span>
+                    <span><i class="bi bi-calendar3 me-1 text-primary"></i> ${date}</span>
                 </div>
             </div>
             
             ${mediaHTML}
             
-            <div class="showcase-content mt-4" style="font-size: 1.1rem; text-align: justify; line-height: 1.8; color: #cbd5e1;">
-                <h4 class="fw-bold mb-3 text-white">Deskripsi Karya</h4>
+            <div class="showcase-content mt-4" style="font-size: 1.15rem; text-align: justify; line-height: 2; color: #cbd5e1; letter-spacing: 0.2px;">
+                <h4 class="fw-bold mb-4 text-white" style="font-size: 1.4rem;"><i class="bi bi-journal-text text-primary me-2"></i> Deskripsi Karya</h4>
                 ${fullDesc}
             </div>
 
