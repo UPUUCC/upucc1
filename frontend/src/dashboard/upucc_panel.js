@@ -119,7 +119,7 @@ async function loadMembersForSelect() {
     if (!select) return;
     
     try {
-        const q = query(collection(db, 'members'), orderBy('nama'));
+        const q = query(collection(db, 'members'));
         const snap = await getDocs(q);
         
         // Keep the first option (all)
@@ -511,6 +511,7 @@ window.deleteDocItem = async (collectionName, id, reloadCallback) => {
         } catch (e) { Swal.fire('Gagal', 'Terjadi kesalahan.', 'error'); }
     }
 };
+
 
 
 

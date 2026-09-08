@@ -100,23 +100,24 @@ async function loadSertifikat(divisiId) {
     try {
         const userEmail = currentMember ? currentMember.email : '';
         const qDivisi = query(collection(db, "certificates"), where("divisi_id", "==", divisiId));
-        const qPusatAll = query(collection(db, "certificates"), where("divisi_id", "==", "upucc"), where("member_email", "==", "all"));
-        const qPusatSpecific = userEmail ? query(collection(db, "certificates"), where("divisi_id", "==", "upucc"), where("member_email", "==", userEmail)) : null;
+        const qPusat = query(collection(db, "certificates"), where("divisi_id", "==", "upucc"));
         
-        const promises = [getDocs(qDivisi), getDocs(qPusatAll)];
-        if(qPusatSpecific) promises.push(getDocs(qPusatSpecific));
-        
-        const results = await Promise.all(promises);
+        const [snapDivisi, snapPusat] = await Promise.all([getDocs(qDivisi), getDocs(qPusat)]);
         
         let docsArray = [];
-        results.forEach(snap => {
-            snap.forEach(docSnap => {
-                const data = docSnap.data();
-                const email = data.member_email;
-                if (!email || email === 'all' || email === userEmail) {
-                    if(!docsArray.find(d => d.id === docSnap.id)) docsArray.push({ id: docSnap.id, ...data });
-                }
-            });
+        snapDivisi.forEach(docSnap => {
+            const data = docSnap.data();
+            const email = data.member_email;
+            if (!email || email === 'all' || email === userEmail) {
+                docsArray.push({ id: docSnap.id, ...data });
+            }
+        });
+        snapPusat.forEach(docSnap => {
+            const data = docSnap.data();
+            const email = data.member_email;
+            if (!email || email === 'all' || email === userEmail) {
+                if(!docsArray.find(d => d.id === docSnap.id)) docsArray.push({ id: docSnap.id, ...data });
+            }
         });
         docsArray.sort((a, b) => (b.created_at?.toMillis() || 0) - (a.created_at?.toMillis() || 0));
 
@@ -199,5 +200,6 @@ async function checkAbsensiQR(divisiId) {
     // Tapi karena tidak ada kontainer khusus di dashboard.js (kecuali tombol di profil),
     // kita biarkan saja. Logika pembacaan akan diurus di scan.html jika ada.
 }
+
 
 

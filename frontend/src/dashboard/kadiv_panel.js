@@ -125,7 +125,7 @@ async function loadMembersForSelect() {
     if (!select) return;
     
     try {
-        let q = query(collection(db, 'members'), orderBy('nama'));
+        let q = query(collection(db, 'members'));
         // Jika activeDivisiId ada (bukan admin yang belum milih), kita filter di frontend saja agar mudah
         const snap = await getDocs(q);
         
@@ -521,4 +521,5 @@ window.deleteDocItem = async (collectionName, id, reloadCallback) => {
         } catch (e) { Swal.fire('Gagal', 'Terjadi kesalahan.', 'error'); }
     }
 };
+
 
