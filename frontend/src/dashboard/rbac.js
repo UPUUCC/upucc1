@@ -12,8 +12,8 @@ const ROLE_PERMISSIONS = {
     'wakil_bendahara': ['/dashboard/upucc_panel.html', '/dashboard/keuangan.html', '/dashboard/logout.html'], // Akses ke semua menu
     'bendahara': ['/dashboard/upucc_panel.html', '/dashboard/keuangan.html', '/dashboard/logout.html'],
     'sekretaris': ['/dashboard/upucc_panel.html', '/dashboard/pendaftaran.html', '/dashboard/logout.html'],
-    'kadiv': ['/dashboard/kadiv_panel.html', '/dashboard/logout.html'],
-    'wakadiv': ['/dashboard/kadiv_panel.html', '/dashboard/logout.html']
+    'kadiv': ['/dashboard/kadiv_panel.html', '/dashboard/blog_admin.html', '/dashboard/logout.html'],
+    'wakadiv': ['/dashboard/kadiv_panel.html', '/dashboard/blog_admin.html', '/dashboard/logout.html']
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -118,4 +118,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
