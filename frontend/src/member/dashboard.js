@@ -268,8 +268,8 @@ function renderKta() {
         ktaQrCode.innerHTML = ''; // clear
         new QRCode(ktaQrCode, {
             text: currentMember.email,
-            width: 80,
-            height: 80
+            width: 65,
+            height: 65
         });
     }
 
