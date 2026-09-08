@@ -21,7 +21,8 @@ async function fetchBlogs() {
         snapshot.forEach(docSnap => {
             const data = docSnap.data();
             const id = docSnap.id;
-            if (data.status && data.status !== 'approved') return;
+            // Sembunyikan hanya jika status = 'pending' atau 'rejected'
+            if (data.status === 'pending' || data.status === 'rejected') return;
 
             const date = data.createdAt ? data.createdAt.toDate().toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'}) : 'Baru saja';
             const isi = data.isi || '';
