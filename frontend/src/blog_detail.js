@@ -56,7 +56,7 @@ async function loadBlogDetail() {
         let isi = data.isi || '';
         // Bungkus setiap blok teks yang dipisah enter ganda menjadi paragraf
         const fullText = isi.split(/\n\s*\n/).map(p => 
-            `<p style="margin-bottom: 1.2rem;">${linkify(p).replace(/\n/g, '<br>')}</p>`
+            `<p style="margin-bottom: 1rem;">${linkify(p).replace(/\n/g, '<br>')}</p>`
         ).join('');
         
         const author = data.author || 'Admin UPUCC';
@@ -82,7 +82,7 @@ async function loadBlogDetail() {
                 <img src="${data.gambar}" class="img-fluid w-100" style="max-height: 450px; object-fit: cover;" alt="${data.judul}">
             </div>
             
-            <div class="blog-content" style="font-size: 1.15rem; text-align: justify; line-height: 1.7; color: #334155; letter-spacing: 0.2px;">
+            <div class="blog-content" style="font-size: 1.05rem; text-align: justify; line-height: 1.5; color: #334155; letter-spacing: 0.2px;">
                 ${fullText}
             </div>
         `;

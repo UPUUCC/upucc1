@@ -43,7 +43,7 @@ async function loadShowcaseDetail() {
 
         let deskripsi = data.deskripsi || '';
         const fullDesc = deskripsi.split(/\n\s*\n/).map(p => 
-            `<p style="margin-bottom: 1.2rem;">${linkify(p).replace(/\n/g, '<br>')}</p>`
+            `<p style="margin-bottom: 1rem;">${linkify(p).replace(/\n/g, '<br>')}</p>`
         ).join('');
         
         const author = data.author || 'Anggota UPUCC';
@@ -97,7 +97,7 @@ async function loadShowcaseDetail() {
             
             ${mediaHTML}
             
-            <div class="showcase-content mt-4" style="font-size: 1.15rem; text-align: justify; line-height: 1.7; color: #cbd5e1; letter-spacing: 0.2px;">
+            <div class="showcase-content mt-4" style="font-size: 1.05rem; text-align: justify; line-height: 1.5; color: #cbd5e1; letter-spacing: 0.2px;">
                 <h4 class="fw-bold mb-4 text-white" style="font-size: 1.4rem;"><i class="bi bi-journal-text text-primary me-2"></i> Deskripsi Karya</h4>
                 ${fullDesc}
             </div>
