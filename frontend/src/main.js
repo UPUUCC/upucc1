@@ -74,12 +74,14 @@ async function fetchHomeData() {
         const logoSrc = d.logoUrl || (d.logo ? (d.logo.startsWith('http') ? d.logo : `/uploads/divisi/${d.logo}`) : 'https://via.placeholder.com/90?text=' + d.nama.substring(0,1));
         divHTML += `
         <div class="col-md-3 col-6">
-          <a href="/informasi_divisi.html?slug=${d.slug || docSnap.id}" class="text-decoration-none text-dark">
-            <div class="card card-divisi h-100 text-center">
-              <img src="${logoSrc}" class="logo-divisi" alt="${d.nama}">
-              <div class="card-body">
-                <h5 class="card-title">${d.nama}</h5>
+          <a href="/informasi_divisi.html?slug=${d.slug || docSnap.id}" class="text-decoration-none">
+            <div class="card-divisi-home">
+              <div class="cdh-accent"></div>
+              <div class="cdh-logo-wrap">
+                <img src="${logoSrc}" class="cdh-logo" alt="${d.nama}">
               </div>
+              <h5 class="cdh-title">${d.nama}</h5>
+              <div class="cdh-arrow"><i class="bi bi-arrow-right"></i></div>
             </div>
           </a>
         </div>`;
