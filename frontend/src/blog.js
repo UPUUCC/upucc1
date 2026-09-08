@@ -24,16 +24,21 @@ async function fetchBlogs() {
             const date = data.createdAt ? data.createdAt.toDate().toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'}) : 'Baru saja';
             
             // Limit characters for summary
-            const summary = data.isi.length > 100 ? data.isi.substring(0, 100) + '...' : data.isi;
-            const fullText = data.isi.replace(/\n/g, '<br>');
+            const isi = data.isi || '';
+            const summary = isi.length > 100 ? isi.substring(0, 100) + '...' : isi;
+            const fullText = isi.replace(/\n/g, '<br>');
+
+            const kategori = data.kategori || 'Artikel';
+            const gambar = data.gambar || 'https://via.placeholder.com/400x200?text=No+Image';
+            const judul = data.judul || 'Tanpa Judul';
 
             cardsHTML += `
                 <div class="col-md-4 mb-4">
                     <div class="card blog-card h-100 shadow-sm border-0">
-                        <span class="badge bg-primary position-absolute m-3 px-3 py-2 rounded-pill shadow-sm" style="z-index: 2;">${data.kategori}</span>
-                        <img src="${data.gambar}" class="card-img-top" alt="${data.judul}" style="height: 200px; object-fit: contain; background-color: #f8f9fa;">
+                        <span class="badge bg-primary position-absolute m-3 px-3 py-2 rounded-pill shadow-sm" style="z-index: 2;">${kategori}</span>
+                        <img src="${gambar}" class="card-img-top" alt="${judul}" style="height: 200px; object-fit: contain; background-color: #f8f9fa;">
                         <div class="card-body p-4 d-flex flex-column">
-                            <h5 class="card-title fw-bold text-dark">${data.judul}</h5>
+                            <h5 class="card-title fw-bold text-dark">${judul}</h5>
                             <p class="card-text text-muted small mb-3">${summary}</p>
                             <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
                                 <small class="text-muted fw-medium"><i class="bi bi-calendar3 me-1"></i> ${date}</small>
@@ -49,13 +54,7 @@ async function fetchBlogs() {
 
         blogContainer.innerHTML = cardsHTML;
         
-        let modalContainer = document.getElementById('blogModalsContainer');
-        if (!modalContainer) {
-            modalContainer = document.createElement('div');
-            modalContainer.id = 'blogModalsContainer';
-            document.body.appendChild(modalContainer);
-        }
-        modalContainer.innerHTML = modalsHTML;
+        // Modals are handled in detail page now
 
     } catch (error) {
         console.error("Error fetching blogs: ", error);
