@@ -261,7 +261,7 @@ function renderKta() {
     let divName = currentMember.divisi || currentMember.divisi_name || currentMember.divisi_id || 'UMUM';
     divName = divName.replace(/^\d+_/, '').replace(/_/g, ' ');
     if (ktaDivisi) ktaDivisi.textContent = "DIVISI " + divName.toUpperCase();
-    if (ktaEmail) ktaEmail.textContent = currentMember.email;
+    if (ktaEmail) ktaEmail.textContent = "NIM: " + (currentMember.nim || currentMember.npm || '-');
     
     // Generate QR
     if (ktaQrCode) {
