@@ -74,7 +74,7 @@ async function fetchHomeData() {
         const logoSrc = d.logoUrl || (d.logo ? (d.logo.startsWith('http') ? d.logo : `/uploads/divisi/${d.logo}`) : 'https://via.placeholder.com/90?text=' + d.nama.substring(0,1));
         divHTML += `
         <div class="col-md-3 col-6">
-          <a href="/informasi_divisi.html?slug=${d.slug}" class="text-decoration-none text-dark">
+          <a href="/informasi_divisi.html?slug=${d.slug || docSnap.id}" class="text-decoration-none text-dark">
             <div class="card card-divisi h-100 text-center">
               <img src="${logoSrc}" class="logo-divisi" alt="${d.nama}">
               <div class="card-body">
