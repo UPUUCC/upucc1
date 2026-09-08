@@ -5,9 +5,13 @@ import { collection, query, where, limit, getDocs } from 'firebase/firestore';
 
 // Peta menu yang diperbolehkan untuk setiap role
 const ROLE_PERMISSIONS = {
-    'admin': ['*'], // Akses ke semua menu
-    'bendahara': ['/dashboard/keuangan.html', '/dashboard/logout.html'],
-    'sekretaris': ['/dashboard/pendaftaran.html', '/dashboard/logout.html'],
+    'admin': ['*'],
+    'ketum': ['/dashboard/upucc_panel.html'],
+    'waketum': ['/dashboard/upucc_panel.html'],
+    'wakil_sekretaris': ['/dashboard/upucc_panel.html', '/dashboard/pendaftaran.html', '/dashboard/logout.html'],
+    'wakil_bendahara': ['/dashboard/upucc_panel.html', '/dashboard/keuangan.html', '/dashboard/logout.html'], // Akses ke semua menu
+    'bendahara': ['/dashboard/upucc_panel.html', '/dashboard/keuangan.html', '/dashboard/logout.html'],
+    'sekretaris': ['/dashboard/upucc_panel.html', '/dashboard/pendaftaran.html', '/dashboard/logout.html'],
     'kadiv': ['/dashboard/kadiv_panel.html', '/dashboard/logout.html'],
     'wakadiv': ['/dashboard/kadiv_panel.html', '/dashboard/logout.html']
 };
@@ -114,3 +118,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
