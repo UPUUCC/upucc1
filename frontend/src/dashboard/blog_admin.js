@@ -33,6 +33,7 @@ const btnCancel = document.getElementById('btnCancel');
 const formTitle = document.getElementById('formTitle');
 
 let editingId = null;
+let loadedBlogs = {};
 
 async function fetchBlogs() {
     tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Memuat data...</td></tr>';
@@ -41,6 +42,7 @@ async function fetchBlogs() {
         const snapshot = await getDocs(q);
         
         tableBody.innerHTML = '';
+        loadedBlogs = {};
         if (snapshot.empty) {
             tableBody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Belum ada artikel.</td></tr>';
             return;
@@ -49,6 +51,7 @@ async function fetchBlogs() {
         snapshot.forEach(docSnap => {
             const data = docSnap.data();
             const id = docSnap.id;
+            loadedBlogs[id] = data;
             const date = data.createdAt ? data.createdAt.toDate().toLocaleDateString('id-ID') : 'Baru saja';
             let statusBadge = data.status === 'pending' ? '<span class="badge bg-warning text-dark">Pending</span>' : '<span class="badge bg-success">Published</span>';
             let approveBtn = data.status === 'pending' ? `<button class="btn btn-sm btn-outline-success me-1" onclick="approveBlog('${id}')" title="Approve"><i class="bi bi-check-lg"></i></button>` : '';
@@ -62,7 +65,7 @@ async function fetchBlogs() {
                     <td>${statusBadge}</td>
                     <td>
                         ${approveBtn}
-                        <button class="btn btn-sm btn-outline-primary me-1" onclick="editBlog('${id}', \`${data.judul}\`, '${data.kategori}', '${data.gambar}', \`${data.isi}\`)" title="Edit"><i class="bi bi-pencil"></i></button>
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick="editBlog('${id}')" title="Edit"><i class="bi bi-pencil"></i></button>
                         <button class="btn btn-sm btn-outline-danger" onclick="deleteBlog('${id}')" title="Hapus"><i class="bi bi-trash"></i></button>
                     </td>
                 </tr>
@@ -125,11 +128,14 @@ window.deleteBlog = async (id) => {
     }
 };
 
-window.editBlog = (id, judul, kategori, gambar, isi) => {
+window.editBlog = (id) => {
+    const blog = loadedBlogs[id];
+    if (!blog) return;
+    
     editingId = id;
-    document.getElementById('judul').value = judul;
-    document.getElementById('kategori').value = kategori;
-    document.getElementById('isi').value = isi;
+    document.getElementById('judul').value = blog.judul || '';
+    document.getElementById('kategori').value = blog.kategori || 'Umum';
+    document.getElementById('isi').value = blog.isi || '';
     document.getElementById('gambarFile').removeAttribute('required'); // tidak wajib diisi saat edit
     
     formTitle.textContent = 'Edit Artikel';
