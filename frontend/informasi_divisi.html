@@ -71,18 +71,32 @@
   </div>
 </nav>
 
-<div class="container my-5 animate-on-load delay-1">
-  <div id="divisiHeader">
-    <div class="text-center my-4">
-      <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+<!-- Hero Banner Divisi -->
+<div class="divisi-hero-banner" id="divisiHeroBanner">
+  <div class="divisi-hero-overlay"></div>
+  <div class="container divisi-hero-content">
+    <div id="divisiHeader" class="animate-on-load delay-1">
+      <div class="text-center">
+        <div class="spinner-border text-light" role="status"><span class="visually-hidden">Loading...</span></div>
+      </div>
     </div>
   </div>
-
-  <h4 class="mt-4">Pengurus Divisi</h4>
-  <div class="row g-3" id="divisiMembers">
+  <div class="divisi-hero-wave">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none"><path fill="#f8fafc" d="M0,48L80,42.7C160,37,320,27,480,32C640,37,800,59,960,64C1120,69,1280,59,1360,53.3L1440,48L1440,80L1360,80C1280,80,1120,80,960,80C800,80,640,80,480,80C320,80,160,80,80,80L0,80Z"/></svg>
   </div>
+</div>
 
-  <a href="informasi.html" class="btn btn-outline-primary mt-4"><i class="bi bi-arrow-left"></i> Kembali ke Informasi</a>
+<!-- Pengurus Divisi Section -->
+<div class="container my-5 animate-on-load delay-2">
+  <div class="text-center mb-4">
+    <h2 class="section-title">Pengurus Divisi</h2>
+    <p class="text-muted">Kenali pengurus dan anggota divisi kami</p>
+  </div>
+  <div class="row g-4" id="divisiMembers"></div>
+
+  <div class="text-center mt-5">
+    <a href="/informasi.html" class="btn-back-divisi"><i class="bi bi-arrow-left me-2"></i>Kembali ke Informasi</a>
+  </div>
 </div>
 
 <footer class="upucc-footer text-light mt-5">

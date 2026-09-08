@@ -65,11 +65,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const logoSrc = divisiData.logoUrl || (divisiData.logo ? (divisiData.logo.startsWith('http') ? divisiData.logo : `uploads/divisi/${divisiData.logo}`) : `https://ui-avatars.com/api/?name=${initial}&background=e2e8f0&color=475569&size=128&bold=true`);
 
     headerContainer.innerHTML = `
-      <div class="text-center mb-5">
-        <img src="${logoSrc}" class="mb-3 rounded-circle shadow-sm" style="width:120px;height:120px;object-fit:cover; border:4px solid #fff;" alt="Logo ${divisiData.nama}">
-        <h2 class="fw-bold text-primary mb-3 display-6">Divisi ${divisiData.nama}</h2>
-        <p class="text-muted mx-auto" style="max-width: 800px; font-size:1.05rem; line-height:1.7; white-space:pre-line;">${nl2br(divisiData.deskripsi || 'Belum ada deskripsi.')}</p>
-      </div>
+      <img src="${logoSrc}" class="divisi-hero-logo" alt="Logo ${divisiData.nama}">
+      <span class="info-badge"><i class="bi bi-grid-3x3-gap me-2"></i>Divisi UPUCC</span>
+      <h1 class="divisi-hero-name mt-2">Divisi <span class="highlight">${divisiData.nama}</span></h1>
+      <p class="divisi-hero-desc">${divisiData.deskripsi ? divisiData.deskripsi.substring(0,220) + (divisiData.deskripsi.length > 220 ? '...' : '') : 'Belum ada deskripsi.'}</p>
     `;
 
     // 2. Fetch Pengurus
@@ -106,12 +105,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       const fotoUrl = p.fotoUrl || (p.foto ? (p.foto.startsWith('http') ? p.foto : `uploads/anggota/${p.foto}`) : fallbackFoto);
       const jabatanText = p.jabatan_text || p.jabatan || labelRole(p.role);
       
+      const isLeader = ['kadiv','wakadiv'].includes(p.role ? p.role.toLowerCase() : '');
       membersHTML += `
       <div class="col-md-3 col-6">
-        <div class="struktur-card">
-          <img src="${fotoUrl}" alt="${namaAnggota}">
-          <h6 class="mb-0 text-truncate" title="${namaAnggota}">${namaAnggota}</h6>
-          <div class="jabatan">${jabatanText}</div>
+        <div class="pengurus-card${isLeader ? ' is-leader' : ''}">
+          <div class="pengurus-card-img-wrap">
+            <img src="${fotoUrl}" alt="${namaAnggota}">
+          </div>
+          <h6 class="text-truncate" title="${namaAnggota}">${namaAnggota}</h6>
+          <div class="jabatan-text">${jabatanText}</div>
         </div>
       </div>
       `;

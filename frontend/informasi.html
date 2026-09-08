@@ -71,13 +71,40 @@
   </div>
 </nav>
 
-<div class="container my-5 animate-on-load delay-1 text-center">
-  <h2 class="section-title">Informasi UPUCC</h2>
-  <p class="lead mx-auto" id="infoUmumText" style="white-space:pre-line; max-width: 800px;">Memuat informasi...</p>
+<!-- Hero Banner -->
+<div class="info-hero-banner">
+  <div class="info-hero-overlay"></div>
+  <div class="container info-hero-content">
+    <div class="animate-on-load delay-1">
+      <span class="info-badge"><i class="bi bi-info-circle me-2"></i>Tentang Kami</span>
+      <h1 class="info-hero-title">Informasi <span class="info-hero-highlight">UPUCC</span></h1>
+      <p class="info-hero-subtitle">Universitas Potensi Utama Computer Club &mdash; Wadah mahasiswa berinovasi di bidang teknologi</p>
+    </div>
+  </div>
+  <div class="info-hero-wave">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none"><path fill="#f8fafc" d="M0,48L80,42.7C160,37,320,27,480,32C640,37,800,59,960,64C1120,69,1280,59,1360,53.3L1440,48L1440,80L1360,80C1280,80,1120,80,960,80C800,80,640,80,480,80C320,80,160,80,80,80L0,80Z"/></svg>
+  </div>
+</div>
 
-  <h3 class="section-title mt-5">Informasi Masing-Masing Divisi</h3>
-  <div class="row justify-content-center g-4 mt-2" id="divisiContainer">
-    <div class="col-12 text-center text-muted">
+<!-- Info Umum Section -->
+<div class="container my-5 animate-on-load delay-1">
+  <div class="info-umum-card">
+    <div class="info-umum-icon"><i class="bi bi-building"></i></div>
+    <div class="info-umum-body">
+      <h2 class="info-umum-title">Tentang Organisasi</h2>
+      <p id="infoUmumText" class="info-umum-text">Memuat informasi...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Divisi Section -->
+<div class="container my-5 animate-on-load delay-2">
+  <div class="text-center mb-5">
+    <h2 class="section-title">Divisi Kami</h2>
+    <p class="text-muted">Pilih divisi untuk melihat detail dan pengurus</p>
+  </div>
+  <div class="row justify-content-center g-4" id="divisiContainer">
+    <div class="col-12 text-center">
       <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
     </div>
   </div>

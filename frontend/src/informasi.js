@@ -41,11 +41,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       
       cardsHTML += `
       <div class="col-md-6 col-lg-4">
-        <div class="card card-divisi h-100 shadow-sm border-0 text-center p-4 rounded-4" style="transition: 0.3s; background: #fff;">
-          <img src="${logoSrc}" class="mx-auto mb-3 rounded-circle shadow-sm" style="width:90px; height:90px; object-fit:cover; border:3px solid #f8fafc;" alt="Logo ${d.nama}">
-          <h5 class="card-title fw-bold mb-3" style="color: #1e293b;">${d.nama || 'Tanpa Nama'}</h5>
-          <p class="card-text text-muted small mb-4 flex-grow-1">${truncateText(d.deskripsi, 100)}</p>
-          <a href="informasi_divisi.html?slug=${d.slug || docSnap.id}" class="btn btn-primary rounded-pill px-4 mt-auto mx-auto d-inline-block">Selengkapnya</a>
+        <div class="card-divisi-info">
+          <div class="divisi-img-wrap">
+            <img src="${logoSrc}" class="divisi-logo" alt="Logo ${d.nama}">
+          </div>
+          <div class="divisi-body">
+            <h5 class="divisi-name">${d.nama || 'Tanpa Nama'}</h5>
+            <p class="divisi-desc">${truncateText(d.deskripsi, 110)}</p>
+            <div class="divisi-btn-wrap">
+              <a href="informasi_divisi.html?slug=${d.slug || docSnap.id}" class="divisi-btn">
+                <i class="bi bi-arrow-right-circle"></i> Selengkapnya
+              </a>
+            </div>
+          </div>
         </div>
       </div>
       `;
