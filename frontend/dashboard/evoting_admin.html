@@ -52,13 +52,14 @@
       if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) { e.preventDefault(); return false; }
     });
   </script>
-  <style id="rbac-hide">.sidebar { opacity: 0; pointer-events: none; }</style>
+<style id="rbac-hide">.sidebar { opacity: 0; pointer-events: none; }</style>
 </head>
 <body>
 
   <div class="sidebar" id="sidebar">
     <div class="brand">UPUCC Admin</div>
     <ul class="nav flex-column mt-2">
+      <!-- Menu will be injected / replaced here, we keep the basic ones for now -->
       <li class="nav-item"><a class="nav-link" href="/dashboard/index.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
       <li class="nav-item"><a class="nav-link" href="/dashboard/kadiv_panel.html"><i class="bi bi-briefcase"></i> Panel Divisi</a></li>
       <li class="nav-item"><a class="nav-link active" href="/dashboard/evoting_admin.html"><i class="bi bi-box"></i> E-Voting</a></li>
@@ -184,14 +185,10 @@
             <textarea class="form-control" id="candMission" rows="3" required></textarea>
           </div>
           <div class="mb-3">
-            <label class="form-label text-muted small fw-bold">Foto Kandidat <span class="text-danger">*</span></label>
-            <input type="file" class="form-control mb-2" id="candPhotoFile" accept="image/*" onchange="previewPhoto(this)">
-            <div class="text-center text-muted small mb-2">— ATAU masukkan URL langsung —</div>
-            <input type="url" class="form-control" id="candPhotoUrl" placeholder="https://example.com/photo.jpg" oninput="previewPhotoUrl(this.value)">
-            <div id="photoPreview" style="display:none; margin-top:12px; text-align:center;">
-              <img id="photoPreviewImg" src="" style="width:130px; height:130px; object-fit:cover; border-radius:12px; border:3px solid #2563eb; box-shadow:0 4px 12px rgba(37,99,235,0.2);">
-              <p class="text-success small mt-2 mb-0 fw-bold">✅ Foto siap diupload</p>
-            </div>
+            <label class="form-label text-muted small">Foto Kandidat (Pilih File atau URL)</label>
+            <input type="file" class="form-control mb-2" id="candPhotoFile" accept="image/*">
+            <div class="text-center text-muted small mb-2">- ATAU -</div>
+            <input type="url" class="form-control" id="candPhotoUrl" placeholder="https://example.com/photo.jpg">
           </div>
           <button type="submit" class="btn btn-primary w-100" id="btnSaveCandidate">Simpan Kandidat</button>
         </form>
@@ -205,32 +202,6 @@
   function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('show');
     document.getElementById('sidebarOverlay').classList.toggle('show');
-  }
-
-  function previewPhoto(input) {
-    const preview = document.getElementById('photoPreview');
-    const img = document.getElementById('photoPreviewImg');
-    if (input.files && input.files[0]) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        img.src = e.target.result;
-        preview.style.display = 'block';
-        document.getElementById('candPhotoUrl').value = '';
-      };
-      reader.readAsDataURL(input.files[0]);
-    }
-  }
-
-  function previewPhotoUrl(url) {
-    const preview = document.getElementById('photoPreview');
-    const img = document.getElementById('photoPreviewImg');
-    if (url) {
-      img.src = url;
-      preview.style.display = 'block';
-      document.getElementById('candPhotoFile').value = '';
-    } else {
-      preview.style.display = 'none';
-    }
   }
 </script>
 <script type="module" src="/src/dashboard/evoting_admin.js"></script>
