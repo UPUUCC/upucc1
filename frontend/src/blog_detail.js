@@ -1,5 +1,5 @@
 import { db } from "./firebase.js";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, increment } from "firebase/firestore";
 
 const blogDetailContainer = document.getElementById('blogDetailContainer');
 
@@ -19,6 +19,9 @@ async function loadBlogDetail() {
     try {
         const docRef = doc(db, "blogs", id);
         const docSnap = await getDoc(docRef);
+
+        // Tambah jumlah penonton (+1) setiap kali halaman dibuka
+        updateDoc(docRef, { views: increment(1) }).catch(() => {});
 
         if (!docSnap.exists()) {
             blogDetailContainer.innerHTML = `
@@ -72,9 +75,10 @@ async function loadBlogDetail() {
                     <span class="badge bg-primary px-3 py-2 rounded-pill shadow-sm">${data.kategori}</span>
                 </div>
                 <h1 class="fw-bold mb-3" style="color: #0f172a; font-size: 2.2rem; line-height: 1.3;">${data.judul}</h1>
-                <div class="d-flex align-items-center text-secondary mb-4 gap-3 fw-medium">
+                <div class="d-flex align-items-center text-secondary mb-4 gap-3 fw-medium flex-wrap">
                     <span><i class="bi bi-person-circle me-1 text-primary"></i> ${author}</span>
                     <span><i class="bi bi-calendar3 me-1 text-primary"></i> ${date}</span>
+                    <span><i class="bi bi-eye me-1 text-primary"></i> ${(data.views || 0) + 1} kali dilihat</span>
                 </div>
             </div>
             

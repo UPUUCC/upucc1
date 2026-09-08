@@ -21,17 +21,15 @@ async function fetchBlogs() {
         snapshot.forEach(docSnap => {
             const data = docSnap.data();
             const id = docSnap.id;
+            if (data.status && data.status !== 'approved') return;
+
             const date = data.createdAt ? data.createdAt.toDate().toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'}) : 'Baru saja';
-            
-            // Limit characters for summary
             const isi = data.isi || '';
             const summary = isi.length > 100 ? isi.substring(0, 100) + '...' : isi;
-            const fullText = isi.replace(/\n/g, '<br>');
-
             const kategori = data.kategori || 'Artikel';
             const gambar = data.gambar || 'https://via.placeholder.com/400x200?text=No+Image';
             const judul = data.judul || 'Tanpa Judul';
-
+            const views = data.views || 0;
             cardsHTML += `
                 <div class="col-md-4 mb-4">
                     <div class="card blog-card h-100 shadow-sm border-0">
@@ -41,7 +39,10 @@ async function fetchBlogs() {
                             <h5 class="card-title fw-bold text-dark">${judul}</h5>
                             <p class="card-text text-muted small mb-3">${summary}</p>
                             <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
-                                <small class="text-muted fw-medium"><i class="bi bi-calendar3 me-1"></i> ${date}</small>
+                                <div class="d-flex gap-3">
+                                    <small class="text-muted fw-medium"><i class="bi bi-calendar3 me-1"></i> ${date}</small>
+                                    <small class="text-muted fw-medium"><i class="bi bi-eye me-1"></i> ${views}</small>
+                                </div>
                                 <a href="blog_detail.html?id=${id}" class="btn btn-sm btn-primary px-3 rounded-pill">Baca <i class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>

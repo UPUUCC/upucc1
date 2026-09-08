@@ -37,8 +37,9 @@ async function fetchShowcases() {
             const summary = deskripsi.length > 100 ? deskripsi.substring(0, 100) + '...' : deskripsi;
             const fullText = deskripsi.replace(/\n/g, '<br>');
 
-            const gambar = data.gambar || 'https://via.placeholder.com/400x200?text=No+Image';
+            const gambar = data.gambar || data.mediaUrl || 'https://via.placeholder.com/400x200?text=No+Image';
             const judul = data.judul || 'Tanpa Judul';
+            const views = data.views || 0;
 
             cardsHTML += `
                 <div class="col-md-6 col-lg-4 mb-4">
@@ -48,8 +49,9 @@ async function fetchShowcases() {
                             <span class="badge ${badgeClass} mb-2 align-self-start">${kategori}</span>
                             <h5 class="fw-bold">${judul}</h5>
                             <p class="small opacity-75 mb-3 flex-grow-1">${summary}</p>
-                            <div>
-                                <a href="showcase_detail.html?id=${id}" class="btn btn-sm btn-light border px-3 rounded-pill text-dark">Baca <i class="bi bi-arrow-right"></i></a>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <small class="opacity-50"><i class="bi bi-eye me-1"></i> ${views} dilihat</small>
+                                <a href="showcase_detail.html?id=${id}" class="btn btn-sm btn-light border px-3 rounded-pill text-dark">Lihat <i class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
