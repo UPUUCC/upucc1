@@ -32,9 +32,18 @@ async function loadShowcaseDetail() {
         const data = docSnap.data();
         const date = data.createdAt ? data.createdAt.toDate().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'}) : '-';
         
+        // Fungsi untuk mendeteksi link dan membuatnya bisa diklik
+        const linkify = (text) => {
+            const urlRegex = /(https?:\/\/[^\s]+)|(www\.[^\s]+)/ig;
+            return text.replace(urlRegex, function(url) {
+                let href = url.startsWith('http') ? url : 'https://' + url;
+                return `<a href="${href}" target="_blank" class="text-primary fw-medium" style="text-decoration: underline;">${url}</a>`;
+            });
+        };
+
         let deskripsi = data.deskripsi || '';
         const fullDesc = deskripsi.split(/\n\s*\n/).map(p => 
-            `<p style="margin-bottom: 1.8rem;">${p.replace(/\n/g, '<br>')}</p>`
+            `<p style="margin-bottom: 1.2rem;">${linkify(p).replace(/\n/g, '<br>')}</p>`
         ).join('');
         
         const author = data.author || 'Anggota UPUCC';
@@ -88,7 +97,7 @@ async function loadShowcaseDetail() {
             
             ${mediaHTML}
             
-            <div class="showcase-content mt-4" style="font-size: 1.15rem; text-align: justify; line-height: 2; color: #cbd5e1; letter-spacing: 0.2px;">
+            <div class="showcase-content mt-4" style="font-size: 1.15rem; text-align: justify; line-height: 1.7; color: #cbd5e1; letter-spacing: 0.2px;">
                 <h4 class="fw-bold mb-4 text-white" style="font-size: 1.4rem;"><i class="bi bi-journal-text text-primary me-2"></i> Deskripsi Karya</h4>
                 ${fullDesc}
             </div>

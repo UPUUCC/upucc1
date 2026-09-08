@@ -43,11 +43,20 @@ async function loadBlogDetail() {
 
         const date = data.createdAt ? data.createdAt.toDate().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'}) : '-';
         
+        // Fungsi untuk mendeteksi link dan membuatnya bisa diklik
+        const linkify = (text) => {
+            const urlRegex = /(https?:\/\/[^\s]+)|(www\.[^\s]+)/ig;
+            return text.replace(urlRegex, function(url) {
+                let href = url.startsWith('http') ? url : 'https://' + url;
+                return `<a href="${href}" target="_blank" class="text-primary fw-medium" style="text-decoration: underline;">${url}</a>`;
+            });
+        };
+
         // Mempercantik paragraf dan spasi
         let isi = data.isi || '';
         // Bungkus setiap blok teks yang dipisah enter ganda menjadi paragraf
         const fullText = isi.split(/\n\s*\n/).map(p => 
-            `<p style="margin-bottom: 1.8rem;">${p.replace(/\n/g, '<br>')}</p>`
+            `<p style="margin-bottom: 1.2rem;">${linkify(p).replace(/\n/g, '<br>')}</p>`
         ).join('');
         
         const author = data.author || 'Admin UPUCC';
@@ -73,7 +82,7 @@ async function loadBlogDetail() {
                 <img src="${data.gambar}" class="img-fluid w-100" style="max-height: 450px; object-fit: cover;" alt="${data.judul}">
             </div>
             
-            <div class="blog-content" style="font-size: 1.15rem; text-align: justify; line-height: 2; color: #334155; letter-spacing: 0.2px;">
+            <div class="blog-content" style="font-size: 1.15rem; text-align: justify; line-height: 1.7; color: #334155; letter-spacing: 0.2px;">
                 ${fullText}
             </div>
         `;
