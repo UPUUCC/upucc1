@@ -50,17 +50,20 @@ async function loadMateri(divisiId) {
     }
 
     try {
-        const q = query(collection(db, "materials"), where("divisi_id", "==", divisiId), orderBy("created_at", "desc"));
+        const q = query(collection(db, "materials"), where("divisi_id", "==", divisiId));
         const snap = await getDocs(q);
         
+        let docsArray = [];
+        snap.forEach(docSnap => docsArray.push({ id: docSnap.id, ...docSnap.data() }));
+        docsArray.sort((a, b) => (b.created_at?.toMillis() || 0) - (a.created_at?.toMillis() || 0));
+
         materiContainer.innerHTML = '';
-        if (snap.empty) {
+        if (docsArray.length === 0) {
             materiContainer.innerHTML = '<p class="text-muted">Belum ada materi belajar untuk divisi ini.</p>';
             return;
         }
 
-        snap.forEach(docSnap => {
-            const item = docSnap.data();
+        docsArray.forEach(item => {
             const icon = item.type === 'PDF' ? 'bi-file-earmark-pdf text-danger' : (item.type === 'Video' ? 'bi-play-circle text-primary' : 'bi-link-45deg text-success');
             const date = item.created_at ? new Date(item.created_at.toMillis()).toLocaleDateString('id-ID') : '-';
             
@@ -91,17 +94,20 @@ async function loadSertifikat(divisiId) {
     }
 
     try {
-        const q = query(collection(db, "certificates"), where("divisi_id", "==", divisiId), orderBy("created_at", "desc"));
+        const q = query(collection(db, "certificates"), where("divisi_id", "==", divisiId));
         const snap = await getDocs(q);
         
+        let docsArray = [];
+        snap.forEach(docSnap => docsArray.push({ id: docSnap.id, ...docSnap.data() }));
+        docsArray.sort((a, b) => (b.created_at?.toMillis() || 0) - (a.created_at?.toMillis() || 0));
+
         certContainer.innerHTML = '';
-        if (snap.empty) {
+        if (docsArray.length === 0) {
             certContainer.innerHTML = '<p class="text-muted">Belum ada E-Certificate.</p>';
             return;
         }
 
-        snap.forEach(docSnap => {
-            const item = docSnap.data();
+        docsArray.forEach(item => {
             certContainer.innerHTML += `
                 <div class="col-md-6">
                     <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
@@ -129,17 +135,20 @@ async function loadJadwal(divisiId) {
     }
 
     try {
-        const q = query(collection(db, "schedules"), where("divisi_id", "==", divisiId), orderBy("created_at", "desc"));
+        const q = query(collection(db, "schedules"), where("divisi_id", "==", divisiId));
         const snap = await getDocs(q);
         
+        let docsArray = [];
+        snap.forEach(docSnap => docsArray.push({ id: docSnap.id, ...docSnap.data() }));
+        docsArray.sort((a, b) => (b.created_at?.toMillis() || 0) - (a.created_at?.toMillis() || 0));
+
         jadwalContainer.innerHTML = '';
-        if (snap.empty) {
+        if (docsArray.length === 0) {
             jadwalContainer.innerHTML = '<p class="text-muted">Belum ada jadwal kegiatan.</p>';
             return;
         }
 
-        snap.forEach(docSnap => {
-            const item = docSnap.data();
+        docsArray.forEach(item => {
             let statusBadge = item.status === 'Upcoming' ? 'bg-warning text-dark' : (item.status === 'Done' ? 'bg-success' : 'bg-danger');
             jadwalContainer.innerHTML += `
                 <div class="d-flex p-3 mb-3 bg-light rounded-3 align-items-center justify-content-between border-start border-4 ${item.status === 'Upcoming' ? 'border-warning' : (item.status === 'Done' ? 'border-success' : 'border-danger')}">

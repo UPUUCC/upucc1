@@ -124,20 +124,25 @@ async function loadMateri() {
     try {
         let q;
         if (activeDivisiId) {
-            q = query(collection(db, "materials"), where("divisi_id", "==", activeDivisiId), orderBy("created_at", "desc"));
+            q = query(collection(db, "materials"), where("divisi_id", "==", activeDivisiId));
         } else {
-            q = query(collection(db, "materials"), orderBy("created_at", "desc"));
+            q = query(collection(db, "materials"));
         }
         
         const snap = await getDocs(q);
-        if (snap.empty) {
+        
+        // Sort client-side to avoid Firestore composite index requirement
+        let docsArray = [];
+        snap.forEach(docSnap => docsArray.push({ id: docSnap.id, ...docSnap.data() }));
+        docsArray.sort((a, b) => (b.created_at?.toMillis() || 0) - (a.created_at?.toMillis() || 0));
+
+        if (docsArray.length === 0) {
             tbody.innerHTML = '<tr><td colspan="5" class="text-center">Belum ada materi.</td></tr>';
             return;
         }
 
         let html = '';
-        snap.forEach(docSnap => {
-            const d = docSnap.data();
+        docsArray.forEach(d => {
             const date = d.created_at ? new Date(d.created_at.toMillis()).toLocaleDateString('id-ID') : '-';
             html += `
             <tr>
@@ -145,7 +150,7 @@ async function loadMateri() {
                 <td><span class="badge bg-secondary">${d.type}</span></td>
                 <td><a href="${d.link}" target="_blank" class="btn btn-sm btn-outline-info">Buka Link</a></td>
                 <td>${date}</td>
-                <td><button class="btn btn-sm btn-danger" onclick="deleteDocItem('materials', '${docSnap.id}', loadMateri)"><i class="bi bi-trash"></i></button></td>
+                <td><button class="btn btn-sm btn-danger" onclick="deleteDocItem('materials', '${d.id}', loadMateri)"><i class="bi bi-trash"></i></button></td>
             </tr>`;
         });
         tbody.innerHTML = html;
@@ -186,18 +191,23 @@ async function loadSertifikat() {
     
     try {
         let q = activeDivisiId 
-            ? query(collection(db, "certificates"), where("divisi_id", "==", activeDivisiId), orderBy("created_at", "desc"))
-            : query(collection(db, "certificates"), orderBy("created_at", "desc"));
+            ? query(collection(db, "certificates"), where("divisi_id", "==", activeDivisiId))
+            : query(collection(db, "certificates"));
             
         const snap = await getDocs(q);
-        if (snap.empty) {
+        
+        // Sort client-side to avoid Firestore composite index requirement
+        let docsArray = [];
+        snap.forEach(docSnap => docsArray.push({ id: docSnap.id, ...docSnap.data() }));
+        docsArray.sort((a, b) => (b.created_at?.toMillis() || 0) - (a.created_at?.toMillis() || 0));
+
+        if (docsArray.length === 0) {
             tbody.innerHTML = '<tr><td colspan="5" class="text-center">Belum ada E-Certificate.</td></tr>';
             return;
         }
 
         let html = '';
-        snap.forEach(docSnap => {
-            const d = docSnap.data();
+        docsArray.forEach(d => {
             const date = d.created_at ? new Date(d.created_at.toMillis()).toLocaleDateString('id-ID') : '-';
             html += `
             <tr>
@@ -205,7 +215,7 @@ async function loadSertifikat() {
                 <td class="fw-bold">${d.title}</td>
                 <td>${d.issueDate}</td>
                 <td>${date}</td>
-                <td><button class="btn btn-sm btn-danger" onclick="deleteDocItem('certificates', '${docSnap.id}', loadSertifikat)"><i class="bi bi-trash"></i></button></td>
+                <td><button class="btn btn-sm btn-danger" onclick="deleteDocItem('certificates', '${d.id}', loadSertifikat)"><i class="bi bi-trash"></i></button></td>
             </tr>`;
         });
         tbody.innerHTML = html;
@@ -254,18 +264,23 @@ async function loadJadwal() {
     
     try {
         let q = activeDivisiId 
-            ? query(collection(db, "schedules"), where("divisi_id", "==", activeDivisiId), orderBy("created_at", "desc"))
-            : query(collection(db, "schedules"), orderBy("created_at", "desc"));
+            ? query(collection(db, "schedules"), where("divisi_id", "==", activeDivisiId))
+            : query(collection(db, "schedules"));
             
         const snap = await getDocs(q);
-        if (snap.empty) {
+        
+        // Sort client-side to avoid Firestore composite index requirement
+        let docsArray = [];
+        snap.forEach(docSnap => docsArray.push({ id: docSnap.id, ...docSnap.data() }));
+        docsArray.sort((a, b) => (b.created_at?.toMillis() || 0) - (a.created_at?.toMillis() || 0));
+
+        if (docsArray.length === 0) {
             tbody.innerHTML = '<tr><td colspan="5" class="text-center">Belum ada Jadwal.</td></tr>';
             return;
         }
 
         let html = '';
-        snap.forEach(docSnap => {
-            const d = docSnap.data();
+        docsArray.forEach(d => {
             let statusBadge = d.status === 'Upcoming' ? 'bg-warning text-dark' : (d.status === 'Done' ? 'bg-success' : 'bg-danger');
             html += `
             <tr>
@@ -273,7 +288,7 @@ async function loadJadwal() {
                 <td>${d.time}</td>
                 <td>${d.location}</td>
                 <td><span class="badge ${statusBadge}">${d.status}</span></td>
-                <td><button class="btn btn-sm btn-danger" onclick="deleteDocItem('schedules', '${docSnap.id}', loadJadwal)"><i class="bi bi-trash"></i></button></td>
+                <td><button class="btn btn-sm btn-danger" onclick="deleteDocItem('schedules', '${d.id}', loadJadwal)"><i class="bi bi-trash"></i></button></td>
             </tr>`;
         });
         tbody.innerHTML = html;
