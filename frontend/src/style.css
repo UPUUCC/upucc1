@@ -105,18 +105,28 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; }
 .card-divisi .card-title { font-weight: 700; color: var(--upucc-primary); }
 
 /* Struktur */
-.struktur-card { text-align: center; padding: 30px 15px; }
+.struktur-card { 
+    text-align: center; 
+    padding: 20px 10px; 
+    background: #fff; 
+    border-radius: 16px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
+    border: 1px solid rgba(0,0,0,0.05);
+    height: 100%;
+    transition: transform 0.3s;
+}
+.struktur-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.06); }
 .struktur-card img { 
-  width: 120px; height: 120px; object-fit: cover; 
+  width: 90px; height: 90px; object-fit: cover; 
   border-radius: 50%; 
-  border: 4px solid #fff; 
-  box-shadow: 0 0 0 4px var(--upucc-secondary); 
+  border: 3px solid #fff; 
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1); 
   margin-bottom: 15px; 
   transition: transform 0.3s;
 }
-.struktur-card:hover img { transform: rotate(5deg) scale(1.05); }
-.struktur-card h6 { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--text-dark); }
-.struktur-card .jabatan { color: var(--upucc-secondary); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.struktur-card:hover img { transform: scale(1.05); }
+.struktur-card h6 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; color: #1e293b; line-height: 1.3; }
+.struktur-card .jabatan { color: var(--upucc-primary); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
 
 /* Prestasi */
 .prestasi-card img { height: 220px; object-fit: contain; background-color: #f8f9fa; }

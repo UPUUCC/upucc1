@@ -65,11 +65,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const logoSrc = divisiData.logoUrl || (divisiData.logo ? (divisiData.logo.startsWith('http') ? divisiData.logo : `uploads/divisi/${divisiData.logo}`) : `https://via.placeholder.com/100?text=${initial}`);
 
     headerContainer.innerHTML = `
-      <div class="d-flex align-items-center gap-3 mb-4">
-        <img src="${logoSrc}" style="width:100px;height:100px;object-fit:contain;" alt="Logo ${divisiData.nama}">
-        <h2 class="section-title mb-0">Divisi ${divisiData.nama}</h2>
+      <div class="text-center mb-5">
+        <img src="${logoSrc}" class="mb-3 rounded-circle shadow-sm" style="width:120px;height:120px;object-fit:cover; border:4px solid #fff;" alt="Logo ${divisiData.nama}">
+        <h2 class="fw-bold text-primary mb-3 display-6">Divisi ${divisiData.nama}</h2>
+        <p class="text-muted mx-auto" style="max-width: 800px; font-size:1.05rem; line-height:1.7; white-space:pre-line;">${nl2br(divisiData.deskripsi || 'Belum ada deskripsi.')}</p>
       </div>
-      <p class="lead" style="white-space:pre-line;">${nl2br(divisiData.deskripsi || 'Belum ada deskripsi.')}</p>
     `;
 
     // 2. Fetch Pengurus
@@ -100,20 +100,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let membersHTML = '';
     membersList.forEach(p => {
-      const fotoUrl = p.fotoUrl || (p.foto ? (p.foto.startsWith('http') ? p.foto : `uploads/anggota/${p.foto}`) : 'https://via.placeholder.com/110?text=Foto');
+      const namaAnggota = p.nama || 'Anggota';
+      const initial = namaAnggota.charAt(0).toUpperCase();
+      const fallbackFoto = `https://ui-avatars.com/api/?name=${initial}&background=e2e8f0&color=475569&size=128&bold=true`;
+      const fotoUrl = p.fotoUrl || (p.foto ? (p.foto.startsWith('http') ? p.foto : `uploads/anggota/${p.foto}`) : fallbackFoto);
       const jabatanText = p.jabatan_text || p.jabatan || labelRole(p.role);
       
       membersHTML += `
       <div class="col-md-3 col-6">
         <div class="struktur-card">
-          <img src="${fotoUrl}" alt="${p.nama || 'Anggota'}">
-          <h6 class="mb-0">${p.nama || 'Tanpa Nama'}</h6>
+          <img src="${fotoUrl}" alt="${namaAnggota}">
+          <h6 class="mb-0 text-truncate" title="${namaAnggota}">${namaAnggota}</h6>
           <div class="jabatan">${jabatanText}</div>
         </div>
       </div>
       `;
     });
-
     membersContainer.innerHTML = membersHTML;
 
   } catch (error) {

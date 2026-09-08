@@ -16,7 +16,7 @@ async function fetchShowcases() {
         }
 
         let cardsHTML = '';
-        let modalsHTML = '';
+        
 
         snapshot.forEach(docSnap => {
             const data = docSnap.data();
@@ -44,28 +44,7 @@ async function fetchShowcases() {
                             <h5 class="fw-bold">${data.judul}</h5>
                             <p class="small opacity-75 mb-3 flex-grow-1">${summary}</p>
                             <div>
-                                <button type="button" class="btn btn-sm btn-light border px-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#showcaseModal${id}">Baca <i class="bi bi-arrow-right"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            modalsHTML += `
-                <div class="modal fade" id="showcaseModal${id}" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header border-0 pb-0">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body p-4 p-md-5 pt-2">
-                                <span class="badge ${badgeClass} mb-3 px-3 py-2 rounded-pill">${data.kategori}</span>
-                                <h2 class="fw-bold mb-3">${data.judul}</h2>
-                                <img src="${data.gambar}" class="img-fluid rounded mb-4 w-100" style="max-height: 400px; object-fit: contain; background-color: #f8f9fa;" alt="${data.judul}">
-                                <div class="showcase-content" style="font-size: 1.05rem; line-height: 1.8; color: #4b5563;">
-                                    ${fullText}
-                                </div>
-                                ${linkHTML}
+                                <a href="showcase_detail.html?id=${id}" class="btn btn-sm btn-light border px-3 rounded-pill text-dark">Baca <i class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -74,14 +53,6 @@ async function fetchShowcases() {
         });
         
         showcaseContainer.innerHTML = cardsHTML;
-        
-        let modalContainer = document.getElementById('showcaseModalsContainer');
-        if (!modalContainer) {
-            modalContainer = document.createElement('div');
-            modalContainer.id = 'showcaseModalsContainer';
-            document.body.appendChild(modalContainer);
-        }
-        modalContainer.innerHTML = modalsHTML;
 
     } catch (error) {
         console.error("Error fetching showcases: ", error);
@@ -90,3 +61,4 @@ async function fetchShowcases() {
 }
 
 fetchShowcases();
+

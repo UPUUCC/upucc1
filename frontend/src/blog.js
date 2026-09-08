@@ -16,7 +16,7 @@ async function fetchBlogs() {
         }
 
         let cardsHTML = '';
-        let modalsHTML = '';
+        
 
         snapshot.forEach(docSnap => {
             const data = docSnap.data();
@@ -37,33 +37,14 @@ async function fetchBlogs() {
                             <p class="card-text text-muted small mb-3">${summary}</p>
                             <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
                                 <small class="text-muted fw-medium"><i class="bi bi-calendar3 me-1"></i> ${date}</small>
-                                <button type="button" class="btn btn-sm btn-primary px-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#blogModal${id}">Baca <i class="bi bi-arrow-right"></i></button>
+                                <a href="blog_detail.html?id=${id}" class="btn btn-sm btn-primary px-3 rounded-pill">Baca <i class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
             
-            modalsHTML += `
-                <div class="modal fade" id="blogModal${id}" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header border-0 pb-0">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body p-4 p-md-5 pt-2">
-                                <span class="badge bg-primary mb-3 px-3 py-2 rounded-pill">${data.kategori}</span>
-                                <h2 class="fw-bold mb-3">${data.judul}</h2>
-                                <p class="text-muted mb-4"><i class="bi bi-calendar3 me-2"></i>${date}</p>
-                                <img src="${data.gambar}" class="img-fluid rounded mb-4 w-100" style="max-height: 400px; object-fit: contain; background-color: #f8f9fa;" alt="${data.judul}">
-                                <div class="blog-content" style="font-size: 1.05rem; line-height: 1.8; color: #4b5563;">
-                                    ${fullText}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
+            
         });
 
         blogContainer.innerHTML = cardsHTML;
@@ -83,4 +64,5 @@ async function fetchBlogs() {
 }
 
 fetchBlogs();
+
 

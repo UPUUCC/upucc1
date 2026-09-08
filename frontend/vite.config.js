@@ -43,6 +43,8 @@ export default defineConfig({
         dashboard_showcase_admin: resolve(__dirname, 'dashboard/showcase_admin.html'),
         dashboard_kadiv_panel: resolve(__dirname, 'dashboard/kadiv_panel.html'),
         dashboard_upucc_panel: resolve(__dirname, 'dashboard/upucc_panel.html'),
+        blog_detail: resolve(__dirname, 'blog_detail.html'),
+        showcase_detail: resolve(__dirname, 'showcase_detail.html'),
       }
     }
   }
