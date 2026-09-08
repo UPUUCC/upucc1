@@ -42,6 +42,7 @@ export default defineConfig({
         dashboard_blog_admin: resolve(__dirname, 'dashboard/blog_admin.html'),
         dashboard_showcase_admin: resolve(__dirname, 'dashboard/showcase_admin.html'),
         dashboard_kadiv_panel: resolve(__dirname, 'dashboard/kadiv_panel.html'),
+        dashboard_upucc_panel: resolve(__dirname, 'dashboard/upucc_panel.html'),
       }
     }
   }
