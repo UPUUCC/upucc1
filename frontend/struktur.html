@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UPU-CC</title>
+  <title>Struktur Organisasi - UPU-CC</title>
 
   <!-- SEO Tags -->
   <meta name="description" content="Struktur kepengurusan dan anggota Universitas Potensi Utama Computer Club (UPU-CC).">
-  <meta property="og:title" content="UPU-CC">
+  <meta property="og:title" content="Struktur Organisasi - UPU-CC">
   <meta property="og:description" content="Struktur kepengurusan dan anggota Universitas Potensi Utama Computer Club (UPU-CC).">
   <meta property="og:url" content="https://upuccofficial.com/struktur.html">
   <meta name="keywords" content="UPU-CC, Computer Club, Universitas Potensi Utama, Programming, NetSect, KnowTech, Multimedia, Mahasiswa IT, Organisasi Komputer">
@@ -20,7 +20,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
   <script>
-    // Proteksi kode sumber
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('keydown', e => {
       if (e.key === 'F12') { e.preventDefault(); return false; }
@@ -28,8 +27,241 @@
       if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) { e.preventDefault(); return false; }
     });
   </script>
+
+  <style>
+  /* =====================================================================
+     STRUKTUR ORGANISASI - PREMIUM MODERN REDESIGN
+     ===================================================================== */
+
+  /* Hero Banner */
+  .struktur-hero {
+    position: relative;
+    background: linear-gradient(135deg, #002A54 0%, #0a4a8c 45%, #1a7bc4 100%);
+    min-height: 260px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .struktur-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 15% 50%, rgba(36,172,223,0.3) 0%, transparent 50%),
+      radial-gradient(circle at 85% 20%, rgba(242,169,0,0.2) 0%, transparent 40%);
+  }
+  .struktur-hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 70px 0 90px;
+    color: #fff;
+  }
+  .struktur-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    padding: 7px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+  }
+  .struktur-hero-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .struktur-hero-title span {
+    background: linear-gradient(120deg, #f2a900, #FFD460);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .struktur-hero-sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.75);
+    max-width: 550px;
+    line-height: 1.6;
+  }
+  .struktur-hero-wave {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 80px;
+  }
+  .struktur-hero-wave svg { width: 100%; height: 100%; display: block; }
+
+  /* Org Chart */
+  .oc-wrap { width:100%; overflow-x:auto; padding:10px 4px 30px; }
+  .oc-wrap::-webkit-scrollbar { height: 6px; }
+  .oc-wrap::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 3px; }
+  .oc-wrap::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  .oc-wrap .tree,
+  .oc-wrap .tree ul,
+  .oc-wrap .tree li { margin:0; padding:0; list-style:none; list-style-type:none; }
+  .oc-wrap .tree { text-align:center; display:inline-block; min-width:100%; }
+  .oc-wrap .tree ul { display:flex; padding-top:40px; position:relative; }
+  .oc-wrap .tree > ul { padding-top:0; justify-content:center; }
+  .oc-wrap .tree li { flex:1; display:flex; flex-direction:column; align-items:center; position:relative; padding:40px 18px 0; }
+
+  .oc-wrap .tree li::before {
+    content:''; position:absolute; top:0; left:50%; width:0; height:40px;
+    border-left:2px solid #cbd5e1;
+  }
+  .oc-wrap .tree > ul > li::before { display:none; }
+  .oc-wrap .tree ul:not(.tree > ul)::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:0;
+    border-top:2px solid #cbd5e1;
+  }
+  .oc-wrap .tree ul li:first-child::after,
+  .oc-wrap .tree ul li:last-child::after { content:''; position:absolute; top:0; width:50%; height:2px; background:#f8fafc; }
+  .oc-wrap .tree ul li:first-child::after { left:0; }
+  .oc-wrap .tree ul li:last-child::after { right:0; }
+  .oc-wrap .tree > ul > li:first-child::after,
+  .oc-wrap .tree > ul > li:last-child::after { display:none; }
+  .oc-wrap .tree ul:not(.tree > ul) li:only-child::after { display:none; }
+  .oc-wrap .tree ul.oc-row-single::before { display:none; }
+
+  /* Person */
+  .oc-wrap .oc-multi { display:flex; flex-direction:column; align-items:center; gap:18px; }
+  .oc-wrap .oc-person {
+    display:inline-flex; flex-direction:column; align-items:center;
+    position:relative; z-index:1; width:142px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+  }
+  .oc-wrap .oc-person:hover { transform: translateY(-5px); }
+
+  .oc-wrap .oc-avatar-ring {
+    width:90px; height:90px; border-radius:50%; padding:3px; margin-bottom:10px;
+    background: linear-gradient(135deg, #24ACDF, #002A54);
+    box-shadow: 0 6px 20px rgba(0,42,84,0.25), 0 0 0 3px rgba(255,255,255,0.8);
+    flex:none; display:block;
+    transition: box-shadow 0.3s;
+  }
+  .oc-wrap .oc-person:hover .oc-avatar-ring {
+    box-shadow: 0 10px 30px rgba(36,172,223,0.4), 0 0 0 4px rgba(255,255,255,1);
+  }
+  .oc-wrap .oc-person.role-ketum .oc-avatar-ring {
+    background: linear-gradient(135deg, #f2a900 0%, #002A54 50%, #f2a900 100%);
+    width:106px; height:106px;
+    box-shadow: 0 8px 28px rgba(242,169,0,0.4), 0 0 0 4px rgba(255,255,255,0.9);
+  }
+  .oc-wrap .oc-person.role-ketum:hover .oc-avatar-ring {
+    box-shadow: 0 14px 40px rgba(242,169,0,0.55), 0 0 0 5px rgba(255,255,255,1);
+  }
+  .oc-wrap .oc-person.role-waketum .oc-avatar-ring { width:96px; height:96px; }
+  .oc-wrap .oc-person.role-anggota .oc-avatar-ring {
+    width:66px; height:66px; padding:2px;
+    background: linear-gradient(135deg, #64748b, #94a3b8);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 0 0 2px rgba(255,255,255,0.8);
+  }
+
+  .oc-wrap .oc-avatar-ring img,
+  .oc-wrap .oc-avatar-ring .oc-avatar-placeholder {
+    width:100%; height:100%; border-radius:50%; object-fit:cover; display:block;
+    border:3px solid #fff; background:#f1f5f9;
+  }
+  .oc-wrap .oc-avatar-ring .oc-avatar-placeholder {
+    display:flex; align-items:center; justify-content:center;
+    color:#94a3b8; font-size:1.6rem;
+  }
+
+  .oc-wrap .oc-label {
+    background: linear-gradient(135deg, #002A54, #0a4a8c);
+    color:#fff;
+    border-radius: 12px;
+    padding: 8px 14px;
+    text-align:center;
+    min-width: 130px; max-width:165px;
+    box-shadow: 0 4px 16px rgba(0,42,84,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: box-shadow 0.2s;
+  }
+  .oc-wrap .oc-person:hover .oc-label { box-shadow: 0 8px 24px rgba(0,42,84,0.4); }
+  .oc-wrap .oc-person.role-ketum .oc-label {
+    background: linear-gradient(135deg, #002A54, #163f6e);
+    border: 1px solid rgba(242,169,0,0.5);
+    box-shadow: 0 6px 20px rgba(242,169,0,0.25), 0 4px 16px rgba(0,42,84,0.3);
+    min-width: 140px;
+  }
+  .oc-wrap .oc-label-name { font-weight:700; font-size:.82rem; line-height:1.3; word-break:break-word; }
+  .oc-wrap .oc-label-jabatan {
+    font-size:.65rem; font-weight:700; letter-spacing:.5px;
+    text-transform:uppercase; color:#f2a900; margin-top:3px;
+  }
+  .oc-wrap .oc-person.role-anggota .oc-label {
+    min-width:0; padding:5px 10px;
+    background: linear-gradient(135deg, #334155, #475569);
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  }
+  .oc-wrap .oc-person.role-anggota .oc-label-name { font-size:.72rem; }
+  .oc-wrap .oc-person.role-anggota .oc-label-jabatan { display:none; }
+
+  .oc-wrap .oc-person.oc-kosong .oc-avatar-ring {
+    background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+    box-shadow: none;
+  }
+  .oc-wrap .oc-person.oc-kosong .oc-avatar-placeholder {
+    background: #f8fafc; border: 2px dashed #e2e8f0; color: #cbd5e1;
+  }
+  .oc-wrap .oc-person.oc-kosong .oc-label {
+    background: #f1f5f9; color: #94a3b8;
+    box-shadow: none; border: 1px solid #e2e8f0;
+  }
+  .oc-wrap .oc-person.oc-kosong .oc-label-jabatan { color: #cbd5e1; }
+
+  .oc-wrap .oc-trunk { width:6px; min-width:6px; padding:0; margin:0; }
+
+  /* Division */
+  .oc-wrap .oc-division { display:flex; flex-direction:column; align-items:center; }
+  .oc-wrap .oc-division-title {
+    background: linear-gradient(135deg, #002A54 0%, #24ACDF 100%);
+    color:#fff; font-weight:700; font-size:.78rem; letter-spacing:.8px; text-transform:uppercase;
+    padding:9px 20px; border-radius:50px; margin-bottom:22px;
+    box-shadow: 0 4px 16px rgba(0,42,84,0.3);
+    border: 1px solid rgba(255,255,255,0.15);
+    white-space:nowrap;
+  }
+  .oc-wrap .oc-division-pair { display:flex; gap:16px; justify-content:center; }
+  .oc-wrap .oc-division-empty { font-size:.72rem; color:#94a3b8; font-style:italic; margin-top:4px; }
+  .oc-wrap .oc-division-connector { width:0; height:22px; border-left:2px solid #cbd5e1; margin:4px 0 0; }
+
+  .oc-wrap .oc-anggota-group {
+    min-width:180px; max-width:310px;
+    text-align:center; margin-top:18px;
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 14px 12px;
+    border: 1px solid #e2e8f0;
+  }
+  .oc-wrap .oc-anggota-title {
+    font-weight:700; color: #64748b;
+    font-size:.68rem; text-transform:uppercase; letter-spacing:.5px; margin-bottom:12px;
+  }
+  .oc-wrap .oc-anggota-list { display:flex; flex-wrap:wrap; gap:12px 10px; justify-content:center; }
+
+  @media (max-width:768px) {
+    .oc-wrap .oc-person { width:110px; }
+    .oc-wrap .oc-avatar-ring { width:72px; height:72px; }
+    .oc-wrap .oc-person.role-ketum .oc-avatar-ring { width:84px; height:84px; }
+    .oc-wrap .oc-label { min-width:100px; padding:6px 10px; }
+    .oc-wrap .oc-label-name { font-size:.74rem; }
+    .oc-wrap .oc-label-jabatan { font-size:.6rem; }
+    .oc-wrap .oc-division-title { font-size:.7rem; padding:7px 14px; }
+  }
+  </style>
 </head>
 <body>
+
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top upucc-navbar">
   <div class="container">
     <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
@@ -43,10 +275,10 @@
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-medium gap-1" id="navMenu">
         <li class="nav-item"><a class="nav-link" href="/">Beranda</a></li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Tentang Kami</a>
+          <a class="nav-link dropdown-toggle active" href="#" data-bs-toggle="dropdown">Tentang Kami</a>
           <ul class="dropdown-menu border-0 shadow-sm rounded-4 mt-2">
             <li><a class="dropdown-item py-2" href="/informasi.html"><i class="bi bi-info-circle text-primary me-2"></i>Informasi Umum</a></li>
-            <li><a class="dropdown-item py-2" href="/struktur.html"><i class="bi bi-diagram-3 text-primary me-2"></i>Struktur Organisasi</a></li>
+            <li><a class="dropdown-item py-2 active" href="/struktur.html"><i class="bi bi-diagram-3 text-primary me-2"></i>Struktur Organisasi</a></li>
             <li><a class="dropdown-item py-2" href="/sejarah.html"><i class="bi bi-clock-history text-primary me-2"></i>Sejarah</a></li>
             <li><a class="dropdown-item py-2" href="/prestasi.html"><i class="bi bi-trophy text-primary me-2"></i>Prestasi</a></li>
           </ul>
@@ -56,7 +288,7 @@
           <ul class="dropdown-menu border-0 shadow-sm rounded-4 mt-2">
             <li><a class="dropdown-item py-2" href="/acara.html"><i class="bi bi-calendar-event text-primary me-2"></i>Acara</a></li>
             <li><a class="dropdown-item py-2" href="/kalender.html"><i class="bi bi-calendar3 text-primary me-2"></i>Kalender</a></li>
-            <li><a class="dropdown-item py-2" href="/blog.html"><i class="bi bi-newspaper text-primary me-2"></i>Blog & Edukasi</a></li>
+            <li><a class="dropdown-item py-2" href="/blog.html"><i class="bi bi-newspaper text-primary me-2"></i>Blog &amp; Edukasi</a></li>
             <li><a class="dropdown-item py-2" href="/showcase.html"><i class="bi bi-laptop text-primary me-2"></i>Galeri Karya</a></li>
           </ul>
         </li>
@@ -71,166 +303,44 @@
   </div>
 </nav>
 
+<!-- Hero Banner -->
+<div class="struktur-hero">
+  <div class="container struktur-hero-content animate-on-load delay-1">
+    <span class="struktur-hero-badge"><i class="bi bi-diagram-3"></i> Kepengurusan</span>
+    <h1 class="struktur-hero-title">Struktur <span>Organisasi</span> UPUCC</h1>
+    <p class="struktur-hero-sub">Bagan susunan pengurus dan anggota UPUCC sesuai data yang dikelola melalui Dashboard.</p>
+  </div>
+  <div class="struktur-hero-wave">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none"><path fill="#f8fafc" d="M0,48L80,42.7C160,37,320,27,480,32C640,37,800,59,960,64C1120,69,1280,59,1360,53.3L1440,48L1440,80L1360,80C1280,80,1120,80,960,80C800,80,640,80,480,80C320,80,160,80,80,80L0,80Z"/></svg>
+  </div>
+</div>
 
-    
-<style>
-/* =====================================================================
-   BAGAN STRUKTUR ORGANISASI (org chart) -- khusus struktur.php
-   Ditulis inline di sini (bukan hanya di css/style.css) supaya bagan
-   tetap tampil benar meski file css/style.css eksternal belum
-   ter-upload ulang / masih ke-cache oleh browser.
-   Teknik "CSS-only tree": setiap level dibuat dari <ul><li> yang saling
-   bersarang, garis penghubung dibuat lewat border pada ::before/::after
-   tiap <li> (bukan gambar / bukan bullet list bawaan browser).
-   ===================================================================== */
-.oc-wrap { width:100%; overflow-x:auto; padding:10px 4px 20px; }
-
-.oc-wrap .tree,
-.oc-wrap .tree ul,
-.oc-wrap .tree li { margin:0; padding:0; list-style:none; list-style-type:none; }
-.oc-wrap .tree { text-align:center; display:inline-block; min-width:100%; }
-.oc-wrap .tree ul { display:flex; padding-top:36px; position:relative; }
-.oc-wrap .tree > ul { padding-top:0; justify-content:center; }
-.oc-wrap .tree li { flex:1; display:flex; flex-direction:column; align-items:center; position:relative; padding:36px 16px 0; }
-
-/* garis vertikal turun dari kotak induk ke baris anak */
-.oc-wrap .tree li::before {
-  content:''; position:absolute; top:0; left:50%; width:0; height:36px;
-  border-left:2.5px solid #9fb3cc;
-}
-.oc-wrap .tree > ul > li::before { display:none; }
-
-/* garis horizontal penghubung antar-saudara pada satu baris <ul> */
-.oc-wrap .tree ul:not(.tree > ul)::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:0;
-  border-top:2.5px solid #9fb3cc;
-}
-.oc-wrap .tree ul li:first-child::after,
-.oc-wrap .tree ul li:last-child::after { content:''; position:absolute; top:0; width:50%; height:2.5px; background:#f5f7fa; }
-.oc-wrap .tree ul li:first-child::after { left:0; }
-.oc-wrap .tree ul li:last-child::after { right:0; }
-.oc-wrap .tree > ul > li:first-child::after,
-.oc-wrap .tree > ul > li:last-child::after { display:none; }
-.oc-wrap .tree ul:not(.tree > ul) li:only-child::after { display:none; }
-/* Baris yang cuma berisi 1 kotak (misal WAKETUM) -- tidak perlu garis
-   horizontal, cukup garis vertikal lurus. Dipakai class ".single"
-   langsung dari HTML (bukan :has()) supaya kompatibel di semua browser. */
-.oc-wrap .tree ul.oc-row-single::before { display:none; }
-
-/* ---------------------------------------------------------------------
-   Kotak "orang" -- foto bulat (bingkai dua warna) + label nama gelap.
-   --------------------------------------------------------------------- */
-.oc-wrap .oc-multi { display:flex; flex-direction:column; align-items:center; gap:18px; }
-
-.oc-wrap .oc-person { display:inline-flex; flex-direction:column; align-items:center; position:relative; z-index:1; width:132px; }
-
-.oc-wrap .oc-avatar-ring {
-  width:88px; height:88px; border-radius:50%; padding:4px; margin-bottom:8px;
-  background:conic-gradient(var(--upucc-secondary, #1e6fd9) 0 50%, var(--upucc-primary, #0d2b4e) 50% 100%);
-  box-shadow:0 3px 8px rgba(13,43,78,.25);
-  flex:none; display:block;
-}
-.oc-wrap .oc-person.role-ketum .oc-avatar-ring {
-  background:conic-gradient(var(--upucc-accent, #f2a900) 0 50%, var(--upucc-primary, #0d2b4e) 50% 100%);
-  width:98px; height:98px;
-}
-.oc-wrap .oc-person.role-waketum .oc-avatar-ring { width:92px; height:92px; }
-.oc-wrap .oc-person.role-anggota .oc-avatar-ring { width:60px; height:60px; padding:3px; }
-
-.oc-wrap .oc-avatar-ring img, .oc-wrap .oc-avatar-ring .oc-avatar-placeholder {
-  width:100%; height:100%; border-radius:50%; object-fit:cover; display:block;
-  border:3px solid #fff; background:#eef2f7;
-}
-.oc-wrap .oc-avatar-ring .oc-avatar-placeholder {
-  display:flex; align-items:center; justify-content:center; color:#9fb3cc; font-size:1.5rem;
-}
-
-.oc-wrap .oc-label {
-  background:var(--upucc-primary, #0d2b4e); color:#fff; border-radius:8px;
-  padding:6px 12px; text-align:center; min-width:118px; max-width:150px;
-  box-shadow:0 2px 6px rgba(13,43,78,.25);
-}
-.oc-wrap .oc-person.role-ketum .oc-label { background:linear-gradient(135deg, var(--upucc-primary, #0d2b4e), #163f6e); border:1px solid var(--upucc-accent, #f2a900); }
-.oc-wrap .oc-label-name { font-weight:700; font-size:.82rem; line-height:1.2; word-break:break-word; }
-.oc-wrap .oc-label-jabatan { font-size:.66rem; font-weight:600; letter-spacing:.3px; text-transform:uppercase; color:var(--upucc-accent, #f2a900); margin-top:2px; }
-.oc-wrap .oc-person.role-anggota .oc-label { min-width:0; padding:4px 8px; }
-.oc-wrap .oc-person.role-anggota .oc-label-name { font-size:.7rem; }
-.oc-wrap .oc-person.role-anggota .oc-label-jabatan { display:none; }
-
-/* Kotak kosong (placeholder) jika jabatan tersebut belum ada akunnya */
-.oc-wrap .oc-person.oc-kosong .oc-avatar-ring { background:#dbe3ee; }
-.oc-wrap .oc-person.oc-kosong .oc-avatar-placeholder { background:#f1f4f9; border:3px dashed #b9c6d6; }
-.oc-wrap .oc-person.oc-kosong .oc-label { background:#eef2f7; color:#7c8ea6; box-shadow:none; }
-.oc-wrap .oc-person.oc-kosong .oc-label-jabatan { color:#9fb3cc; }
-
-/* Node tak-terlihat: hanya berfungsi meneruskan garis vertikal dari
-   baris Sekretaris/Bendahara turun ke baris 4 Divisi (garis tengah). */
-.oc-wrap .oc-trunk { width:6px; min-width:6px; padding:0; margin:0; }
-
-/* ---------------------------------------------------------------------
-   Kotak Divisi -- judul divisi + Kadiv & Wakadiv berdampingan + Anggota.
-   --------------------------------------------------------------------- */
-.oc-wrap .oc-division { display:flex; flex-direction:column; align-items:center; }
-.oc-wrap .oc-division-title {
-  background:linear-gradient(135deg, var(--upucc-primary, #0d2b4e), var(--upucc-secondary, #1e6fd9));
-  color:#fff; font-weight:700; font-size:.82rem; letter-spacing:.3px; text-transform:uppercase;
-  padding:8px 16px; border-radius:8px; margin-bottom:18px; box-shadow:0 2px 6px rgba(13,43,78,.2);
-  white-space:nowrap;
-}
-.oc-wrap .oc-division-pair { display:flex; gap:14px; justify-content:center; }
-.oc-wrap .oc-division-empty { font-size:.72rem; color:#9fb3cc; font-style:italic; margin-top:4px; }
-
-.oc-wrap .oc-division-connector { width:0; height:22px; border-left:2.5px solid #9fb3cc; margin:2px 0 0; }
-
-/* Kotak "Anggota" -- kumpulan anggota divisi ditampilkan sebagai chip
-   yang dapat mengalir (flex-wrap), supaya jumlah anggota berapa pun
-   tetap rapi tanpa membuat pohon melebar tak terkendali. */
-.oc-wrap .oc-anggota-group { min-width:170px; max-width:280px; text-align:center; margin-top:14px; }
-.oc-wrap .oc-anggota-title { font-weight:700; color:var(--upucc-primary, #0d2b4e); font-size:.72rem; text-transform:uppercase; letter-spacing:.3px; margin-bottom:10px; }
-.oc-wrap .oc-anggota-list { display:flex; flex-wrap:wrap; gap:12px 10px; justify-content:center; }
-
-@media (max-width:768px) {
-  .oc-wrap .oc-person { width:104px; }
-  .oc-wrap .oc-avatar-ring { width:70px; height:70px; }
-  .oc-wrap .oc-person.role-ketum .oc-avatar-ring { width:78px; height:78px; }
-  .oc-wrap .oc-label { min-width:96px; padding:5px 8px; }
-  .oc-wrap .oc-label-name { font-size:.72rem; }
-  .oc-wrap .oc-label-jabatan { font-size:.58rem; }
-  .oc-wrap .oc-division-title { font-size:.72rem; padding:6px 10px; }
-}
-</style>
-
-<div class="container my-5 animate-on-load delay-1">
-  <h2 class="section-title">Struktur Organisasi UPUCC</h2>
-  <p class="text-muted mb-4">Bagan berikut menampilkan susunan pengurus UPUCC beserta foto dan nama akun masing-masing, sesuai data yang dikelola lewat Dashboard.</p>
-
+<div class="container-fluid mb-5 animate-on-load delay-2">
   <div id="strukturLoading" class="text-center my-5">
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
+    <p class="mt-3 text-muted small">Memuat struktur organisasi...</p>
   </div>
 
-  <div id="strukturContainer" class="oc-wrap" style="display:none;">
+  <div id="strukturContainer" class="oc-wrap mx-auto" style="display:none; max-width: 1400px;">
     <div class="tree" id="strukturTree"></div>
   </div>
-
 </div>
+
 <script>
-// Bagan bisa lebih lebar dari layar (terutama di HP), jadi saat halaman
-// dibuka posisi geser (scroll) horizontal langsung ditengahkan supaya
-// KETUM/WAKETUM langsung terlihat, tidak perlu geser ke kiri dulu.
 document.addEventListener('DOMContentLoaded', function () {
   var wrap = document.querySelector('.oc-wrap');
   if (wrap) { wrap.scrollLeft = (wrap.scrollWidth - wrap.clientWidth) / 2; }
 });
 </script>
 
-<footer class="upucc-footer text-light mt-5">
-  <div class="container">
+<footer class="upucc-footer text-light mt-5" style="background: var(--upucc-primary);">
+  <div class="container py-4">
     <div class="row g-4 justify-content-between align-items-center mb-4">
       <div class="col-md-6 text-center text-md-start">
         <h5 class="mb-2 fw-bold d-flex align-items-center justify-content-center justify-content-md-start">
-          <img src="/logo.jpg" alt="Logo UPU-CC" height="36" class="me-3 rounded-circle footer-logo"> 
+          <img src="/logo.jpg" alt="Logo UPU-CC" height="36" class="me-3 rounded-circle footer-logo" style="border: 2px solid white;">
           UPU-CC
         </h5>
         <p class="mb-1 small text-light opacity-75">Universitas Potensi Utama Computer Club</p>
@@ -238,23 +348,26 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
       <div class="col-md-6 text-center text-md-end">
         <div class="social-icons">
-          <a href="https://www.instagram.com/upucc.or.id/" target="_blank" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-          <a href="https://www.youtube.com/@UPUCC" target="_blank" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-          <a href="#" aria-label="Github"><i class="bi bi-github"></i></a>
+          <a href="https://www.instagram.com/upucc.or.id/" target="_blank" aria-label="Instagram" class="text-light me-3 fs-5"><i class="bi bi-instagram"></i></a>
+          <a href="https://www.youtube.com/@UPUCC" target="_blank" aria-label="YouTube" class="text-light me-3 fs-5"><i class="bi bi-youtube"></i></a>
+          <a href="#" aria-label="Github" class="text-light fs-5"><i class="bi bi-github"></i></a>
         </div>
       </div>
     </div>
     <div class="row pt-3" style="border-top: 1px solid rgba(255,255,255,0.1);">
       <div class="col-12 text-center">
-        <p class="mb-0 small" style="color: #94a3b8;">&copy; <span id="footerYear"></span> UPU-CC - All Rights Reserved.</p>
+        <p class="mb-0 small opacity-75">&copy; <span id="footerYear"></span> UPU-CC - All Rights Reserved.</p>
       </div>
     </div>
   </div>
 </footer>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module" src="/src/main.js"></script>
 <script type="module" src="/src/struktur.js"></script>
 <script src="/src/protect.js"></script>
+<script>
+  document.getElementById('footerYear').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
-
