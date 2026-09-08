@@ -1,6 +1,7 @@
 // src/dashboard/showcase_admin.js
 import { db } from "../firebase.js";
 import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy } from "firebase/firestore";
+import Swal from "sweetalert2";
 
 const CLOUDINARY_CLOUD_NAME = "xg0djsvz";
 const CLOUDINARY_UPLOAD_PRESET = "ml_default";
@@ -33,6 +34,7 @@ const btnCancel = document.getElementById('btnCancel');
 const formTitle = document.getElementById('formTitle');
 
 let editingId = null;
+let loadedShowcases = {};
 
 async function fetchShowcases() {
     tableBody.innerHTML = '<tr><td colspan="4" class="text-center">Memuat data...</td></tr>';
@@ -41,6 +43,7 @@ async function fetchShowcases() {
         const snapshot = await getDocs(q);
         
         tableBody.innerHTML = '';
+        loadedShowcases = {};
         if (snapshot.empty) {
             tableBody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Belum ada karya ditambahkan.</td></tr>';
             return;
@@ -49,6 +52,7 @@ async function fetchShowcases() {
         snapshot.forEach(docSnap => {
             const data = docSnap.data();
             const id = docSnap.id;
+            loadedShowcases[id] = data;
             
             tableBody.innerHTML += `
                 <tr>
@@ -56,7 +60,7 @@ async function fetchShowcases() {
                     <td class="fw-bold">${data.judul}</td>
                     <td><span class="badge bg-secondary">${data.kategori}</span></td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary me-1" onclick="editShowcase('${id}', \`${data.judul}\`, '${data.kategori}', '${data.gambar}', \`${data.deskripsi}\`, '${data.link || ''}')"><i class="bi bi-pencil"></i></button>
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick="editShowcase('${id}')"><i class="bi bi-pencil"></i></button>
                         <button class="btn btn-sm btn-outline-danger" onclick="deleteShowcase('${id}')"><i class="bi bi-trash"></i></button>
                     </td>
                 </tr>
@@ -104,9 +108,10 @@ form.addEventListener('submit', async (e) => {
         form.reset();
         resetForm();
         fetchShowcases();
+        Swal.fire('Berhasil!', 'Karya berhasil disimpan.', 'success');
     } catch (error) {
         console.error("Error saving showcase: ", error);
-        alert("Gagal menyimpan karya: " + error.message);
+        Swal.fire('Gagal!', "Gagal menyimpan karya: " + error.message, 'error');
     } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Simpan Karya';
@@ -114,18 +119,31 @@ form.addEventListener('submit', async (e) => {
 });
 
 window.deleteShowcase = async (id) => {
-    if (confirm('Yakin ingin menghapus karya ini?')) {
-        await deleteDoc(doc(db, "showcases", id));
-        fetchShowcases();
-    }
+    Swal.fire({
+        title: 'Konfirmasi',
+        text: 'Yakin ingin menghapus karya ini?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Hapus',
+        cancelButtonText: 'Batal'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            await deleteDoc(doc(db, "showcases", id));
+            fetchShowcases();
+            Swal.fire('Terhapus!', 'Karya berhasil dihapus.', 'success');
+        }
+    });
 };
 
-window.editShowcase = (id, judul, kategori, gambar, deskripsi, link) => {
+window.editShowcase = (id) => {
+    const data = loadedShowcases[id];
+    if (!data) return;
+    
     editingId = id;
-    document.getElementById('judul').value = judul;
-    document.getElementById('kategori').value = kategori;
-    document.getElementById('deskripsi').value = deskripsi;
-    document.getElementById('link').value = link;
+    document.getElementById('judul').value = data.judul || '';
+    document.getElementById('kategori').value = data.kategori || 'Semua Divisi';
+    document.getElementById('deskripsi').value = data.deskripsi || '';
+    document.getElementById('link').value = data.link || '';
     document.getElementById('gambarFile').removeAttribute('required'); // tidak wajib diisi saat edit
     
     formTitle.textContent = 'Edit Karya';

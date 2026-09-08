@@ -1,6 +1,7 @@
 // src/dashboard/blog_admin.js
 import { db } from "../firebase.js";
 import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy } from "firebase/firestore";
+import Swal from "sweetalert2";
 
 const CLOUDINARY_CLOUD_NAME = "xg0djsvz";
 const CLOUDINARY_UPLOAD_PRESET = "ml_default";
@@ -112,9 +113,10 @@ form.addEventListener('submit', async (e) => {
         form.reset();
         resetForm();
         fetchBlogs();
+        Swal.fire('Berhasil!', 'Artikel berhasil disimpan.', 'success');
     } catch (error) {
         console.error("Error saving blog: ", error);
-        alert("Gagal menyimpan artikel: " + error.message);
+        Swal.fire('Gagal!', "Gagal menyimpan artikel: " + error.message, 'error');
     } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Simpan Artikel';
@@ -122,10 +124,20 @@ form.addEventListener('submit', async (e) => {
 });
 
 window.deleteBlog = async (id) => {
-    if (confirm('Yakin ingin menghapus artikel ini?')) {
-        await deleteDoc(doc(db, "blogs", id));
-        fetchBlogs();
-    }
+    Swal.fire({
+        title: 'Konfirmasi',
+        text: 'Yakin ingin menghapus artikel ini?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Hapus',
+        cancelButtonText: 'Batal'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            await deleteDoc(doc(db, "blogs", id));
+            fetchBlogs();
+            Swal.fire('Terhapus!', 'Artikel berhasil dihapus.', 'success');
+        }
+    });
 };
 
 window.editBlog = (id) => {
@@ -156,8 +168,18 @@ btnCancel.addEventListener('click', resetForm);
 fetchBlogs();
 
 window.approveBlog = async (id) => {
-    if (confirm('Setujui dan publikasikan artikel ini?')) {
-        await updateDoc(doc(db, "blogs", id), { status: 'published' });
-        fetchBlogs();
-    }
+    Swal.fire({
+        title: 'Konfirmasi',
+        text: 'Setujui dan publikasikan artikel ini?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Setujui',
+        cancelButtonText: 'Batal'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            await updateDoc(doc(db, "blogs", id), { status: 'published' });
+            fetchBlogs();
+            Swal.fire('Berhasil!', 'Artikel telah dipublikasikan.', 'success');
+        }
+    });
 };
