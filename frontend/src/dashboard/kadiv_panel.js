@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import { db, auth } from '../firebase.js';
 import { onAuthStateChanged } from 'firebase/auth';
-import { collection, doc, getDoc, getDocs, addDoc, deleteDoc, setDoc, query, where, orderBy, limit } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, addDoc, deleteDoc, setDoc, updateDoc, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "firebase/firestore";
 
 const CLOUDINARY_CLOUD_NAME = "xg0djsvz";
 const CLOUDINARY_UPLOAD_PRESET = "ml_default";
@@ -83,7 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('formAddMateri').addEventListener('submit', addMateri);
     document.getElementById('formAddSertifikat').addEventListener('submit', addSertifikat);
     document.getElementById('formAddJadwal').addEventListener('submit', addJadwal);
-    document.getElementById('formAbsensi').addEventListener('submit', saveAbsensi);
+    
+    const formAddSession = document.getElementById('formAddSession');
+    if (formAddSession) formAddSession.addEventListener('submit', startAbsensiSession);
+    const btnCloseSession = document.getElementById('btnCloseSession');
+    if (btnCloseSession) btnCloseSession.addEventListener('click', closeAbsensiSession);
 });
 
 async function loadDivisionsFilter() {
@@ -323,60 +327,155 @@ async function addJadwal(e) {
 }
 
 /* ================== ABSENSI ================== */
+let currentSessionUnsubscribe = null;
+let currentAttendanceUnsubscribe = null;
+let qrcodeInstance = null;
+let activeSessionId = null;
+
 async function loadAbsensi() {
-    const linkInput = document.getElementById('linkAbsensi');
-    const statusCheckbox = document.getElementById('statusAbsensi');
-    const lblStatus = document.getElementById('lblStatusAbsensi');
-    
     if (!activeDivisiId) {
-        linkInput.value = '';
-        statusCheckbox.checked = false;
-        lblStatus.textContent = 'Ditutup';
-        lblStatus.className = 'form-check-label fs-6 ms-2 mt-1 fw-bold text-danger';
+        document.getElementById('noSessionContainer').style.display = 'block';
+        document.getElementById('activeSessionContainer').style.display = 'none';
+        document.getElementById('btnOpenSession').disabled = true;
         return;
     }
+    document.getElementById('btnOpenSession').disabled = false;
 
-    try {
-        const docRef = doc(db, "attendance_links", activeDivisiId);
-        const snap = await getDoc(docRef);
-        if (snap.exists()) {
-            const data = snap.data();
-            linkInput.value = data.link || '';
-            statusCheckbox.checked = data.active || false;
+    // Listen to active session for this division
+    if (currentSessionUnsubscribe) currentSessionUnsubscribe();
+    
+    const qSession = query(collection(db, "attendance_sessions"), 
+        where("divisi_id", "==", activeDivisiId),
+        where("isActive", "==", true),
+        limit(1)
+    );
+
+    currentSessionUnsubscribe = onSnapshot(qSession, (snapshot) => {
+        if (!snapshot.empty) {
+            const sessionData = snapshot.docs[0].data();
+            activeSessionId = snapshot.docs[0].id;
+            
+            document.getElementById('noSessionContainer').style.display = 'none';
+            document.getElementById('activeSessionContainer').style.display = 'block';
+            document.getElementById('btnOpenSession').style.display = 'none';
+            document.getElementById('activeSessionTitle').textContent = sessionData.title || "Sesi Kehadiran";
+            
+            // Generate QR Code
+            const qrContainer = document.getElementById('qrcodeDisplay');
+            qrContainer.innerHTML = ''; // clear old
+            if (!qrcodeInstance) {
+                qrcodeInstance = new QRCode(qrContainer, {
+                    text: activeSessionId,
+                    width: 200,
+                    height: 200,
+                    colorDark : "#0f172a",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+            } else {
+                qrcodeInstance.clear();
+                qrcodeInstance.makeCode(activeSessionId);
+            }
+
+            // Start listening to attendees
+            listenToAttendees(activeSessionId);
+            
         } else {
-            linkInput.value = '';
-            statusCheckbox.checked = false;
+            activeSessionId = null;
+            document.getElementById('noSessionContainer').style.display = 'block';
+            document.getElementById('activeSessionContainer').style.display = 'none';
+            document.getElementById('btnOpenSession').style.display = 'block';
+            
+            if (currentAttendanceUnsubscribe) {
+                currentAttendanceUnsubscribe();
+                currentAttendanceUnsubscribe = null;
+            }
         }
-        
-        lblStatus.textContent = statusCheckbox.checked ? 'Dibuka (Aktif)' : 'Ditutup';
-        lblStatus.className = statusCheckbox.checked ? 'form-check-label fs-6 ms-2 mt-1 fw-bold text-success' : 'form-check-label fs-6 ms-2 mt-1 fw-bold text-danger';
-
-    } catch (e) { console.error(e); }
+    });
 }
 
-document.getElementById('statusAbsensi').addEventListener('change', (e) => {
-    const lbl = document.getElementById('lblStatusAbsensi');
-    lbl.textContent = e.target.checked ? 'Dibuka (Aktif)' : 'Ditutup';
-    lbl.className = e.target.checked ? 'form-check-label fs-6 ms-2 mt-1 fw-bold text-success' : 'form-check-label fs-6 ms-2 mt-1 fw-bold text-danger';
-});
+function listenToAttendees(sessionId) {
+    if (currentAttendanceUnsubscribe) currentAttendanceUnsubscribe();
+    
+    const qAtt = query(collection(db, "attendance_records"), 
+        where("session_id", "==", sessionId),
+        orderBy("timestamp", "desc")
+    );
 
-async function saveAbsensi(e) {
+    currentAttendanceUnsubscribe = onSnapshot(qAtt, (snapshot) => {
+        const tbody = document.getElementById('attendanceTableBody');
+        tbody.innerHTML = '';
+        document.getElementById('totalHadir').textContent = snapshot.size;
+
+        if (snapshot.empty) {
+            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Belum ada anggota yang absen.</td></tr>';
+            return;
+        }
+
+        let index = 1;
+        snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            const time = data.timestamp ? new Date(data.timestamp.toMillis()).toLocaleTimeString('id-ID') : '-';
+            tbody.innerHTML += `
+                <tr>
+                    <td class="text-muted fw-bold">${index++}</td>
+                    <td class="fw-bold">${data.member_name}</td>
+                    <td><span class="badge bg-light text-dark"><i class="bi bi-clock me-1"></i> ${time}</span></td>
+                </tr>
+            `;
+        });
+    });
+}
+
+async function startAbsensiSession(e) {
     e.preventDefault();
     if (!activeDivisiId) return Swal.fire('Gagal', 'Pilih divisi terlebih dahulu.', 'error');
     
-    const btn = document.getElementById('btnSaveAbsensi');
-    btn.disabled = true; btn.textContent = 'Menyimpan...';
+    const btn = document.getElementById('btnStartSession');
+    btn.disabled = true; btn.innerHTML = 'Memulai...';
 
     try {
-        await setDoc(doc(db, "attendance_links", activeDivisiId), {
-            link: document.getElementById('linkAbsensi').value,
-            active: document.getElementById('statusAbsensi').checked,
-            updatedAt: new Date()
-        }, { merge: true });
+        const title = document.getElementById('sessionTitle').value;
+        await addDoc(collection(db, "attendance_sessions"), {
+            divisi_id: activeDivisiId,
+            title: title,
+            isActive: true,
+            created_at: serverTimestamp(),
+            created_by: auth.currentUser?.uid || 'admin'
+        });
         
-        Swal.fire('Berhasil', 'Pengaturan absensi disimpan.', 'success');
-    } catch (e) { Swal.fire('Gagal', e.message, 'error'); }
-    finally { btn.disabled = false; btn.innerHTML = '<i class="bi bi-save"></i> Simpan Pengaturan Absensi'; }
+        bootstrap.Modal.getInstance(document.getElementById('modalAddSession')).hide();
+        document.getElementById('formAddSession').reset();
+        Swal.fire('Berhasil', 'Sesi absensi dimulai!', 'success');
+    } catch (e) { 
+        console.error(e);
+        Swal.fire('Gagal', e.message, 'error'); 
+    }
+    finally { btn.disabled = false; btn.innerHTML = '<i class="bi bi-play-circle me-1"></i> Mulai Sesi'; }
+}
+
+async function closeAbsensiSession() {
+    if (!activeSessionId) return;
+    
+    const res = await Swal.fire({
+        title: 'Tutup Sesi Absensi?',
+        text: "Anggota tidak akan bisa scan QR lagi setelah sesi ditutup.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Tutup Sesi'
+    });
+
+    if (res.isConfirmed) {
+        try {
+            await updateDoc(doc(db, "attendance_sessions", activeSessionId), {
+                isActive: false,
+                closed_at: serverTimestamp()
+            });
+            Swal.fire('Berhasil', 'Sesi absensi telah ditutup.', 'success');
+        } catch (e) {
+            Swal.fire('Gagal', 'Gagal menutup sesi.', 'error');
+        }
+    }
 }
 
 /* ================== GLOBAL UTILS ================== */
