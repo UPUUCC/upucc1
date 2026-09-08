@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const navItems = document.querySelectorAll('.sidebar .nav-link');
                 navItems.forEach(nav => {
                     const href = nav.getAttribute('href');
-                    if (href === '/' || href === '/dashboard/logout.html') return; // selalu tampilkan Lihat Website & Logout
+                    if (href === '/' || href === '/dashboard/logout.html' || href === '/member/profil.html') return; // selalu tampilkan Lihat Website, Profil, & Logout
                     
                     const canAccess = allowedPaths.some(path => href.includes(path));
                     if (!canAccess) {
