@@ -112,7 +112,16 @@
       <div class="col-md-7">
         <div class="card h-100">
           <div class="card-body p-4">
-            <h5 class="fw-bold mb-4">Live Real Count (Hasil Suara)</h5>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h5 class="fw-bold mb-0">Live Real Count (Hasil Suara)</h5>
+              <select id="chartCategoryFilter" class="form-select form-select-sm w-auto">
+                <option value="Semua">Semua Kategori</option>
+                <option value="Ketua & Wakil Ketua">Ketua & Wakil Ketua</option>
+                <option value="Sekretaris & Wakil">Sekretaris & Wakil</option>
+                <option value="Bendahara & Wakil">Bendahara & Wakil</option>
+                <option value="Kadiv & Wakadiv">Kadiv & Wakadiv</option>
+              </select>
+            </div>
             <div style="position: relative; height:300px; width:100%">
               <canvas id="votingChart"></canvas>
             </div>
@@ -139,15 +148,16 @@
                 <thead class="table-light">
                   <tr>
                     <th>Kandidat</th>
-                    <th>Nomor Urut</th>
+                    <th>No.</th>
+                    <th>Kategori</th>
                     <th>Visi & Misi</th>
-                    <th>Perolehan Suara</th>
+                    <th>Suara</th>
                     <th>Aksi</th>
                   </tr>
                 </thead>
                 <tbody id="candidateTableBody">
                   <tr>
-                    <td colspan="5" class="text-center text-muted">Memuat data kandidat...</td>
+                    <td colspan="6" class="text-center text-muted">Memuat data kandidat...</td>
                   </tr>
                 </tbody>
               </table>
@@ -172,6 +182,16 @@
           <div class="mb-3">
             <label class="form-label text-muted small">Nomor Urut</label>
             <input type="number" class="form-control" id="candNo" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted small">Kategori Jabatan</label>
+            <select class="form-select" id="candKategori" required>
+              <option value="" disabled selected>Pilih Kategori...</option>
+              <option value="Ketua & Wakil Ketua">Ketua & Wakil Ketua</option>
+              <option value="Sekretaris & Wakil">Sekretaris & Wakil</option>
+              <option value="Bendahara & Wakil">Bendahara & Wakil</option>
+              <option value="Kadiv & Wakadiv">Kadiv & Wakadiv</option>
+            </select>
           </div>
           <div class="mb-3">
             <label class="form-label text-muted small">Nama Kandidat / Paslon</label>

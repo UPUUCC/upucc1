@@ -25,10 +25,16 @@ document.getElementById('btnLogout').addEventListener('click', () => {
     });
 });
 
-async function checkHasVoted(userId) {
-  const q = query(collection(db, "votes"), where("userId", "==", userId), limit(1));
+async function checkVotedCategories(userId, electionId) {
+  const q = query(collection(db, "votes"), where("userId", "==", userId), where("electionId", "==", electionId));
   const snap = await getDocs(q);
-  return !snap.empty;
+  let votedCats = [];
+  snap.forEach(doc => {
+      if (doc.data().kategori) votedCats.push(doc.data().kategori);
+      // Fallback for old votes before categories existed
+      if (!doc.data().kategori) votedCats.push('Umum');
+  });
+  return votedCats;
 }
 
 async function loadElection() {
@@ -53,57 +59,96 @@ async function loadElection() {
     
     document.getElementById('displayElectionTitle').textContent = docSnap.data().title;
     
-    const hasVoted = await checkHasVoted(user.uid);
-    if (hasVoted) {
+    const votedCategories = await checkVotedCategories(user.uid, currentElectionId);
+    
+    const q = query(collection(db, "candidates"), orderBy("nomorUrut", "asc"));
+    const candSnap = await getDocs(q);
+    
+    const categoriesMap = {};
+    candSnap.forEach(snap => {
+       const c = snap.data();
+       const cat = c.kategori || 'Umum';
+       if(!categoriesMap[cat]) categoriesMap[cat] = [];
+       categoriesMap[cat].push({ id: snap.id, ...c });
+    });
+    
+    const allCategories = Object.keys(categoriesMap);
+    
+    // Check if voted in ALL categories available
+    if (allCategories.length > 0 && allCategories.every(cat => votedCategories.includes(cat))) {
       container.innerHTML = `
         <div class="py-5 text-center">
           <div class="d-inline-flex align-items-center justify-content-center bg-success text-white rounded-circle mb-4" style="width: 80px; height: 80px;">
             <i class="bi bi-check-lg fs-1"></i>
           </div>
           <h3 class="fw-bold text-success">Terima Kasih!</h3>
-          <p class="fs-5 text-muted">Anda sudah memberikan hak suara pada Pemilu ini.</p>
+          <p class="fs-5 text-muted">Anda sudah memberikan hak suara pada Pemilu ini untuk seluruh kategori yang ada.</p>
         </div>
       `;
       return;
     }
     
-    // Member hasn't voted, load candidates
     container.style.display = 'none';
     activeContainer.style.display = 'block';
-    
-    const q = query(collection(db, "candidates"), orderBy("nomorUrut", "asc"));
-    const candSnap = await getDocs(q);
-    
-    let html = '';
-    candSnap.forEach(snap => {
-      const c = snap.data();
-      const candId = snap.id;
-      const safeNama = (c.nama || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-      const safeVisi = (c.visi || '').replace(/`/g, "'").replace(/\\/g, '\\\\');
-      const safeMisi = (c.misi || '').replace(/`/g, "'").replace(/\\/g, '\\\\');
 
-      html += `
-        <div class="col-md-6 col-lg-5">
-          <div class="candidate-card h-100 d-flex flex-column position-relative">
-            <div class="no-urut">${c.nomorUrut || '-'}</div>
-            <img src="${c.photoUrl || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(c.nama || 'No Name') + '&background=e2e8f0&color=475569&size=400'}" onerror="this.src='https://ui-avatars.com/api/?name=' + encodeURIComponent('${safeNama}') + '&background=e2e8f0&color=475569&size=400'" class="candidate-photo" alt="${c.nama}">
-            <div class="p-4 d-flex flex-column flex-grow-1">
-              <h5 class="fw-bold mb-3 text-center">${c.nama || 'Tanpa Nama'}</h5>
-              <div class="d-flex justify-content-center gap-2 mt-auto pt-3 border-top">
-                <button class="btn btn-outline-secondary w-50" onclick="showDetail('${safeNama}', \`${safeVisi}\`, \`${safeMisi}\`, '${c.nomorUrut || '-'}', '${c.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(safeNama)}&background=e2e8f0&color=475569&size=400`}', '${c.instagram || ''}')">
-                  <i class="bi bi-eye"></i> Detail
-                </button>
-                <button class="btn btn-primary w-50 fw-bold" onclick="castVote('${candId}', '${safeNama}')">
-                  Pilih <i class="bi bi-check-circle"></i>
-                </button>
+    let tabsHtml = '';
+    let contentHtml = '';
+    
+    let isFirst = true;
+    for (const cat of allCategories) {
+       const safeCatId = cat.replace(/\s+/g, '-').replace(/&/g, 'and');
+       const isVoted = votedCategories.includes(cat);
+       const tabIcon = isVoted ? '<i class="bi bi-check-circle-fill text-success ms-1"></i>' : '';
+       
+       tabsHtml += `
+          <li class="nav-item" role="presentation">
+            <button class="nav-link ${isFirst ? 'active' : ''} fw-bold px-4 rounded-pill border mb-2" id="tab-${safeCatId}" data-bs-toggle="pill" data-bs-target="#content-${safeCatId}" type="button" role="tab">${cat} ${tabIcon}</button>
+          </li>
+       `;
+       
+       contentHtml += `
+          <div class="tab-pane fade ${isFirst ? 'show active' : ''}" id="content-${safeCatId}" role="tabpanel">
+            ${isVoted ? `<div class="alert alert-success text-center mb-4"><i class="bi bi-check-circle-fill me-2"></i>Anda sudah memberikan suara untuk kategori <b>${cat}</b>.</div>` : ''}
+            <div class="row g-4 justify-content-center">
+       `;
+       
+       categoriesMap[cat].forEach(c => {
+          const safeNama = (c.nama || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+          const safeVisi = (c.visi || '').replace(/`/g, "'").replace(/\\/g, '\\\\');
+          const safeMisi = (c.misi || '').replace(/`/g, "'").replace(/\\/g, '\\\\');
+          
+          let actionBtn = '';
+          if (isVoted) {
+             actionBtn = `<button class="btn btn-secondary w-50 fw-bold" disabled>Sudah Memilih</button>`;
+          } else {
+             actionBtn = `<button class="btn btn-primary w-50 fw-bold" onclick="castVote('${c.id}', '${safeNama}', '${cat}')">Pilih <i class="bi bi-check-circle"></i></button>`;
+          }
+          
+          contentHtml += `
+            <div class="col-md-6 col-lg-5">
+              <div class="candidate-card h-100 d-flex flex-column position-relative ${isVoted ? 'opacity-75' : ''}">
+                <div class="no-urut">${c.nomorUrut || '-'}</div>
+                <img src="${c.photoUrl || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(c.nama || 'No Name') + '&background=e2e8f0&color=475569&size=400'}" onerror="this.src='https://ui-avatars.com/api/?name=' + encodeURIComponent('${safeNama}') + '&background=e2e8f0&color=475569&size=400'" class="candidate-photo" alt="${c.nama}">
+                <div class="p-4 d-flex flex-column flex-grow-1">
+                  <h5 class="fw-bold mb-3 text-center">${c.nama || 'Tanpa Nama'}</h5>
+                  <div class="d-flex justify-content-center gap-2 mt-auto pt-3 border-top">
+                    <button class="btn btn-outline-secondary w-50" onclick="showDetail('${safeNama}', \`${safeVisi}\`, \`${safeMisi}\`, '${c.nomorUrut || '-'}', '${c.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(safeNama)}&background=e2e8f0&color=475569&size=400`}', '${c.instagram || ''}')">
+                      <i class="bi bi-eye"></i> Detail
+                    </button>
+                    ${actionBtn}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      `;
-    });
+          `;
+       });
+       
+       contentHtml += `</div></div>`;
+       isFirst = false;
+    }
     
-    document.getElementById('candidatesList').innerHTML = html;
+    document.getElementById('categoryTabs').innerHTML = tabsHtml;
+    document.getElementById('categoryTabContent').innerHTML = contentHtml;
 
   } catch (error) {
     console.error("Error loading election:", error);
@@ -149,10 +194,10 @@ window.showDetail = (nama, visi, misi, noUrut, photoUrl, instagram) => {
   modal.show();
 };
 
-window.castVote = async (candId, candName) => {
+window.castVote = async (candId, candName, kategori) => {
   const res = await Swal.fire({
     title: 'Konfirmasi Pilihan',
-    html: `Apakah Anda yakin ingin memberikan suara untuk <b>${candName}</b>?<br><br><small class="text-danger">Pilihan yang sudah disimpan tidak dapat diubah!</small>`,
+    html: `Apakah Anda yakin ingin memberikan suara untuk <b>${candName}</b> pada kategori <b>${kategori}</b>?<br><br><small class="text-danger">Pilihan yang sudah disimpan tidak dapat diubah!</small>`,
     icon: 'question',
     showCancelButton: true,
     confirmButtonColor: '#2563eb',
@@ -164,10 +209,9 @@ window.castVote = async (candId, candName) => {
   if (res.isConfirmed) {
     Swal.showLoading();
     try {
-      // Double check if already voted to prevent concurrent race condition
-      const alreadyVoted = await checkHasVoted(currentUser.uid);
-      if(alreadyVoted) {
-         Swal.fire('Gagal', 'Anda sudah pernah memberikan suara.', 'error');
+      const votedCats = await checkVotedCategories(currentUser.uid, currentElectionId);
+      if(votedCats.includes(kategori)) {
+         Swal.fire('Gagal', 'Anda sudah pernah memberikan suara untuk kategori ini.', 'error');
          setTimeout(() => location.reload(), 1500);
          return;
       }
@@ -177,6 +221,7 @@ window.castVote = async (candId, candName) => {
         electionId: currentElectionId,
         userId: currentUser.uid,
         userEmail: currentUser.email,
+        kategori: kategori,
         timestamp: serverTimestamp()
       });
       
@@ -185,7 +230,7 @@ window.castVote = async (candId, candName) => {
         votes: increment(1)
       });
       
-      Swal.fire('Berhasil!', 'Suara Anda berhasil disimpan. Terima kasih telah berpartisipasi.', 'success').then(() => {
+      Swal.fire('Berhasil!', 'Suara Anda berhasil disimpan. Lanjutkan ke kategori lain jika belum.', 'success').then(() => {
         location.reload();
       });
       

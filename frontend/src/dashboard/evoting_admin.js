@@ -137,9 +137,18 @@ async function loadCandidates() {
       document.getElementById('totalVotesCount').textContent = '0';
     } else {
       let colorIndex = 0;
+      
+      const filterSelect = document.getElementById('chartCategoryFilter');
+      const selectedCat = filterSelect ? filterSelect.value : 'Semua';
+
       snap.forEach(docSnap => {
         const c = docSnap.data();
         const candId = docSnap.id;
+        
+        if (selectedCat !== 'Semua' && c.kategori !== selectedCat) {
+          return; // skip if not matching filter
+        }
+
         html += `
           <tr>
             <td>
@@ -149,6 +158,7 @@ async function loadCandidates() {
               </div>
             </td>
             <td class="text-center fw-bold fs-5">${c.nomorUrut}</td>
+            <td class="text-center"><span class="badge bg-secondary">${c.kategori || 'Umum'}</span></td>
             <td>
               <div class="small"><b>Visi:</b> ${c.visi.substring(0, 50)}...</div>
               <div class="small mt-1"><b>Misi:</b> ${c.misi.substring(0, 50)}...</div>
@@ -214,6 +224,7 @@ document.getElementById('formAddCandidate').addEventListener('submit', async (e)
 
   try {
     const no = parseInt(document.getElementById('candNo').value);
+    const kategori = document.getElementById('candKategori').value;
     const nama = document.getElementById('candName').value;
     const visi = document.getElementById('candVision').value;
     const misi = document.getElementById('candMission').value;
@@ -228,6 +239,7 @@ document.getElementById('formAddCandidate').addEventListener('submit', async (e)
 
     await addDoc(collection(db, "candidates"), {
       nomorUrut: no,
+      kategori: kategori,
       nama: nama,
       visi: visi,
       misi: misi,
@@ -308,6 +320,12 @@ async function init() {
   if (isAdmin) {
     loadElectionSettings();
     loadCandidates();
+    
+    const filterSelect = document.getElementById('chartCategoryFilter');
+    if (filterSelect) {
+      filterSelect.addEventListener('change', loadCandidates);
+    }
+    
     // Auto refresh candidates every 10 seconds for live update
     setInterval(loadCandidates, 10000);
   }
