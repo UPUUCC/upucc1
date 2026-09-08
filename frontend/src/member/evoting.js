@@ -90,7 +90,7 @@ async function loadElection() {
             <div class="p-4 d-flex flex-column flex-grow-1">
               <h5 class="fw-bold mb-3 text-center">${c.nama || 'Tanpa Nama'}</h5>
               <div class="d-flex justify-content-center gap-2 mt-auto pt-3 border-top">
-                <button class="btn btn-outline-secondary w-50" onclick="showDetail('${safeNama}', \`${safeVisi}\`, \`${safeMisi}\`)">
+                <button class="btn btn-outline-secondary w-50" onclick="showDetail('${safeNama}', \`${safeVisi}\`, \`${safeMisi}\`, '${c.nomorUrut || '-'}', '${c.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(safeNama)}&background=e2e8f0&color=475569&size=400`}')">
                   <i class="bi bi-eye"></i> Detail
                 </button>
                 <button class="btn btn-primary w-50 fw-bold" onclick="castVote('${candId}', '${safeNama}')">
@@ -117,8 +117,15 @@ async function loadElection() {
   }
 }
 
-window.showDetail = (nama, visi, misi) => {
+window.showDetail = (nama, visi, misi, noUrut, photoUrl) => {
   document.getElementById('modalCandName').textContent = nama;
+  
+  const noEl = document.getElementById('modalCandNo');
+  if(noEl) noEl.textContent = noUrut;
+  
+  const photoEl = document.getElementById('modalCandPhoto');
+  if(photoEl) photoEl.src = photoUrl;
+  
   document.getElementById('modalCandVision').textContent = visi;
   document.getElementById('modalCandMission').textContent = misi;
   const modal = new bootstrap.Modal(document.getElementById('modalDetail'));
