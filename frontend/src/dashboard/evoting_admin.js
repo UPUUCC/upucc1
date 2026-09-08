@@ -3,25 +3,27 @@ import { db, auth } from '../firebase.js';
 import { onAuthStateChanged } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, setDoc, addDoc, updateDoc, deleteDoc, query, orderBy, where, limit } from 'firebase/firestore';
 
-const CLOUDINARY_CLOUD_NAME = "xg0djsvz";
-const CLOUDINARY_UPLOAD_PRESET = "ml_default";
+// ImgBB - Free image hosting, no server needed, no complex setup
+const IMGBB_API_KEY = "be8a5da0e99aaef8ce0b3b8e34d08826";
 
-async function uploadToCloudinary(file) {
+async function uploadToImgBB(file) {
     if (!file) return '';
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    formData.append('image', file);
     try {
-        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
             method: 'POST',
             body: formData
         });
         const data = await res.json();
-        if (data.secure_url) return data.secure_url;
-        throw new Error(data.error?.message || 'Gagal upload gambar');
+        if (data.success && data.data?.url) {
+            console.log('✅ Upload sukses:', data.data.url);
+            return data.data.url;
+        }
+        throw new Error(data.error?.message || 'Gagal upload gambar ke ImgBB');
     } catch (err) {
-        console.error("Cloudinary Error:", err);
-        throw new Error("Gagal mengupload gambar ke Cloudinary.");
+        console.error("ImgBB Upload Error:", err);
+        throw new Error("Gagal mengupload gambar. Coba pakai link URL langsung.");
     }
 }
 
@@ -210,7 +212,7 @@ document.getElementById('formAddCandidate').addEventListener('submit', async (e)
   e.preventDefault();
   const btn = document.getElementById('btnSaveCandidate');
   btn.disabled = true;
-  btn.innerHTML = 'Menyimpan...';
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Mengupload...';
 
   try {
     const no = parseInt(document.getElementById('candNo').value);
@@ -218,11 +220,16 @@ document.getElementById('formAddCandidate').addEventListener('submit', async (e)
     const visi = document.getElementById('candVision').value;
     const misi = document.getElementById('candMission').value;
     
-    let photoUrl = document.getElementById('candPhotoUrl').value;
+    let photoUrl = document.getElementById('candPhotoUrl').value.trim();
     const photoFile = document.getElementById('candPhotoFile');
     
     if (photoFile.files.length > 0) {
-        photoUrl = await uploadToCloudinary(photoFile.files[0]);
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Upload foto...';
+        photoUrl = await uploadToImgBB(photoFile.files[0]);
+    }
+
+    if (!photoUrl) {
+        throw new Error('Foto kandidat wajib diisi! Pilih file foto atau isi URL foto.');
     }
 
     await addDoc(collection(db, "candidates"), {
@@ -234,19 +241,21 @@ document.getElementById('formAddCandidate').addEventListener('submit', async (e)
       votes: 0
     });
 
-    Swal.fire('Berhasil', 'Kandidat berhasil ditambahkan!', 'success');
+    Swal.fire('Berhasil!', `Kandidat <b>${nama}</b> berhasil ditambahkan dengan foto!`, 'success');
     document.getElementById('formAddCandidate').reset();
+    document.getElementById('photoPreview').style.display = 'none';
     const modal = bootstrap.Modal.getInstance(document.getElementById('modalAddCandidate'));
     modal.hide();
     loadCandidates();
   } catch (error) {
     console.error(error);
-    Swal.fire('Gagal', 'Gagal menambah kandidat.', 'error');
+    Swal.fire('Gagal', error.message || 'Gagal menambah kandidat.', 'error');
   } finally {
     btn.disabled = false;
     btn.innerHTML = 'Simpan Kandidat';
   }
 });
+
 
 window.deleteCandidate = async (id) => {
   const res = await Swal.fire({

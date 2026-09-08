@@ -178,6 +178,123 @@
           </div>
           <div class="mb-3">
             <label class="form-label text-muted small">Visi</label>
+      <li class="nav-item"><a class="nav-link" href="/dashboard/kadiv_panel.html"><i class="bi bi-briefcase"></i> Panel Divisi</a></li>
+      <li class="nav-item"><a class="nav-link active" href="/dashboard/evoting_admin.html"><i class="bi bi-box"></i> E-Voting</a></li>
+      <li class="nav-item mt-4"><a class="nav-link text-info" href="/" target="_blank"><i class="bi bi-box-arrow-up-right"></i> Lihat Website</a></li>
+      <li class="nav-item"><a class="nav-link text-danger" href="/dashboard/logout.html"><i class="bi bi-box-arrow-left"></i> Logout</a></li>
+    </ul>
+  </div>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="main-content">
+  <div class="top-navbar">
+    <div class="d-flex align-items-center">
+      <button class="toggle-btn me-3" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
+      <h5 class="mb-0 fw-bold d-none d-sm-block">Manajemen E-Voting</h5>
+    </div>
+  </div>
+
+  <div class="container-fluid p-4">
+    <div class="row g-4">
+      <!-- Election Settings -->
+      <div class="col-md-5">
+        <div class="card h-100">
+          <div class="card-body p-4">
+            <h5 class="fw-bold mb-4">Pengaturan Pemilu</h5>
+            <form id="electionSettingsForm">
+              <div class="mb-3">
+                <label class="form-label text-muted small">Judul Pemilu Raya</label>
+                <input type="text" class="form-control" id="electionTitle" placeholder="Contoh: Pemilu Raya UPUCC 2026">
+              </div>
+              <div class="mb-3">
+                <label class="form-label text-muted small">Status Pemilu</label>
+                <div class="form-check form-switch fs-5">
+                  <input class="form-check-input" type="checkbox" role="switch" id="electionStatus">
+                  <label class="form-check-label fs-6 ms-2 mt-1" for="electionStatus" id="statusLabel">Ditutup</label>
+                </div>
+                <small class="text-muted d-block mt-2">Jika diaktifkan, anggota dapat melihat kandidat dan melakukan pencoblosan di Portal Member.</small>
+              </div>
+              <button type="submit" class="btn btn-primary w-100 mt-2" id="btnSaveElection">Simpan Pengaturan</button>
+              
+              <hr class="my-4">
+              <h6 class="fw-bold text-danger">Zona Berbahaya</h6>
+              <button type="button" class="btn btn-outline-danger w-100" id="btnResetVotes">Reset Seluruh Suara (Mulai Ulang)</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Live Results Chart -->
+      <div class="col-md-7">
+        <div class="card h-100">
+          <div class="card-body p-4">
+            <h5 class="fw-bold mb-4">Live Real Count (Hasil Suara)</h5>
+            <div style="position: relative; height:300px; width:100%">
+              <canvas id="votingChart"></canvas>
+            </div>
+            <div class="mt-3 text-center">
+              <span class="badge bg-primary px-3 py-2 fs-6">Total Suara Masuk: <span id="totalVotesCount">0</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Candidate Management -->
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h5 class="fw-bold mb-0">Daftar Kandidat</h5>
+              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalAddCandidate">
+                <i class="bi bi-plus-lg"></i> Tambah Kandidat
+              </button>
+            </div>
+            
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Kandidat</th>
+                    <th>Nomor Urut</th>
+                    <th>Visi & Misi</th>
+                    <th>Perolehan Suara</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="candidateTableBody">
+                  <tr>
+                    <td colspan="5" class="text-center text-muted">Memuat data kandidat...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Add Candidate -->
+<div class="modal fade" id="modalAddCandidate" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 shadow">
+      <div class="modal-header border-bottom-0 pb-0">
+        <h5 class="modal-title fw-bold">Tambah Kandidat Baru</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form id="formAddCandidate">
+          <div class="mb-3">
+            <label class="form-label text-muted small">Nomor Urut</label>
+            <input type="number" class="form-control" id="candNo" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted small">Nama Kandidat / Paslon</label>
+            <input type="text" class="form-control" id="candName" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted small">Visi</label>
             <textarea class="form-control" id="candVision" rows="2" required></textarea>
           </div>
           <div class="mb-3">
@@ -186,9 +303,13 @@
           </div>
           <div class="mb-3">
             <label class="form-label text-muted small">Foto Kandidat (Pilih File atau URL)</label>
-            <input type="file" class="form-control mb-2" id="candPhotoFile" accept="image/*">
+            <input type="file" class="form-control mb-2" id="candPhotoFile" accept="image/*" onchange="previewPhoto(this)">
             <div class="text-center text-muted small mb-2">- ATAU -</div>
-            <input type="url" class="form-control" id="candPhotoUrl" placeholder="https://example.com/photo.jpg">
+            <input type="url" class="form-control" id="candPhotoUrl" placeholder="https://example.com/photo.jpg" oninput="previewPhotoUrl(this.value)">
+            <div id="photoPreview" style="display:none; margin-top:10px; text-align:center;">
+              <img id="photoPreviewImg" src="" style="width:120px; height:120px; object-fit:cover; border-radius:12px; border:2px solid #2563eb;">
+              <p class="text-success small mt-1 mb-0">✅ Foto terpilih</p>
+            </div>
           </div>
           <button type="submit" class="btn btn-primary w-100" id="btnSaveCandidate">Simpan Kandidat</button>
         </form>
@@ -202,6 +323,32 @@
   function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('show');
     document.getElementById('sidebarOverlay').classList.toggle('show');
+  }
+
+  function previewPhoto(input) {
+    const preview = document.getElementById('photoPreview');
+    const img = document.getElementById('photoPreviewImg');
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        img.src = e.target.result;
+        preview.style.display = 'block';
+        document.getElementById('candPhotoUrl').value = '';
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function previewPhotoUrl(url) {
+    const preview = document.getElementById('photoPreview');
+    const img = document.getElementById('photoPreviewImg');
+    if (url) {
+      img.src = url;
+      preview.style.display = 'block';
+      document.getElementById('candPhotoFile').value = '';
+    } else {
+      preview.style.display = 'none';
+    }
   }
 </script>
 <script type="module" src="/src/dashboard/evoting_admin.js"></script>
