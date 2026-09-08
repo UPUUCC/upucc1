@@ -198,3 +198,10 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; }
 .hover-lift { transition: transform 0.2s ease, box-shadow 0.2s ease !important; }
 .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3) !important; }
 .tracking-wide { letter-spacing: 1.5px; }
+
+/* Fix for navbar toggler z-index on mobile */
+.upucc-navbar .navbar-toggler {
+    position: relative;
+    z-index: 1050;
+}
+

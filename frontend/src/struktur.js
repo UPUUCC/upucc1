@@ -77,7 +77,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const ketum = getByRole('ketum') || getByRole('ketua umum');
     const waketum = getByRole('waketum') || getByRole('wakil ketua umum');
     const sekre = getByRole('sekretaris');
+    const wasek = getByRole('wakil_sekretaris');
     const benda = getByRole('bendahara');
+    const waben = getByRole('wakil_bendahara');
 
     // Build Divisions HTML
     let divisiNodesHTML = '';
@@ -170,3 +172,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     treeContainer.innerHTML = '<p class="text-danger text-center mt-4">Gagal memuat struktur organisasi.</p>';
   }
 });
+

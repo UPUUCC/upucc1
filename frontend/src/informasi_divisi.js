@@ -12,6 +12,8 @@ function labelRole(roleStr) {
   if (r === 'ketum') return 'Ketua Umum';
   if (r === 'waketum') return 'Wakil Ketua Umum';
   if (r === 'sekretaris') return 'Sekretaris';
+  if (r === 'wakil_sekretaris') return 'Wakil Sekretaris';
+  if (r === 'wakil_bendahara') return 'Wakil Bendahara';
   if (r === 'bendahara') return 'Bendahara';
   if (r === 'kadiv') return 'Kepala Divisi';
   if (r === 'wakadiv') return 'Wakil Kepala Divisi';
@@ -120,3 +122,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     membersContainer.innerHTML = '';
   }
 });
+

@@ -120,9 +120,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                             targetUrl = "/member/profil.html"; // Anggota biasa
                         } else if (role === 'kadiv' || role === 'wakadiv') {
                             targetUrl = "/dashboard/kadiv_panel.html"; // Kadiv langsung ke panel divisi
-                        } else if (role === 'sekretaris') {
+                        } else if (role === 'sekretaris' || role === 'wakil_sekretaris') {
                             targetUrl = "/dashboard/pendaftaran.html"; // Sekretaris langsung ke pendaftaran
-                        } else if (role === 'bendahara') {
+                        } else if (role === 'bendahara' || role === 'wakil_bendahara') {
                             targetUrl = "/dashboard/keuangan.html"; // Bendahara langsung ke kas
                         }
                         // role lain (admin, ketum, dll) → tetap dashboard utama
@@ -156,3 +156,4 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 });
+

@@ -52,7 +52,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             'ketum': 'Ketua Umum',
             'waketum': 'Wakil Ketua Umum',
             'bendahara': 'Bendahara',
+            'wakil_bendahara': 'Wakil Bendahara',
             'sekretaris': 'Sekretaris',
+            'wakil_sekretaris': 'Wakil Sekretaris',
             'kadiv': 'Kepala Divisi',
             'wakadiv': 'Wakil Kepala Divisi',
             'anggota': 'Anggota Divisi'
@@ -124,3 +126,4 @@ document.addEventListener('DOMContentLoaded', async () => {
         notFound.style.display = 'block';
     }
 });
+
