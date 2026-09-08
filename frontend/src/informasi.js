@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     divSnap.forEach((docSnap) => {
       const d = docSnap.data();
       const initial = d.nama ? d.nama.substring(0, 1) : 'U';
-      const logoSrc = d.logo ? (d.logo.startsWith('http') ? d.logo : `uploads/divisi/${d.logo}`) : `https://via.placeholder.com/90?text=${initial}`;
+      const logoSrc = d.logoUrl || (d.logo ? (d.logo.startsWith('http') ? d.logo : `uploads/divisi/${d.logo}`) : `https://ui-avatars.com/api/?name=${initial}&background=e2e8f0&color=475569&size=128&bold=true`);
       
       cardsHTML += `
       <div class="col-md-6 col-lg-4">

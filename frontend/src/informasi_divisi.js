@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     const initial = divisiData.nama ? divisiData.nama.substring(0, 1) : 'U';
-    const logoSrc = divisiData.logoUrl || (divisiData.logo ? (divisiData.logo.startsWith('http') ? divisiData.logo : `uploads/divisi/${divisiData.logo}`) : `https://via.placeholder.com/100?text=${initial}`);
+    const logoSrc = divisiData.logoUrl || (divisiData.logo ? (divisiData.logo.startsWith('http') ? divisiData.logo : `uploads/divisi/${divisiData.logo}`) : `https://ui-avatars.com/api/?name=${initial}&background=e2e8f0&color=475569&size=128&bold=true`);
 
     headerContainer.innerHTML = `
       <div class="text-center mb-5">
