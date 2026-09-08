@@ -95,7 +95,7 @@ async function loadShowcaseDetail() {
                 <div class="d-flex align-items-center text-light opacity-75 mb-4 gap-3 fw-medium flex-wrap">
                     <span><i class="bi bi-person-circle me-1 text-primary"></i> ${author}</span>
                     <span><i class="bi bi-calendar3 me-1 text-primary"></i> ${date}</span>
-                    <span><i class="bi bi-eye me-1 text-primary"></i> ${(data.views || 0) + 1} kali dilihat</span>
+                    <span><i class="bi bi-eye me-1 text-primary"></i> ${(data.views || 0)} kali dilihat</span>
                 </div>
             </div>
             
