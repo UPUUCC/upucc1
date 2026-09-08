@@ -111,7 +111,11 @@ async function loadSertifikat(divisiId) {
         let docsArray = [];
         results.forEach(snap => {
             snap.forEach(docSnap => {
-                if(!docsArray.find(d => d.id === docSnap.id)) docsArray.push({ id: docSnap.id, ...docSnap.data() });
+                const data = docSnap.data();
+                const email = data.member_email;
+                if (!email || email === 'all' || email === userEmail) {
+                    if(!docsArray.find(d => d.id === docSnap.id)) docsArray.push({ id: docSnap.id, ...data });
+                }
             });
         });
         docsArray.sort((a, b) => (b.created_at?.toMillis() || 0) - (a.created_at?.toMillis() || 0));
@@ -195,4 +199,5 @@ async function checkAbsensiQR(divisiId) {
     // Tapi karena tidak ada kontainer khusus di dashboard.js (kecuali tombol di profil),
     // kita biarkan saja. Logika pembacaan akan diurus di scan.html jika ada.
 }
+
 

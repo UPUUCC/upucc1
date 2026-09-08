@@ -112,6 +112,7 @@ async function loadAllData() {
     const namaDiv = !activeDivisiId ? "Semua Divisi (Pilih Divisi Dulu Untuk Upload)" : getDivisiName(activeDivisiId);
     document.getElementById('displayNamaDivisi').textContent = namaDiv;
 
+    await loadMembersForSelect();
     await loadMateri();
     await loadSertifikat();
     await loadJadwal();
@@ -119,6 +120,34 @@ async function loadAllData() {
 }
 
 /* ================== MATERI ================== */
+async function loadMembersForSelect() {
+    const select = document.getElementById('sertifikatPenerima');
+    if (!select) return;
+    
+    try {
+        let q = query(collection(db, 'members'), orderBy('nama'));
+        // Jika activeDivisiId ada (bukan admin yang belum milih), kita filter di frontend saja agar mudah
+        const snap = await getDocs(q);
+        
+        // Keep the first option (all)
+        select.innerHTML = '<option value="all">Seluruh Anggota Divisi</option>';
+        
+        snap.forEach(docSnap => {
+            const data = docSnap.data();
+            const email = data.email || '';
+            const nama = data.nama || 'Tanpa Nama';
+            const divisi_id = data.divisi_id || '';
+            
+            // Tampilkan anggota jika sesuai divisi yang sedang aktif (atau jika admin belum pilih divisi, tampilkan semua)
+            if(email && (!activeDivisiId || activeDivisiId === divisi_id)) {
+                select.innerHTML += <option value=" + email + "> + nama +  ( + email + )</option>;
+            }
+        });
+    } catch (e) {
+        console.error('Error loading members:', e);
+    }
+}
+
 async function loadMateri() {
     const tbody = document.getElementById('materiTableBody');
     tbody.innerHTML = '<tr><td colspan="5" class="text-center">Memuat...</td></tr>';
@@ -492,3 +521,4 @@ window.deleteDocItem = async (collectionName, id, reloadCallback) => {
         } catch (e) { Swal.fire('Gagal', 'Terjadi kesalahan.', 'error'); }
     }
 };
+
