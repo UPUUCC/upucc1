@@ -40,16 +40,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       const logoSrc = d.logo ? (d.logo.startsWith('http') ? d.logo : `uploads/divisi/${d.logo}`) : `https://via.placeholder.com/90?text=${initial}`;
       
       cardsHTML += `
-      <div class="col-md-6">
-        <div class="card card-divisi h-100 shadow-sm border-0">
-          <div class="card-body d-flex gap-3">
-            <img src="${logoSrc}" class="logo-divisi flex-shrink-0" style="margin:0; object-fit:contain;" alt="Logo ${d.nama}">
-            <div>
-              <h5 class="card-title fw-bold text-primary">${d.nama || 'Tanpa Nama'}</h5>
-              <p class="card-text text-muted" style="font-size:0.9rem;">${truncateText(d.deskripsi)}</p>
-              <a href="informasi_divisi.html?slug=${d.slug || docSnap.id}" class="btn btn-sm btn-primary">Selengkapnya</a>
-            </div>
-          </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card card-divisi h-100 shadow-sm border-0 text-center p-4 rounded-4" style="transition: 0.3s; background: #fff;">
+          <img src="${logoSrc}" class="mx-auto mb-3 rounded-circle shadow-sm" style="width:90px; height:90px; object-fit:cover; border:3px solid #f8fafc;" alt="Logo ${d.nama}">
+          <h5 class="card-title fw-bold mb-3" style="color: #1e293b;">${d.nama || 'Tanpa Nama'}</h5>
+          <p class="card-text text-muted small mb-4 flex-grow-1">${truncateText(d.deskripsi, 100)}</p>
+          <a href="informasi_divisi.html?slug=${d.slug || docSnap.id}" class="btn btn-primary rounded-pill px-4 mt-auto mx-auto d-inline-block">Selengkapnya</a>
         </div>
       </div>
       `;
