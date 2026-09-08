@@ -103,9 +103,54 @@ async function loadShowcaseDetail() {
             </div>
 
             ${repoHTML}
+
+            <hr class="mt-5 mb-4" style="border-color: rgba(255,255,255,0.1);">
+            <div class="share-section text-center p-4 rounded-4 shadow-sm mb-5" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                <h5 class="fw-bold mb-2 text-white">Bagikan Karya Ini 🚀</h5>
+                <p class="mb-4 small" style="color: #94a3b8;">Kagum dengan karya ini? Yuk, sebarkan dan inspirasi teman-teman Anda untuk berkarya lebih besar!</p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a href="https://api.whatsapp.com/send?text=${encodeURIComponent('🌟 *' + data.judul + '*\n\nKarya keren dari UPU-CC! Cek selengkapnya:\n' + window.location.href)}" target="_blank" class="btn btn-success rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;" title="Bagikan ke WhatsApp">
+                        <i class="bi bi-whatsapp fs-5"></i>
+                    </a>
+                    <a href="https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent('🌟 ' + data.judul + ' - Karya dari UPU-CC')}" target="_blank" class="btn rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background-color: #0088cc; color: white;" title="Bagikan ke Telegram">
+                        <i class="bi bi-telegram fs-5"></i>
+                    </a>
+                    <button id="btnShareNative" class="btn btn-primary rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;" title="Lainnya (IG, Threads, dll)">
+                        <i class="bi bi-share-fill fs-5"></i>
+                    </button>
+                    <button id="btnCopyLink" class="btn rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);" title="Salin Tautan">
+                        <i class="bi bi-link-45deg fs-4"></i>
+                    </button>
+                </div>
+            </div>
         `;
         
         document.title = `${data.judul} - UPU-CC Showcase`;
+
+        // Event Listeners for Share Buttons
+        document.getElementById('btnShareNative')?.addEventListener('click', async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: data.judul,
+                        text: 'Karya keren dari UPU-CC! Yuk lihat selengkapnya.',
+                        url: window.location.href
+                    });
+                } catch (err) {
+                    console.log('User cancelled share');
+                }
+            } else {
+                alert('Browser Anda tidak mendukung fitur berbagi langsung. Silakan gunakan tombol salin tautan.');
+            }
+        });
+
+        document.getElementById('btnCopyLink')?.addEventListener('click', () => {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('Tautan berhasil disalin ke clipboard!');
+            }).catch(() => {
+                alert('Gagal menyalin tautan.');
+            });
+        });
 
     } catch (error) {
         console.error("Error fetching showcase detail: ", error);

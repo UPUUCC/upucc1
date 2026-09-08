@@ -85,10 +85,54 @@ async function loadBlogDetail() {
             <div class="blog-content" style="font-size: 1.05rem; text-align: justify; line-height: 1.5; color: #334155; letter-spacing: 0.2px;">
                 ${fullText}
             </div>
+            
+            <hr class="mt-5 mb-4 opacity-10">
+            <div class="share-section text-center p-4 rounded-4 shadow-sm mb-5" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
+                <h5 class="fw-bold mb-2" style="color: #0f172a;">Bagikan Artikel Ini 🚀</h5>
+                <p class="text-muted mb-4 small">Bermanfaat? Yuk, sebarkan wawasan dan pengetahuan teknologi ini ke teman-teman serta komunitas Anda!</p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a href="https://api.whatsapp.com/send?text=${encodeURIComponent('✨ *' + data.judul + '*\n\nYuk baca selengkapnya di UPU-CC Tech Blog:\n' + window.location.href)}" target="_blank" class="btn btn-success rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;" title="Bagikan ke WhatsApp">
+                        <i class="bi bi-whatsapp fs-5"></i>
+                    </a>
+                    <a href="https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent('✨ ' + data.judul)}" target="_blank" class="btn rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background-color: #0088cc; color: white;" title="Bagikan ke Telegram">
+                        <i class="bi bi-telegram fs-5"></i>
+                    </a>
+                    <button id="btnShareNative" class="btn btn-primary rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;" title="Lainnya (IG, Threads, dll)">
+                        <i class="bi bi-share-fill fs-5"></i>
+                    </button>
+                    <button id="btnCopyLink" class="btn btn-outline-secondary rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;" title="Salin Tautan">
+                        <i class="bi bi-link-45deg fs-4"></i>
+                    </button>
+                </div>
+            </div>
         `;
-        
-        // Update Title
-        document.title = `${data.judul} - UPU-CC Tech Blog`;
+
+        document.title = `${data.judul} - UPU-CC Blog`;
+
+        // Event Listeners for Share Buttons
+        document.getElementById('btnShareNative')?.addEventListener('click', async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: data.judul,
+                        text: 'Yuk baca artikel menarik ini di UPU-CC Tech Blog!',
+                        url: window.location.href
+                    });
+                } catch (err) {
+                    console.log('User cancelled share');
+                }
+            } else {
+                alert('Browser Anda tidak mendukung fitur berbagi langsung. Silakan gunakan tombol salin tautan.');
+            }
+        });
+
+        document.getElementById('btnCopyLink')?.addEventListener('click', () => {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('Tautan berhasil disalin ke clipboard!');
+            }).catch(() => {
+                alert('Gagal menyalin tautan.');
+            });
+        });
 
     } catch (error) {
         console.error("Error fetching blog detail: ", error);
