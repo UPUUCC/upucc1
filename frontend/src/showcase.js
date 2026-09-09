@@ -2,37 +2,30 @@ import { db } from "./firebase.js";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 
 const showcaseContainer = document.getElementById('showcaseContainer');
+const filterBtns = document.querySelectorAll('.filter-btn');
 
-async function fetchShowcases() {
+async function fetchShowcases(filterCategory = 'Semua') {
     try {
         const q = query(collection(db, "showcases"), orderBy("createdAt", "desc"));
         const snapshot = await getDocs(q);
         
         showcaseContainer.innerHTML = '';
-        
-        if (snapshot.empty) {
-            showcaseContainer.innerHTML = `
-                <div class="col-12 text-center py-5">
-                    <div class="empty-state mx-auto" style="max-width: 500px;">
-                        <i class="bi bi-folder-x display-1 mb-3 opacity-25"></i>
-                        <h4 class="fw-bold">Belum Ada Karya</h4>
-                        <p class="mb-0">Karya dari anggota belum diunggah untuk kategori ini.</p>
-                    </div>
-                </div>
-            `;
-            return;
-        }
-
+        let hasData = false;
         let cardsHTML = '';
-        
 
         snapshot.forEach(docSnap => {
             const data = docSnap.data();
+            const kategori = data.kategori || '';
+            
+            if (filterCategory !== 'Semua' && kategori.toLowerCase() !== filterCategory.toLowerCase()) {
+                return;
+            }
+
+            hasData = true;
             const id = docSnap.id;
             
             let badgeClass = 'bg-primary';
             let borderClass = 'border-primary';
-            const kategori = data.kategori || '';
             if(kategori.toLowerCase() === 'multimedia') {
                 badgeClass = 'bg-danger'; borderClass = 'border-danger';
             } else if (kategori.toLowerCase() === 'netsect') {
@@ -43,7 +36,6 @@ async function fetchShowcases() {
             
             const deskripsi = data.deskripsi || '';
             const summary = deskripsi.length > 100 ? deskripsi.substring(0, 100) + '...' : deskripsi;
-            const fullText = deskripsi.replace(/\n/g, '<br>');
 
             const gambar = data.gambar || data.mediaUrl || 'https://via.placeholder.com/400x200?text=No+Image';
             const judul = data.judul || 'Tanpa Judul';
@@ -69,6 +61,19 @@ async function fetchShowcases() {
             `;
         });
         
+        if (!hasData) {
+            showcaseContainer.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <div class="empty-state mx-auto" style="max-width: 500px;">
+                        <i class="bi bi-folder-x display-1 mb-3 opacity-25"></i>
+                        <h4 class="fw-bold">Belum Ada Karya</h4>
+                        <p class="mb-0">Karya dari anggota belum diunggah untuk kategori ini.</p>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
         showcaseContainer.innerHTML = cardsHTML;
 
     } catch (error) {
@@ -76,6 +81,15 @@ async function fetchShowcases() {
         showcaseContainer.innerHTML = '<div class="col-12 text-center text-danger py-5">Gagal memuat karya. Silakan muat ulang halaman.</div>';
     }
 }
+
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        const category = e.target.textContent.trim();
+        fetchShowcases(category);
+    });
+});
 
 fetchShowcases();
 
