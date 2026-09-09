@@ -232,52 +232,6 @@
       if(link.getAttribute('href') === currentUrl) link.classList.add('active');
     });
   });
-  
-  // Export Excel function
-  window.exportToExcel = function() {
-    // Select the table
-    const table = document.querySelector(".table");
-    
-    // Convert table to worksheet, ignoring the last column ("Aksi")
-    const wb = XLSX.utils.book_new();
-    
-    // We clone the table to modify it before export
-    const clonedTable = table.cloneNode(true);
-    // Remove the "Aksi" column header
-    const ths = clonedTable.querySelectorAll('th');
-    if(ths.length > 0) ths[ths.length - 1].remove();
-    
-    // Remove the "Aksi" column from each row
-    const rows = clonedTable.querySelectorAll('tr');
-    rows.forEach(row => {
-        const tds = row.querySelectorAll('td');
-        if(tds.length > 0) {
-            // Remove the buttons cell
-            tds[tds.length - 1].remove();
-        }
-    });
-
-    const ws = XLSX.utils.table_to_sheet(clonedTable);
-    
-    // Atur lebar kolom agar rapi (tidak serak)
-    ws['!cols'] = [
-        { wch: 15 }, // Tanggal
-        { wch: 30 }, // Nama Lengkap
-        { wch: 20 }, // NIM
-        { wch: 30 }, // Email
-        { wch: 15 }, // No. HP
-        { wch: 20 }, // Prodi / Smt
-        { wch: 20 }, // Divisi
-        { wch: 20 }, // Bukti Follow
-        { wch: 20 }  // Status
-    ];
-
-    XLSX.utils.book_append_sheet(wb, ws, "Data Pendaftar");
-    
-    // Save file
-    const dateStr = new Date().toISOString().split('T')[0];
-    XLSX.writeFile(wb, `Data_Pendaftaran_UPUCC_${dateStr}.xlsx`);
-  }
 </script>
 
 <script type="module" src="/src/dashboard/pendaftaran.js"></script>

@@ -283,3 +283,74 @@ document.addEventListener('DOMContentLoaded', () => {
     loadData();
     loadStatus();
 });
+
+window.exportToExcel = function() {
+    if (!allData || allData.length === 0) {
+        Swal.fire({ icon: 'warning', title: 'Data Kosong', text: 'Tidak ada data pendaftar untuk diexport.' });
+        return;
+    }
+
+    const excelData = [
+        ['LAPORAN DATA PENDAFTARAN ANGGOTA BARU UPUCC'],
+        [],
+        ['Diunduh pada:', new Date().toLocaleString('id-ID')],
+        [],
+        ['No', 'Tanggal', 'Nama Lengkap', 'NIM', 'Email', 'No. HP', 'Prodi', 'Semester', 'Divisi', 'Status', 'Bukti Follow (Link)']
+    ];
+
+    let no = 1;
+    // Tampilkan data urut dari yang paling lama mendaftar hingga terbaru
+    const sortedData = [...allData].reverse();
+
+    sortedData.forEach(item => {
+        let dateStr = '-';
+        if (item.createdAt) {
+            const d = item.createdAt.toDate();
+            dateStr = d.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year:'numeric'});
+        }
+
+        let bukti = '-';
+        if (item.buktiFollow && item.buktiFollow.length > 0) {
+            bukti = item.buktiFollow.join(', ');
+        } else if (item.buktiUrl) {
+            bukti = item.buktiUrl;
+        }
+
+        excelData.push([
+            no++,
+            dateStr,
+            item.nama || '-',
+            item.nim || '-',
+            item.email || '-',
+            item.nohp || '-',
+            item.prodi || '-',
+            item.semester || '-',
+            item.divisi || '-',
+            item.status || 'Menunggu Review',
+            bukti
+        ]);
+    });
+
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet(excelData);
+
+    // Atur lebar kolom agar rapi (tidak serak)
+    ws['!cols'] = [
+        { wch: 5 },   // No
+        { wch: 15 },  // Tanggal
+        { wch: 30 },  // Nama Lengkap
+        { wch: 15 },  // NIM
+        { wch: 30 },  // Email
+        { wch: 20 },  // No. HP
+        { wch: 25 },  // Prodi
+        { wch: 10 },  // Semester
+        { wch: 15 },  // Divisi
+        { wch: 15 },  // Status
+        { wch: 50 }   // Bukti Follow
+    ];
+
+    XLSX.utils.book_append_sheet(wb, ws, "Data Pendaftar");
+    
+    const dateStr = new Date().toISOString().split('T')[0];
+    XLSX.writeFile(wb, `Data_Pendaftaran_UPUCC_${dateStr}.xlsx`);
+};
