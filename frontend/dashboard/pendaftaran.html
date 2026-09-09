@@ -258,6 +258,20 @@
     });
 
     const ws = XLSX.utils.table_to_sheet(clonedTable);
+    
+    // Atur lebar kolom agar rapi (tidak serak)
+    ws['!cols'] = [
+        { wch: 15 }, // Tanggal
+        { wch: 30 }, // Nama Lengkap
+        { wch: 20 }, // NIM
+        { wch: 30 }, // Email
+        { wch: 15 }, // No. HP
+        { wch: 20 }, // Prodi / Smt
+        { wch: 20 }, // Divisi
+        { wch: 20 }, // Bukti Follow
+        { wch: 20 }  // Status
+    ];
+
     XLSX.utils.book_append_sheet(wb, ws, "Data Pendaftar");
     
     // Save file
