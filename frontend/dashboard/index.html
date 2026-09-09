@@ -158,6 +158,79 @@
   </div>
 </div>
 
+<!-- Admin Guide Modal -->
+<div class="modal fade" id="adminGuideModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+      <div class="modal-header border-0 bg-primary text-white p-4">
+        <h5 class="modal-title fw-bold"><i class="bi bi-rocket-takeoff me-2"></i> Panduan Panel Admin UPUCC</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div id="guideCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <!-- Slide 1: Welcome -->
+            <div class="carousel-item active p-5 text-center">
+              <div class="mb-4">
+                <i class="bi bi-speedometer2 display-1 text-primary opacity-75"></i>
+              </div>
+              <h3 class="fw-bold mb-3">Selamat Datang di Pusat Kendali!</h3>
+              <p class="text-muted">Ini adalah Dashboard Admin UPUCC CMS v2.0. Melalui panel ini, Anda memiliki kendali penuh atas semua konten yang tampil di website publik maupun portal member UPUCC.</p>
+            </div>
+            <!-- Slide 2: Menu CMS -->
+            <div class="carousel-item p-5">
+              <h4 class="fw-bold mb-4 text-center text-primary"><i class="bi bi-layout-text-window-reverse me-2"></i> Manajemen Konten (CMS)</h4>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="d-flex align-items-start bg-light p-3 rounded-3 h-100">
+                    <i class="bi bi-images fs-3 text-primary me-3"></i>
+                    <div><strong class="d-block mb-1">Slider & Galeri</strong> Atur banner interaktif beranda dan portofolio karya mahasiswa IT.</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="d-flex align-items-start bg-light p-3 rounded-3 h-100">
+                    <i class="bi bi-journal-text fs-3 text-success me-3"></i>
+                    <div><strong class="d-block mb-1">Artikel & Acara</strong> Kelola blog, tutorial, berita IT, dan publikasi agenda (event).</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Slide 3: Manajemen Anggota -->
+            <div class="carousel-item p-5">
+              <h4 class="fw-bold mb-4 text-center text-primary"><i class="bi bi-people me-2"></i> Organisasi & Keuangan</h4>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="d-flex align-items-start bg-light p-3 rounded-3 h-100">
+                    <i class="bi bi-person-badge fs-3 text-danger me-3"></i>
+                    <div><strong class="d-block mb-1">Anggota & Struktur</strong> Tambah/hapus akun, atur peran (Super Admin/Kadiv/Member), dan kelola BPH.</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="d-flex align-items-start bg-light p-3 rounded-3 h-100">
+                    <i class="bi bi-wallet2 fs-3 text-warning me-3"></i>
+                    <div><strong class="d-block mb-1">Kas & E-Voting</strong> Transparansi uang kas masuk/keluar serta sistem pemilihan ketua (e-voting).</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#guideCarousel" data-bs-slide="prev" style="width: 50px;">
+            <span class="carousel-control-prev-icon bg-primary rounded-circle p-2" aria-hidden="true" style="width: 30px; height: 30px; background-size: 50%;"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#guideCarousel" data-bs-slide="next" style="width: 50px;">
+            <span class="carousel-control-next-icon bg-primary rounded-circle p-2" aria-hidden="true" style="width: 30px; height: 30px; background-size: 50%;"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer border-0 justify-content-center p-4 pt-2">
+        <button type="button" class="btn btn-primary px-4 rounded-pill fw-bold" data-bs-dismiss="modal">Saya Mengerti</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>

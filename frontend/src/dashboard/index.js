@@ -47,6 +47,16 @@ async function loadMaintenanceStatus() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // Tampilkan Modal Panduan Admin
+    const guideModalEl = document.getElementById('adminGuideModal');
+    if (guideModalEl) {
+        // Use timeout to ensure bootstrap is fully loaded
+        setTimeout(() => {
+            const guideModal = new bootstrap.Modal(guideModalEl);
+            guideModal.show();
+        }, 500);
+    }
+
     loadMaintenanceStatus();
     try {
         const sliderSnap = await getDocs(collection(db, "sliders"));
