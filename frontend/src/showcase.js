@@ -11,7 +11,15 @@ async function fetchShowcases() {
         showcaseContainer.innerHTML = '';
         
         if (snapshot.empty) {
-            showcaseContainer.innerHTML = '<div class="col-12 text-center text-muted py-5">Belum ada karya yang diunggah.</div>';
+            showcaseContainer.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <div class="empty-state mx-auto" style="max-width: 500px;">
+                        <i class="bi bi-folder-x display-1 mb-3 opacity-25"></i>
+                        <h4 class="fw-bold">Belum Ada Karya</h4>
+                        <p class="mb-0">Karya dari anggota belum diunggah untuk kategori ini.</p>
+                    </div>
+                </div>
+            `;
             return;
         }
 
@@ -44,7 +52,9 @@ async function fetchShowcases() {
             cardsHTML += `
                 <div class="col-md-6 col-lg-4 mb-4">
                     <div class="project-card h-100 d-flex flex-column">
-                        <img src="${gambar}" class="project-img" alt="${judul}" style="height: 200px; object-fit: contain; background-color: #f8f9fa;">
+                        <div class="project-img-wrapper">
+                            <img src="${gambar}" class="project-img" alt="${judul}" style="background-color: rgba(255,255,255,0.05);">
+                        </div>
                         <div class="p-4 d-flex flex-column flex-grow-1">
                             <span class="badge ${badgeClass} mb-2 align-self-start">${kategori}</span>
                             <h5 class="fw-bold">${judul}</h5>

@@ -10,41 +10,100 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   
   <style>
-    body { background-color: #0f172a; color: white; font-family: 'Outfit', sans-serif; }
+    body { background-color: #0f172a; color: white; font-family: 'Outfit', sans-serif; position: relative; overflow-x: hidden; }
+    /* Animated Background Blob */
+    body::before {
+        content: '';
+        position: absolute;
+        top: -150px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 800px;
+        height: 400px;
+        background: radial-gradient(ellipse at center, rgba(59,130,246,0.25) 0%, rgba(15,23,42,0) 70%);
+        z-index: -1;
+        pointer-events: none;
+    }
+
     .showcase-header {
-      padding: 80px 0 40px;
+      padding: 100px 0 60px;
       text-align: center;
+      position: relative;
     }
+    
+    .showcase-header h1 {
+        font-weight: 800;
+        letter-spacing: -1px;
+        text-shadow: 0 10px 30px rgba(59,130,246,0.3);
+    }
+    
+    .text-gradient {
+        background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
     .filter-btn {
-        background: transparent;
-        border: 1px solid rgba(255,255,255,0.2);
-        color: white;
-        border-radius: 20px;
-        padding: 8px 20px;
-        margin: 5px;
-        transition: 0.3s;
-    }
-    .filter-btn.active, .filter-btn:hover {
-        background: #3b82f6;
-        border-color: #3b82f6;
-    }
-    .project-card {
-        background: rgba(255,255,255,0.03);
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 16px;
+        color: #cbd5e1;
+        border-radius: 30px;
+        padding: 10px 24px;
+        margin: 5px;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .filter-btn.active, .filter-btn:hover {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white;
+        border-color: transparent;
+        box-shadow: 0 8px 20px rgba(59,130,246,0.4);
+        transform: translateY(-2px);
+    }
+    
+    .project-card {
+        background: rgba(255,255,255,0.02);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255,255,255,0.05);
+        border-radius: 20px;
         overflow: hidden;
-        transition: 0.4s;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
+    
     .project-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-        border-color: rgba(255,255,255,0.2);
+        transform: translateY(-12px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(59,130,246,0.2);
+        border-color: rgba(59,130,246,0.3);
     }
+    
+    .project-img-wrapper {
+        overflow: hidden;
+        position: relative;
+    }
+    
     .project-img {
-        height: 250px;
+        height: 240px;
         width: 100%;
         object-fit: cover;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        transition: transform 0.5s ease;
+    }
+    
+    .project-card:hover .project-img {
+        transform: scale(1.05);
+    }
+    
+    /* Loading / Empty state styling */
+    .empty-state {
+        background: rgba(255,255,255,0.02);
+        border: 1px dashed rgba(255,255,255,0.1);
+        border-radius: 20px;
+        padding: 60px 20px;
+        color: #94a3b8;
     }
   </style>
 </head>
@@ -93,7 +152,7 @@
 
 <div class="showcase-header">
   <div class="container">
-    <h1 class="fw-bold mb-3 display-4">Galeri Karya <span class="text-primary">UPU-CC</span></h1>
+    <h1 class="fw-bold mb-3 display-4">Galeri Karya <span class="text-gradient">UPU-CC</span></h1>
     <p class="lead opacity-75">Mahakarya mahasiswa di bidang pemrograman, desain, dan jaringan.</p>
     
     <div class="mt-5">
