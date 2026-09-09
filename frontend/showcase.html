@@ -26,9 +26,14 @@
     }
 
     .showcase-header {
-      padding: 100px 0 60px;
+      padding: 60px 0 40px;
       text-align: center;
       position: relative;
+    }
+    @media (min-width: 768px) {
+      .showcase-header {
+        padding: 100px 0 60px;
+      }
     }
     
     .showcase-header h1 {
@@ -150,16 +155,16 @@
   </div>
 </nav>
 
-<div class="showcase-header">
-  <div class="container">
+<div class="showcase-header text-center">
+  <div class="container d-flex flex-column align-items-center">
     <h1 class="fw-bold mb-3 display-4">Galeri Karya <span class="text-gradient">UPU-CC</span></h1>
-    <p class="lead opacity-75">Mahakarya mahasiswa di bidang pemrograman, desain, dan jaringan.</p>
+    <p class="lead opacity-75 px-3" style="max-width: 600px;">Mahakarya mahasiswa di bidang pemrograman, desain, dan jaringan.</p>
     
-    <div class="mt-5">
-        <button class="filter-btn active">Semua</button>
-        <button class="filter-btn">Programming</button>
-        <button class="filter-btn">Multimedia</button>
-        <button class="filter-btn">NetSect</button>
+    <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
+        <button class="filter-btn active m-0">Semua</button>
+        <button class="filter-btn m-0">Programming</button>
+        <button class="filter-btn m-0">Multimedia</button>
+        <button class="filter-btn m-0">NetSect</button>
     </div>
   </div>
 </div>

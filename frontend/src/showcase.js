@@ -63,8 +63,8 @@ async function fetchShowcases(filterCategory = 'Semua') {
         
         if (!hasData) {
             showcaseContainer.innerHTML = `
-                <div class="col-12 text-center py-5">
-                    <div class="empty-state mx-auto" style="max-width: 500px;">
+                <div class="col-12 d-flex justify-content-center py-5">
+                    <div class="empty-state text-center mx-auto" style="max-width: 500px; width: 100%;">
                         <i class="bi bi-folder-x display-1 mb-3 opacity-25"></i>
                         <h4 class="fw-bold">Belum Ada Karya</h4>
                         <p class="mb-0">Karya dari anggota belum diunggah untuk kategori ini.</p>
