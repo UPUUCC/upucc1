@@ -96,7 +96,7 @@
   </div>
 
   <div class="container-fluid p-4">
-    <div class="card border-0 shadow-sm p-4">
+    <div class="card border-0 shadow-sm p-4 mb-4">
   <h5>Edit Informasi Umum UPUCC</h5>
   <p class="text-muted small">Konten ini akan tampil di halaman Beranda dan halaman Informasi.</p>
   <div id="alertInfo" class="alert d-none"></div>
@@ -107,6 +107,28 @@
     <button type="submit" class="btn btn-primary" id="btnSave"><i class="bi bi-save"></i> Simpan</button>
   </form>
 </div>
+
+    <!-- PENGATURAN SOSIAL MEDIA -->
+    <div class="card border-0 shadow-sm p-4">
+      <h5>Pengaturan Link Sosial Media</h5>
+      <p class="text-muted small">Link ini akan otomatis ter-update di footer seluruh halaman website utama.</p>
+      <div id="alertSocial" class="alert d-none"></div>
+      <form id="formSocial">
+        <div class="mb-3">
+          <label class="form-label small fw-bold"><i class="bi bi-instagram text-danger me-1"></i> Link Instagram</label>
+          <input type="url" id="linkInstagram" class="form-control" placeholder="https://www.instagram.com/upucc.or.id/">
+        </div>
+        <div class="mb-3">
+          <label class="form-label small fw-bold"><i class="bi bi-youtube text-danger me-1"></i> Link YouTube</label>
+          <input type="url" id="linkYoutube" class="form-control" placeholder="https://www.youtube.com/@UPUCC">
+        </div>
+        <div class="mb-3">
+          <label class="form-label small fw-bold"><i class="bi bi-github text-dark me-1"></i> Link GitHub</label>
+          <input type="url" id="linkGithub" class="form-control" placeholder="https://github.com/UPUUCC">
+        </div>
+        <button type="submit" class="btn btn-primary" id="btnSaveSocial"><i class="bi bi-save"></i> Simpan Link</button>
+      </form>
+    </div>
   </div>
 </div>
 
