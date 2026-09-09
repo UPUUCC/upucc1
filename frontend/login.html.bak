@@ -204,8 +204,7 @@
             <label for="password" class="form-label fw-semibold">Password</label>
             <div class="input-group">
               <span class="input-group-text"><i class="bi bi-lock"></i></span>
-              <input type="password" class="form-control" id="password" required placeholder="Masukkan password" style="border-right: none;">
-              <span class="input-group-text bg-white" id="togglePassword" style="cursor: pointer;"><i class="bi bi-eye-slash" id="toggleIcon"></i></span>
+              <input type="password" class="form-control" id="password" required placeholder="Masukkan password">
             </div>
           </div>
           <button type="submit" class="btn btn-primary w-100 fw-bold py-2" id="btnLogin" style="background-color: var(--upucc-secondary); border-color: var(--upucc-secondary);">
@@ -247,15 +246,6 @@
 <script type="module" src="/src/main.js"></script>
 <script type="module" src="/src/login.js"></script>
 <script src="/src/protect.js"></script>
-<script>
-  document.getElementById('togglePassword').addEventListener('click', function () {
-    const passwordInput = document.getElementById('password');
-    const toggleIcon = document.getElementById('toggleIcon');
-    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordInput.setAttribute('type', type);
-    toggleIcon.className = type === 'password' ? 'bi bi-eye-slash' : 'bi bi-eye';
-  });
-</script>
 </body>
 </html>
 
