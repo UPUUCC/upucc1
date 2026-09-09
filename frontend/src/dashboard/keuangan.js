@@ -242,41 +242,50 @@ document.getElementById('btnExportExcel').addEventListener('click', () => {
     }
 
     const excelData = [
-        ['Laporan Kas Organisasi UPUCC'],
+        ['LAPORAN KEUANGAN & KAS ORGANISASI UPUCC'],
+        [],
         ['Diunduh pada:', new Date().toLocaleString('id-ID')],
         [],
-        ['Tanggal', 'Keterangan', 'Tipe', 'Nominal (Rp)']
+        ['No', 'Tanggal', 'Keterangan Transaksi', 'Tipe', 'Pemasukan (Rp)', 'Pengeluaran (Rp)']
     ];
 
     let totalPemasukan = 0;
     let totalPengeluaran = 0;
+    let no = 1;
 
-    // Use a copy and reverse so oldest is first or keep descending
-    // It's usually better to have chronological order in export, but we can just use the UI order
-    keuanganDataRaw.forEach(item => {
+    // Use a copy and reverse so oldest is first
+    const sortedData = [...keuanganDataRaw].reverse();
+
+    sortedData.forEach(item => {
+        let inRp = item.tipe === 'pemasukan' ? item.nominal : 0;
+        let outRp = item.tipe === 'pengeluaran' ? item.nominal : 0;
+
         excelData.push([
+            no++,
             item.tanggal,
             item.keterangan,
             item.tipe === 'pemasukan' ? 'Pemasukan' : 'Pengeluaran',
-            item.nominal
+            inRp,
+            outRp
         ]);
-        if (item.tipe === 'pemasukan') totalPemasukan += item.nominal;
-        else totalPengeluaran += item.nominal;
+        totalPemasukan += inRp;
+        totalPengeluaran += outRp;
     });
 
     excelData.push([]);
-    excelData.push(['', '', 'Total Pemasukan', totalPemasukan]);
-    excelData.push(['', '', 'Total Pengeluaran', totalPengeluaran]);
-    excelData.push(['', '', 'Saldo Kas', totalPemasukan - totalPengeluaran]);
+    excelData.push(['', '', '', 'TOTAL', totalPemasukan, totalPengeluaran]);
+    excelData.push(['', '', '', 'SALDO AKHIR TERSISA', '', totalPemasukan - totalPengeluaran]);
 
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.aoa_to_sheet(excelData);
 
     ws['!cols'] = [
-        { wch: 15 },
-        { wch: 40 },
-        { wch: 15 },
-        { wch: 20 }
+        { wch: 5 },   // No
+        { wch: 15 },  // Tanggal
+        { wch: 50 },  // Keterangan
+        { wch: 15 },  // Tipe
+        { wch: 20 },  // Pemasukan
+        { wch: 20 }   // Pengeluaran
     ];
 
     XLSX.utils.book_append_sheet(wb, ws, "Laporan Kas");
