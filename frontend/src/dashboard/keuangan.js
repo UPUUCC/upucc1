@@ -18,6 +18,17 @@ onAuthStateChanged(auth, (user) => {
 const form = document.getElementById('formKeuangan');
 const btnSubmit = document.getElementById('btnSubmitForm');
 const tableBody = document.getElementById('keuanganTableBody');
+const nominalInput = document.getElementById('nominal');
+
+if (nominalInput) {
+    nominalInput.addEventListener('input', function(e) {
+        let value = this.value.replace(/[^0-9]/g, '');
+        if (value) {
+            value = parseInt(value, 10).toLocaleString('id-ID');
+        }
+        this.value = value;
+    });
+}
 
 // Format Rupiah
 const formatRupiah = (number) => {
@@ -36,7 +47,8 @@ form.addEventListener('submit', async (e) => {
     
     const tipe = document.getElementById('tipe').value;
     const keterangan = document.getElementById('keterangan').value;
-    const nominal = parseInt(document.getElementById('nominal').value);
+    const nominalRaw = document.getElementById('nominal').value;
+    const nominal = parseInt(nominalRaw.replace(/[^0-9]/g, ''), 10) || 0;
     const tanggal = document.getElementById('tanggal').value;
 
     btnSubmit.disabled = true;

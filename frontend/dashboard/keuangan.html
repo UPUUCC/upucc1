@@ -139,8 +139,19 @@
       </div>
     </div>
 
+    <div class="row g-4 mb-4">
+      <div class="col-12">
+        <div class="card p-4 shadow-sm border-0">
+          <h5 class="mb-3">Statistik Keuangan</h5>
+          <div style="position: relative; height: 350px; width: 100%;">
+            <canvas id="keuanganChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="row g-4">
-      <div class="col-lg-8">
+      <div class="col-12">
         <div class="card p-4 h-100 shadow-sm border-0">
           <h5 class="mb-3">Riwayat Transaksi</h5>
           <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
@@ -158,14 +169,6 @@
                 <tr><td colspan="5" class="text-center text-muted">Memuat data...</td></tr>
               </tbody>
             </table>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="card p-4 h-100 shadow-sm border-0">
-          <h5 class="mb-3">Statistik Keuangan</h5>
-          <div style="position: relative; height: 350px; width: 100%;">
-            <canvas id="keuanganChart"></canvas>
           </div>
         </div>
       </div>
@@ -197,7 +200,7 @@
           </div>
           <div class="mb-3">
             <label class="form-label">Nominal (Rp)</label>
-            <input type="number" class="form-control" id="nominal" required min="0" step="1000">
+            <input type="text" class="form-control" id="nominal" required placeholder="Cth: 90.000">
           </div>
           <div class="mb-3">
             <label class="form-label">Tanggal Transaksi</label>
