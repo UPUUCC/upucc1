@@ -30,6 +30,8 @@
   </script>
 
   <link rel="canonical" href="https://upucc.or.id/login.html">
+  <!-- Cloudflare Turnstile API -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top upucc-navbar">
@@ -209,6 +211,10 @@
               <input type="password" class="form-control" id="password" required placeholder="Masukkan password" style="border-right: none;">
               <span class="input-group-text bg-white" id="togglePassword" style="cursor: pointer;"><i class="bi bi-eye-slash" id="toggleIcon"></i></span>
             </div>
+          </div>
+          <!-- Cloudflare Turnstile -->
+          <div class="mb-3 d-flex justify-content-center">
+            <div class="cf-turnstile" id="cfTurnstile" data-sitekey="1x00000000000000000000AA" data-theme="light"></div>
           </div>
           <button type="submit" class="btn btn-primary w-100 fw-bold py-2" id="btnLogin" style="background-color: var(--upucc-secondary); border-color: var(--upucc-secondary);">
             Login

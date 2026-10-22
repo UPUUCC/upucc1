@@ -1,6 +1,7 @@
 import { auth, db } from './firebase.js';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { collection, getDocs, query, orderBy, where, limit } from "firebase/firestore";
+import Swal from 'sweetalert2';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const loginForm = document.getElementById('loginForm');
@@ -18,6 +19,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         // Save current step so it persists if user clicks back or refreshes (optional)
         sessionStorage.setItem('upucc_login_step', targetId);
+
+        if (targetId === 'stepForm' && window.turnstile) {
+            setTimeout(() => {
+                try { window.turnstile.reset(); } catch(err) {}
+            }, 100);
+        }
     }
 
     // Attach click events to cards and back buttons
@@ -98,6 +105,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+
+            // Verifikasi Cloudflare Turnstile
+            const turnstileResponse = document.querySelector('[name="cf-turnstile-response"]')?.value;
+            if (!turnstileResponse) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Verifikasi Keamanan',
+                    text: 'Harap selesaikan verifikasi centang Cloudflare terlebih dahulu.',
+                    confirmButtonColor: '#0a369d'
+                });
+                return;
+            }
             
             loginAlert.classList.add('d-none');
             btnLogin.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Memproses...';
@@ -150,6 +169,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 loginAlert.textContent = errorMessage;
                 loginAlert.classList.remove('d-none');
                 
+                if (window.turnstile) {
+                    try { window.turnstile.reset(); } catch(err) {}
+                }
+
                 btnLogin.innerHTML = 'Login';
                 btnLogin.disabled = false;
             }
