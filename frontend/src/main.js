@@ -125,7 +125,7 @@ async function fetchHomeData() {
 
   } catch (error) {
     console.error('Error fetching home data:', error);
-    document.getElementById('infoUPUCC').innerText = "Gagal memuat data dari Firebase.";
+    document.getElementById('infoUPUCC').innerText = "Gagal memuat data.";
   }
 }
 

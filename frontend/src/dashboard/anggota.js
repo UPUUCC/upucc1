@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const btnDelete = e.target.closest('.btn-delete');
         if (btnDelete) {
             const id = btnDelete.getAttribute('data-id');
-            const confirmResult = await Swal.fire({title: 'Yakin ingin menghapus anggota ini? Catatan: Akun Auth Firebase tidak akan terhapus otomatis dari sini, hanya profil datanya.', icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya', cancelButtonText: 'Batal'});
+            const confirmResult = await Swal.fire({title: 'Yakin ingin menghapus anggota ini? Catatan: Akun login tidak akan terhapus otomatis dari sini, hanya profil datanya.', icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya', cancelButtonText: 'Batal'});
             if (confirmResult.isConfirmed) {
                 try {
                     await deleteDoc(doc(db, "members", id));

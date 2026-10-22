@@ -10,6 +10,54 @@ document.addEventListener('DOMContentLoaded', async () => {
     const formTitle = document.getElementById('formTitle');
     const backFromForm = document.getElementById('backFromForm');
     
+    const TURNSTILE_SITEKEY = '0x4AAAAAAFg_stMRBtiOCFUA';
+    let turnstileWidgetId = null;
+
+    function renderOrResetTurnstile() {
+        const container = document.getElementById('cfTurnstile');
+        if (!container) return;
+
+        if (typeof window.turnstile === 'undefined') {
+            setTimeout(renderOrResetTurnstile, 150);
+            return;
+        }
+
+        if (turnstileWidgetId === null) {
+            try {
+                container.innerHTML = '';
+                turnstileWidgetId = window.turnstile.render('#cfTurnstile', {
+                    sitekey: TURNSTILE_SITEKEY,
+                    theme: 'light',
+                    size: 'normal'
+                });
+            } catch (err) {
+                console.warn('Gagal render Cloudflare Turnstile:', err);
+            }
+        } else {
+            try {
+                window.turnstile.reset(turnstileWidgetId);
+            } catch (err) {
+                console.warn('Gagal reset Turnstile, mencoba re-render:', err);
+                try {
+                    container.innerHTML = '';
+                    turnstileWidgetId = window.turnstile.render('#cfTurnstile', {
+                        sitekey: TURNSTILE_SITEKEY,
+                        theme: 'light',
+                        size: 'normal'
+                    });
+                } catch (e) {}
+            }
+        }
+    }
+
+    // Expose callback for Turnstile script onload
+    window.onloadTurnstileCallback = function() {
+        const stepForm = document.getElementById('stepForm');
+        if (stepForm && stepForm.classList.contains('active')) {
+            renderOrResetTurnstile();
+        }
+    };
+
     // UI Navigation Logic
     function showStep(targetId) {
         document.querySelectorAll('.login-step').forEach(el => el.classList.remove('active'));
@@ -20,10 +68,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Save current step so it persists if user clicks back or refreshes (optional)
         sessionStorage.setItem('upucc_login_step', targetId);
 
-        if (targetId === 'stepForm' && window.turnstile) {
-            setTimeout(() => {
-                try { window.turnstile.reset(); } catch(err) {}
-            }, 100);
+        if (targetId === 'stepForm') {
+            setTimeout(renderOrResetTurnstile, 60);
         }
     }
 
@@ -170,7 +216,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 loginAlert.classList.remove('d-none');
                 
                 if (window.turnstile) {
-                    try { window.turnstile.reset(); } catch(err) {}
+                    if (turnstileWidgetId !== null) {
+                        try { window.turnstile.reset(turnstileWidgetId); } catch(err) {}
+                    } else {
+                        renderOrResetTurnstile();
+                    }
                 }
 
                 btnLogin.innerHTML = 'Login';
