@@ -16,6 +16,42 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'API is running' });
 });
 
+// Cloudflare Turnstile Verification Route
+app.post('/api/verify-turnstile', async (req, res) => {
+  const { token } = req.body;
+  if (!token) {
+    return res.status(400).json({ success: false, error: 'Token Turnstile tidak disertakan.' });
+  }
+
+  const secretKey = process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY;
+  if (!secretKey) {
+    return res.status(500).json({ success: false, error: 'CLOUDFLARE_TURNSTILE_SECRET_KEY belum dikonfigurasi di server.' });
+  }
+
+  try {
+    const formData = new URLSearchParams();
+    formData.append('secret', secretKey);
+    formData.append('response', token);
+    if (req.ip) {
+      formData.append('remoteip', req.ip);
+    }
+
+    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
+
+    const data = await response.json();
+    return res.json(data);
+  } catch (error) {
+    console.error('Turnstile verification error:', error);
+    return res.status(500).json({ success: false, error: 'Gagal memverifikasi Turnstile.' });
+  }
+});
+
 // Example route to fetch all 'informasi'
 app.get('/api/informasi', async (req, res) => {
   try {
