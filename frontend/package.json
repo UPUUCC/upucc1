@@ -9,10 +9,14 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^8.2.2"
+    "vite": "^8.3.5"
   },
   "dependencies": {
-    "firebase": "^12.18.0",
+    "firebase": "^13.1.0",
     "sweetalert2": "^11.26.25"
+  },
+  "allowScripts": {
+    "@firebase/util@1.15.3": true,
+    "protobufjs@7.6.6": true
   }
 }

@@ -13,13 +13,17 @@
   "type": "commonjs",
   "dependencies": {
     "cookie-parser": "^1.4.7",
-    "dotenv": "^17.4.2",
-    "ejs": "^6.0.1",
-    "express": "^5.2.1",
+    "dotenv": "^18.0.9",
+    "ejs": "^7.0.2",
+    "express": "^5.3.0",
     "express-session": "^1.19.0",
-    "firebase": "^12.18.0",
-    "firebase-admin": "^14.3.0",
+    "firebase": "^13.1.0",
+    "firebase-admin": "^14.5.0",
     "html2canvas": "^1.4.1",
-    "multer": "^2.3.0"
+    "multer": "^2.5.0"
+  },
+  "allowScripts": {
+    "@firebase/util@1.15.3": true,
+    "protobufjs@7.6.6": true
   }
 }
